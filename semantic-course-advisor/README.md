@@ -72,7 +72,7 @@ D:\CodingSpace\TSW\semantic-course-advisor\run-smoke-test.cmd
 Direct command:
 
 ```powershell
-& 'C:\Users\anson\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe' 'D:\CodingSpace\TSW\semantic-course-advisor\tests\smoke_test.mjs'
+& 'C:\Users\Users\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe' 'D:\CodingSpace\TSW\semantic-course-advisor\tests\smoke_test.mjs'
 ```
 
 Expected result includes:
