@@ -3,228 +3,304 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Semantic Career Recommendation Platform</title>
+    <meta
+      name="description"
+      content="CareerGraph — an explainable semantic career recommendation platform."
+    />
+    <title>CareerGraph · Semantic Career Advisor</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="appShell">
-      <nav class="tabBar" role="tablist" aria-label="Demo sections">
-        <button class="tab" type="button" data-tab="overview">Overview</button>
-        <button class="tab is-active" type="button" data-tab="search">Search</button>
-        <button class="tab" type="button" data-tab="recommendations">Recommendations</button>
-        <button class="tab" type="button" data-tab="career">Career Explorer</button>
-        <button class="tab" type="button" data-tab="skillgap">Skill Gap Planner</button>
-        <button class="tab" type="button" data-tab="graph">Graph Visualization</button>
-        <button class="tab" type="button" data-tab="sparql">SPARQL Viewer</button>
-        <button class="tab" type="button" data-tab="statistics">Statistics</button>
-        <button class="tab" type="button" data-tab="evaluation">Evaluation</button>
-      </nav>
+    <div class="appFrame">
+      <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+        <div class="brand">
+          <span class="brandMark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="6" cy="7" r="2.4" fill="#fff"></circle>
+              <circle cx="18" cy="6" r="2" fill="#c4f03b"></circle>
+              <circle cx="16" cy="18" r="2.4" fill="#fff"></circle>
+              <path d="M7.8 8.2 14.6 16.4M8 7.2 16.4 6.4" stroke="#fff" stroke-width="1.4" stroke-linecap="round"></path>
+            </svg>
+          </span>
+          <span class="brandText">
+            <strong><em>Career</em>Graph</strong>
+            <small>Westbridge University</small>
+          </span>
+        </div>
 
-      <section class="tabPanel" id="tab-overview" aria-label="Overview">
-        <section class="heroCard" aria-label="Project title">
-          <div>
-            <p class="eyebrow">TSW6223 Semantic Web Technology</p>
-            <h1>Semantic Career Recommendation Platform</h1>
-            <p class="heroCopy">
-              Explore career paths through an RDF/OWL knowledge graph, SPARQL queries, and traceable
-              rule-based recommendations.
-            </p>
-          </div>
-          <div class="statPills" aria-label="Knowledge graph summary">
-            <span><strong id="rdfTripleCount">0</strong> RDF triples</span>
-            <span><strong id="careerCount">0</strong> careers</span>
-            <span><strong id="skillCount">0</strong> skills</span>
-            <span><strong id="courseCount">0</strong> courses</span>
-            <span><strong id="certificationCount">0</strong> certifications</span>
-          </div>
-        </section>
-        <div class="sectionHeader">
-          <p class="eyebrow">Project overview</p>
-          <h2>Semantic career search with explainable recommendations</h2>
-          <p>
-            The system models careers, skills, interests, industries, courses, certifications and
-            learning resources as linked entities. Results are produced from graph relationships,
-            not only keyword matching.
-          </p>
-        </div>
-        <div class="cardGrid three">
-          <article class="infoCard">
-            <span>Problem</span>
-            <p>
-              Plain keyword search can retrieve a career title, but it does not explain which skills,
-              learning paths or alternative careers are connected to that result.
-            </p>
-          </article>
-          <article class="infoCard">
-            <span>Semantic Web Solution</span>
-            <p>
-              XML source data is converted into RDF triples, queried with SPARQL-style patterns and
-              expanded with OWL-style inference rules.
-            </p>
-          </article>
-          <article class="infoCard">
-            <span>Demo Evidence</span>
-            <p>
-              Each tab shows a different part of the knowledge graph: search, recommendation,
-              skill gap planning, visualization, SPARQL and inferred facts.
-            </p>
-          </article>
-        </div>
-        <div class="wideCard">
-          <h3>Semantic Web technologies used</h3>
-          <div class="techGrid">
-            <div><strong>RDF/RDFS</strong><span>Career data is represented as subject-predicate-object triples and class instances.</span></div>
-            <div><strong>SPARQL</strong><span>Query examples retrieve careers, skills, recommendations and class instances.</span></div>
-            <div><strong>OWL/Inference</strong><span>Rules infer alternative-career links, inverse skill facts and prerequisite expansion.</span></div>
-            <div><strong>Entity Search</strong><span>Search returns career, skill and course entities with graph relationship evidence.</span></div>
-          </div>
-        </div>
-      </section>
+        <nav class="sideNav" role="tablist" aria-label="CareerGraph sections">
+          <p class="navLabel">Student tools</p>
+          <button class="tab is-active" type="button" data-tab="dashboard" role="tab">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+            <span>Dashboard</span>
+          </button>
+          <button class="tab" type="button" data-tab="search" role="tab">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2" stroke-linecap="round"></path></svg>
+            <span>Career Search</span>
+          </button>
+          <button class="tab" type="button" data-tab="recommendations" role="tab">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="4"></circle><circle cx="12" cy="12" r=".7" fill="currentColor" stroke="none"></circle></svg>
+            <span>Recommendations</span>
+          </button>
+          <button class="tab" type="button" data-tab="explorer" role="tab">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2 5-5 2 2-5z" stroke-linejoin="round"></path></svg>
+            <span>Career Explorer</span>
+          </button>
+          <button class="tab" type="button" data-tab="skillgap" role="tab">
+            <svg viewBox="0 0 24 24"><path d="M4 7h10M4 12h7M4 17h12" stroke-linecap="round"></path><path d="m17 6 1.7 1.7L22 4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>Skill Gap &amp; Plan</span>
+          </button>
 
-      <section class="tabPanel is-active" id="tab-search" aria-label="Search">
-        <div class="sectionHeader">
-          <p class="eyebrow">Search</p>
-          <h2>Search the career knowledge graph</h2>
-          <p>
-            Enter a natural language query. The current page changes to a ranked result view for
-            career, skill and course entities using semantic relationships.
-          </p>
-        </div>
-        <form id="searchForm" class="searchLauncher">
-          <label for="searchInput">Search query</label>
-          <div class="searchRow">
-            <input
-              id="searchInput"
-              type="search"
-              autocomplete="off"
-              placeholder="Try: AI engineer Python machine learning"
-            />
-            <button type="submit">Search</button>
-          </div>
-          <div class="examples" aria-label="Example searches">
-            <button type="button" data-query="AI engineer Python machine learning">AI engineer Python machine learning</button>
-            <button type="button" data-query="data scientist analytics visualization">data scientist analytics visualization</button>
-            <button type="button" data-query="cybersecurity analyst network threat">cybersecurity analyst network threat</button>
-          </div>
-        </form>
-      </section>
+          <p class="navLabel semanticLabel">Semantic lab <i aria-hidden="true"></i></p>
+          <button class="tab" type="button" data-tab="graph" role="tab">
+            <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="7" r="2.5"></circle><circle cx="13" cy="18" r="2.5"></circle><path d="M8 7.5 11 16M8.2 6.4 15.6 6.7" stroke-linecap="round"></path></svg>
+            <span>Knowledge Graph</span>
+          </button>
+          <button class="tab" type="button" data-tab="sparql" role="tab">
+            <svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>SPARQL Viewer</span>
+          </button>
+          <button class="tab" type="button" data-tab="stats" role="tab">
+            <svg viewBox="0 0 24 24"><path d="M5 20V10M10 20V4M15 20v-7M20 20V7M3 20h19" stroke-linecap="round"></path></svg>
+            <span>Statistics &amp; Eval</span>
+          </button>
+        </nav>
 
-      <section class="tabPanel" id="tab-recommendations" aria-label="Recommendations">
-        <div class="sectionHeader">
-          <p class="eyebrow">Career recommendation</p>
-          <h2>Rank careers from interests and existing skills</h2>
-          <p>Select interests and skills to score careers from explicit knowledge graph relationships.</p>
+        <nav class="referenceNav" aria-label="Reference views">
+          <button class="tab" type="button" data-tab="system" role="tab">
+            <svg viewBox="0 0 24 24"><rect x="4" y="4" width="5" height="5" rx="1"></rect><rect x="15" y="4" width="5" height="5" rx="1"></rect><rect x="4" y="15" width="5" height="5" rx="1"></rect><rect x="15" y="15" width="5" height="5" rx="1"></rect></svg>
+            <span>Design System</span>
+          </button>
+          <button class="tab" type="button" data-tab="mobile" role="tab">
+            <svg viewBox="0 0 24 24"><rect x="8" y="2.5" width="8" height="19" rx="2"></rect><path d="M11 18.5h2" stroke-linecap="round"></path></svg>
+            <span>Mobile Layouts</span>
+          </button>
+        </nav>
+
+        <div class="studentCard">
+          <span class="avatar">AH</span>
+          <span><strong>Amira Hassan</strong><small>BSc Computer Science · Yr 2</small></span>
         </div>
-        <div class="inputGrid">
-          <section class="inputBlock">
-            <h3>Interests</h3>
-            <div id="recommendInterestChoices" class="choiceGrid"></div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topBar">
+          <div class="breadcrumb" aria-label="Current page">
+            <span id="pageKicker">Student Home</span>
+            <b aria-hidden="true">›</b>
+            <strong id="pageTitle">Dashboard</strong>
+          </div>
+          <form id="globalSearchForm" class="globalSearch" role="search">
+            <label class="srOnly" for="globalSearchInput">Search CareerGraph</label>
+            <input id="globalSearchInput" type="search" autocomplete="off" placeholder="Search..." />
+            <button type="submit" aria-label="Search">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path></svg>
+            </button>
+          </form>
+          <div class="topActions">
+            <div class="popoverWrap">
+              <button id="notificationButton" class="iconButton" type="button" aria-expanded="false" aria-label="Notifications">
+                <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"></path></svg>
+                <i aria-hidden="true"></i>
+              </button>
+              <div id="notificationPanel" class="topPopover" hidden>
+                <strong>You’re all caught up</strong>
+                <span>Your latest semantic matches are ready.</span>
+              </div>
+            </div>
+            <div class="popoverWrap profileWrap">
+              <button id="profileButton" class="profileButton" type="button" aria-expanded="false">
+                <span class="avatar">AH</span>
+                <span><strong>Amira Hassan</strong><small>@a_hassan</small></span>
+              </button>
+              <div id="profilePanel" class="topPopover" hidden>
+                <strong>Student profile</strong>
+                <span>Artificial Intelligence · Data Analytics · Python</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <header class="mobileHeader">
+          <button id="mobileBackButton" class="mobileHeaderButton" type="button" aria-label="Go back">‹</button>
+          <strong id="mobilePageTitle">Dashboard</strong>
+          <span class="avatar">AH</span>
+        </header>
+
+        <main class="content">
+          <section class="tabPanel is-active" id="tab-dashboard" aria-label="Dashboard">
+            <div class="pageIntro dashboardIntro">
+              <div><p class="eyebrow">Student home</p><h1>Welcome back, Amira.</h1><p>Your career pathway is built from the knowledge graph — every match is explainable.</p></div>
+              <span class="termBadge">● Term 2610</span>
+            </div>
+            <div class="journeyRail" aria-label="Career journey">
+              <div class="journeyStep is-done"><b>✓</b><span><small>Step 1</small><strong>Profile</strong></span></div>
+              <div class="journeyLine is-done"></div>
+              <div class="journeyStep is-current"><b>2</b><span><small>Current</small><strong>Career Matches</strong></span></div>
+              <div class="journeyLine"></div>
+              <div class="journeyStep"><b>3</b><span><small>Next</small><strong>Skill Gap</strong></span></div>
+              <div class="journeyLine"></div>
+              <div class="journeyStep"><b>4</b><span><small>Then</small><strong>Courses &amp; Certs</strong></span></div>
+            </div>
+            <div class="dashboardFilters" aria-label="Filter career matches">
+              <button class="is-active" type="button" data-dashboard-filter="all">All matches</button>
+              <button type="button" data-dashboard-filter="Technology">Technology</button>
+              <button type="button" data-dashboard-filter="Finance">Finance</button>
+              <button type="button" data-dashboard-filter="Healthcare">Healthcare</button>
+              <button type="button" data-dashboard-filter="ArtificialIntelligence">Artificial Intelligence</button>
+            </div>
+            <div id="dashboardCareerCards" class="dashboardCareerCards"></div>
+            <div id="mobileDashboardSummary" class="mobileDashboardSummary"></div>
+            <div class="dashboardLower">
+              <section class="lessonCard">
+                <div class="cardHeading"><h2>My next lessons</h2><button type="button" data-goto-tab="skillgap">View all lessons</button></div>
+                <div class="lessonHeader"><span>Lesson</span><span>Teacher</span><span>Duration</span></div>
+                <div id="dashboardLessons" class="lessonList"></div>
+              </section>
+              <div class="dashboardSide">
+                <section id="dashboardSpotlight" class="spotlightCard"></section>
+                <section id="dashboardProfile" class="profileSummary"></section>
+              </div>
+            </div>
           </section>
-          <section class="inputBlock">
-            <h3>Existing skills</h3>
-            <div id="recommendSkillChoices" class="choiceGrid"></div>
+
+          <section class="tabPanel" id="tab-search" aria-label="Career Search">
+            <div class="pageIntro">
+              <div><p class="eyebrow">Discover</p><h1>Search the career knowledge graph</h1><p>Entity-aware search returns careers, skills and courses ranked by graph relationships — not just keyword matches.</p></div>
+            </div>
+            <form id="searchForm" class="searchLauncher">
+              <div class="searchRow">
+                <label class="srOnly" for="searchInput">Search query</label>
+                <span class="searchGlyph" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path></svg>
+                </span>
+                <input id="searchInput" type="search" autocomplete="off" />
+                <button type="submit">Search</button>
+              </div>
+              <div class="examples"><span>Try:</span><button type="button" data-query="data scientist analytics visualization">data scientist analytics visualization</button><button type="button" data-query="cybersecurity analyst network threat">cybersecurity analyst network threat</button><button type="button" data-query="cloud devops linux">cloud devops linux</button></div>
+            </form>
+            <div class="searchLayout">
+              <aside class="searchFilters">
+                <section><h2>Entity type</h2><label><input type="checkbox" data-search-type="Career Entity" checked /><span>Careers</span><em id="filterCareerCount">0</em></label><label><input type="checkbox" data-search-type="Skill Entity" checked /><span>Skills</span><em id="filterSkillCount">0</em></label><label><input type="checkbox" data-search-type="Course Entity" checked /><span>Courses</span><em id="filterCourseCount">0</em></label><label><input type="checkbox" data-search-type="Certification Entity" /><span>Certifications</span><em id="filterCertificationCount">0</em></label></section>
+                <section><h2>Industry</h2><div class="filterPills"><button class="is-active" type="button" data-search-industry="Technology">Technology</button><button type="button" data-search-industry="Finance">Finance</button><button type="button" data-search-industry="Healthcare">Healthcare</button><button type="button" data-search-industry="E-Commerce">E-Commerce</button></div></section>
+                <section><h2>Sort by</h2><label class="radioLabel"><input type="radio" name="searchSort" value="score" checked /><span>Relevance score</span></label><label class="radioLabel"><input type="radio" name="searchSort" value="match" /><span>Match percentage</span></label></section>
+              </aside>
+              <section class="searchResultsArea">
+                <div class="resultListHeading"><strong><span id="searchResultCount">0</span> entities <em>matched across the graph</em></strong><span>Ranked by semantic relevance</span></div>
+                <div id="inlineSearchResults" class="inlineSearchResults"></div>
+              </section>
+            </div>
           </section>
-        </div>
-        <div id="recommendationResults" class="stack"></div>
-      </section>
 
-      <section class="tabPanel" id="tab-career" aria-label="Career Explorer">
-        <div class="sectionHeader">
-          <p class="eyebrow">Career explorer</p>
-          <h2>Inspect one career entity</h2>
-          <p>Explore the direct RDF links connected to a selected career node.</p>
-        </div>
-        <div class="toolbarLine">
-          <label for="careerExplorerSelect">Career entity</label>
-          <select id="careerExplorerSelect"></select>
-        </div>
-        <div id="careerExplorer" class="stack"></div>
-      </section>
-
-      <section class="tabPanel" id="tab-skillgap" aria-label="Skill Gap Planner">
-        <div class="sectionHeader">
-          <p class="eyebrow">Skill gap planner</p>
-          <h2>Compare selected skills with a target career</h2>
-          <p>The planner identifies matched skills, missing skills and prerequisite expansion.</p>
-        </div>
-        <div class="toolbarLine two">
-          <div>
-            <label for="skillGapCareerSelect">Target career</label>
-            <select id="skillGapCareerSelect"></select>
-          </div>
-          <div>
-            <label>Your current skills</label>
-            <div id="skillGapSkillChoices" class="choiceGrid compact"></div>
-          </div>
-        </div>
-        <div id="skillGapPlanner" class="stack"></div>
-      </section>
-
-      <section class="tabPanel" id="tab-graph" aria-label="Graph Visualization">
-        <div class="sectionHeader">
-          <p class="eyebrow">Graph visualization</p>
-          <h2>Career-skill-course knowledge graph</h2>
-          <p>Visualize required skills, related interests, recommended courses and alternative careers.</p>
-        </div>
-        <div class="toolbarLine">
-          <label for="graphCareerSelect">Career entity</label>
-          <select id="graphCareerSelect"></select>
-        </div>
-        <div class="legend" aria-label="Graph legend">
-          <span><i class="dot career"></i>Career</span>
-          <span><i class="dot skill"></i>Skill</span>
-          <span><i class="dot interest"></i>Interest</span>
-          <span><i class="dot course"></i>Course</span>
-          <span><i class="dot alternative"></i>Alternative career</span>
-        </div>
-        <canvas id="graphCanvas" width="960" height="520" aria-label="Knowledge graph visualization"></canvas>
-      </section>
-
-      <section class="tabPanel" id="tab-sparql" aria-label="SPARQL Viewer">
-        <div class="sectionHeader">
-          <p class="eyebrow">SPARQL viewer</p>
-          <h2>SPARQL Query Viewer</h2>
-          <p>Inspect the exact queries used by the app.</p>
-        </div>
-        <div class="sparqlControls">
-          <label for="querySelect">
-            Query
-            <select id="querySelect"></select>
-          </label>
-          <label id="queryKeywordField" for="queryKeywordInput">
-            Search query keyword
-            <input id="queryKeywordInput" type="search" autocomplete="off" />
-          </label>
-          <p id="queryKeywordHelp" class="fieldHint"></p>
-          <section id="sparqlSkillContext" class="sparqlSkillContext" aria-label="Existing skills for skill gap facts">
-            <h3>Existing skills for skill gap facts</h3>
-            <p>This selection only affects the Matched/Missing status in the Skill gap facts query.</p>
-            <div id="sparqlSkillChoices" class="choiceGrid compact"></div>
+          <section class="tabPanel" id="tab-recommendations" aria-label="Recommendations">
+            <div class="pageIntro"><div><p class="eyebrow">Guidance</p><h1>Career recommendations</h1><p>Careers are ranked from explicit graph links between your interests, your skills, and what each role requires.</p></div></div>
+            <section class="recommendationInputs">
+              <div><div class="inputHeading"><h2>Your interests</h2><span id="interestSelectedCount">0 selected</span></div><div id="recommendInterestChoices" class="choiceGrid"></div></div>
+              <div><div class="inputHeading"><h2>Your existing skills</h2><span id="skillSelectedCount">0 selected</span></div><div id="recommendSkillChoices" class="choiceGrid"></div></div>
+              <button id="recalculateButton" class="primaryButton" type="button">Recalculate matches</button>
+            </section>
+            <div class="sectionLineHeading"><h2>Ranked for you</h2><span id="recommendationBasis"></span></div>
+            <div id="recommendationResults" class="recommendationList"></div>
           </section>
-        </div>
-        <div id="queryExplanation" class="noteCard"></div>
-        <pre id="queryText" class="queryText"></pre>
-        <div id="queryResults" class="tableWrap"></div>
-      </section>
 
-      <section class="tabPanel" id="tab-statistics" aria-label="Statistics">
-        <div class="sectionHeader">
-          <p class="eyebrow">Statistics</p>
-          <h2>Knowledge graph size</h2>
-          <p>Counts are loaded directly from the XML/RDF model used by the demo.</p>
-        </div>
-        <div id="statisticsGrid" class="metricGrid"></div>
-      </section>
+          <section class="tabPanel" id="tab-explorer" aria-label="Career Explorer">
+            <div class="pageIntro withControl">
+              <div><p class="eyebrow">Knowledge</p><h1>Career Explorer</h1><p>Inspect one career entity and every relationship asserted or inferred about it in the graph.</p></div>
+              <label class="selectControl">Career entity<select id="careerExplorerSelect"></select></label>
+            </div>
+            <div id="careerExplorer" class="explorerLayout"></div>
+          </section>
 
-      <section class="tabPanel" id="tab-evaluation" aria-label="Evaluation">
-        <div class="sectionHeader">
-          <p class="eyebrow">Evaluation</p>
-          <h2>Demo test cases</h2>
-          <p>These cases can be used as evidence during the project report and presentation.</p>
-        </div>
-        <div id="evaluationTable" class="tableWrap"></div>
-      </section>
-    </main>
-    <script type="module" src="./main.js?v=20260624-space-input-fix"></script>
+          <section class="tabPanel" id="tab-skillgap" aria-label="Skill Gap Planner">
+            <div class="pageIntro withControl">
+              <div><p class="eyebrow">Planning</p><h1>Skill gap &amp; learning plan</h1><p>Compare your skills with a target career, then follow a sequenced plan that closes every gap.</p></div>
+              <label class="selectControl">Target career<select id="skillGapCareerSelect"></select></label>
+            </div>
+            <div id="skillGapSummary" class="skillGapSummary"></div>
+            <section class="currentSkillsChooser"><div><h2>Your current skills</h2><p>Select skills to update the plan.</p></div><div id="skillGapSkillChoices" class="choiceGrid compact"></div></section>
+            <div id="skillGapPlanner" class="skillGapLayout"></div>
+          </section>
+
+          <section class="tabPanel" id="tab-graph" aria-label="Knowledge Graph">
+            <div class="pageIntro withControl">
+              <div><p class="eyebrow semanticEyebrow"><i></i>Semantic lab</p><h1>Knowledge graph</h1><p>The career subgraph — required skills, interests, recommended courses and alternative careers.</p></div>
+              <label class="selectControl srLabel"><span class="srOnly">Career entity</span><select id="graphCareerSelect"></select></label>
+            </div>
+            <div class="graphLayout">
+              <section class="graphPanel">
+                <div class="graphToolbar">
+                  <div class="legend"><span><i class="dot skill"></i>Skills</span><span><i class="dot interest"></i>Interests</span><span><i class="dot course"></i>Courses</span><span><i class="dot alternative"></i>Alternatives</span></div>
+                  <div><button id="graphZoomIn" type="button" aria-label="Zoom in">+</button><button id="graphZoomOut" type="button" aria-label="Zoom out">−</button><button id="graphFit" type="button">Fit</button></div>
+                </div>
+                <svg id="graphSvg" viewBox="0 0 760 490" role="img" aria-label="Career knowledge graph"></svg>
+              </section>
+              <aside id="graphEvidence" class="graphEvidence"></aside>
+            </div>
+          </section>
+
+          <section class="tabPanel" id="tab-sparql" aria-label="SPARQL Viewer">
+            <div class="pageIntro"><div><p class="eyebrow semanticEyebrow"><i></i>Semantic lab</p><h1>SPARQL viewer</h1><p>Inspect the exact queries the platform runs against the RDF graph — and the rows they return.</p></div></div>
+            <div id="queryTabs" class="queryTabs"></div>
+            <div class="sparqlLayout">
+              <div class="sparqlLeft">
+                <div id="queryExplanation" class="queryExplanation"></div>
+                <label id="queryKeywordField" class="queryKeyword">Search keyword<div><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path></svg><input id="queryKeywordInput" type="search" autocomplete="off" /></div><span id="queryKeywordHelp" class="fieldHint"></span></label>
+                <section id="sparqlSkillContext" class="sparqlSkillContext">
+                  <h2>Existing skills for skill gap facts</h2><p>Select skills to update matched and missing query rows.</p><div id="sparqlSkillChoices" class="choiceGrid compact"></div>
+                </section>
+                <div class="queryCodeHeader"><span id="queryFilename">query-1.rq</span><button id="copyQueryButton" type="button">Copy</button></div>
+                <pre id="queryText" class="queryText"></pre>
+              </div>
+              <section class="queryResultsPanel"><div class="queryResultsHeader"><h2>Result bindings</h2><span id="queryRowCount">0 rows</span></div><div id="queryResults" class="tableWrap"></div><p id="queryFeedNote" class="queryFeedNote"></p></section>
+            </div>
+          </section>
+
+          <section class="tabPanel" id="tab-stats" aria-label="Statistics and Evaluation">
+            <div class="pageIntro"><div><p class="eyebrow semanticEyebrow"><i></i>Semantic lab</p><h1>Statistics &amp; evaluation</h1><p>Knowledge-graph size, inference output and the demo test cases that verify the platform.</p></div></div>
+            <div id="statisticsSummary" class="statisticsSummary"></div>
+            <div class="statisticsMiddle"><section class="classInstances"><h2>Class instances</h2><div id="classInstanceBars"></div></section><section class="inferenceOutput"><h2>OWL inference output</h2><p id="inferenceLead"></p><div id="inferenceCards"></div></section></div>
+            <section class="evaluationPanel"><h2>Evaluation — demo test cases</h2><div id="evaluationTable" class="tableWrap"></div></section>
+          </section>
+
+          <section class="tabPanel" id="tab-system" aria-label="Design System">
+            <div class="pageIntro referenceIntro"><div><p class="eyebrow">Reference</p><h1>Design system</h1><p>The building blocks behind the portal — trustworthy, accessible, and consistent across every view.</p></div></div>
+            <section class="designSection"><h2>Color palette</h2><div class="colorPalette">
+              <div><i style="--swatch:#151313"></i><strong>Black · ink</strong><span>#151313</span></div><div><i style="--swatch:#6e93b8"></i><strong>Slate · backdrop</strong><span>#6E93B8</span></div><div><i style="--swatch:#2d5ddc"></i><strong>Blue · primary</strong><span>#2D5DDC</span></div><div><i style="--swatch:#ff5734"></i><strong>Orange · accent</strong><span>#FF5734</span></div><div><i style="--swatch:#1f8a5a"></i><strong>Green · matched</strong><span>#1F8A5A</span></div><div><i style="--swatch:#c07a14"></i><strong>Amber · gap</strong><span>#C07A14</span></div>
+              <div><i style="--swatch:#f4f5f7"></i><strong>Sidebar gray</strong><span>#F4F5F7</span></div><div><i style="--swatch:#e3e6e9"></i><strong>Line</strong><span>#E3E6E9</span></div><div><i style="--swatch:#5c6e7e"></i><strong>Muted text</strong><span>#5C6E7E</span></div><div><i style="--swatch:#5b43a8"></i><strong>Violet · course</strong><span>#5B43A8</span></div><div><i style="--swatch:#c4f03b"></i><strong>Lime · highlight</strong><span>#C4F03B</span></div><div><i style="--swatch:#fff;border:1px solid #dfe3e8"></i><strong>White · surface</strong><span>#FFFFFF</span></div>
+            </div></section>
+            <div class="designTwoColumns">
+              <section class="designSection typographyDemo"><h2>Typography</h2><strong class="displayType">Plus Jakarta Sans Bold</strong><span>Display &amp; headings — geometric, confident</span><hr /><strong class="bodyType">Plus Jakarta Sans Regular / Medium</strong><span>UI &amp; body — clean, highly legible</span><hr /><strong class="monoType">JetBrains Mono</strong><span>RDF triples, SPARQL, predicates</span></section>
+              <section class="designSection spacingDemo"><h2>Spacing &amp; radius</h2><h3>8-point scale</h3><div class="spacingBlocks"><i></i><i></i><i></i><i></i><i></i></div><div class="spacingLabels"><span>8</span><span>12</span><span>16</span><span>24</span><span>32</span></div><h3>Corner radius</h3><div class="radiusBlocks"><i></i><i></i><i></i><i></i></div><div class="radiusLabels"><span>6 input</span><span>9 button</span><span>14 card</span><span>pill</span></div></section>
+            </div>
+            <section class="designSection componentDemo"><h2>Components</h2><div><section><h3>Buttons</h3><div class="componentRow"><button class="primaryButton" type="button">Primary</button><button class="limeButton" type="button">Semantic</button><button class="secondaryButton" type="button">Secondary</button><button class="ghostButton" type="button">Ghost</button></div></section><section><h3>Form controls</h3><input type="search" placeholder="Text / search input" /><div class="componentRow"><span class="demoChip blue">Selected chip</span><span class="demoChip orange">Interest</span><span class="demoChip amber">Missing skill</span></div></section></div></section>
+          </section>
+
+          <section class="tabPanel" id="tab-mobile" aria-label="Mobile Layouts">
+            <div class="pageIntro referenceIntro"><div><p class="eyebrow">Responsive</p><h1>Mobile layouts</h1><p>On small screens the sidebar collapses into a bottom tab bar, multi-column grids stack to one column, and the Semantic Lab moves under a “More” menu — students keep the full journey in their pocket.</p></div></div>
+            <div id="mobileLayoutGallery" class="mobileLayoutGallery"></div>
+          </section>
+        </main>
+
+        <nav class="mobileNav" aria-label="Mobile navigation">
+          <button class="is-active" type="button" data-mobile-tab="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg><span>Home</span></button>
+          <button type="button" data-mobile-tab="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path></svg><span>Search</span></button>
+          <button type="button" data-mobile-tab="recommendations"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="4"></circle></svg><span>Matches</span></button>
+          <button type="button" data-mobile-tab="skillgap"><svg viewBox="0 0 24 24"><path d="M4 7h10M4 12h7M4 17h12"></path></svg><span>Plan</span></button>
+          <button id="mobileMoreButton" type="button"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor"></circle><circle cx="12" cy="12" r="1.5" fill="currentColor"></circle><circle cx="19" cy="12" r="1.5" fill="currentColor"></circle></svg><span>More</span></button>
+        </nav>
+      </div>
+    </div>
+
+    <div id="mobileMoreSheet" class="mobileMoreSheet" hidden>
+      <button type="button" data-sheet-tab="explorer">Career Explorer</button>
+      <button type="button" data-sheet-tab="graph">Knowledge Graph</button>
+      <button type="button" data-sheet-tab="sparql">SPARQL Viewer</button>
+      <button type="button" data-sheet-tab="stats">Statistics &amp; Evaluation</button>
+      <button type="button" data-sheet-tab="system">Design System</button>
+      <button type="button" data-sheet-tab="mobile">Mobile Layouts</button>
+    </div>
+    <div id="mobileSheetBackdrop" class="mobileSheetBackdrop" hidden></div>
+
+    <script type="module" src="./main.js?v=20260624-pixel-parity"></script>
   </body>
 </html>

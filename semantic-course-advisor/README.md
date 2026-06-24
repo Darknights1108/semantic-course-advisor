@@ -40,10 +40,16 @@ The application solves this by modelling careers, skills, interests, industries,
 Recommended for Windows:
 
 ```powershell
-start-demo.cmd
+START-LATEST-APP.cmd
 ```
 
-Double-click `start-demo.cmd` inside the project folder, or run it from PowerShell/CMD. The script starts the local server using Node.js from the computer's PATH, or from a bundled `runtime\node\node.exe` if one is included.
+Double-click `START-LATEST-APP.cmd` inside the project folder. It selects an available local port, starts the server and opens the latest CareerGraph interface.
+
+The original launcher remains available:
+
+```powershell
+start-demo.cmd
+```
 
 Or run the server directly from the project folder:
 
@@ -75,6 +81,20 @@ Direct command from the project folder:
 
 ```powershell
 node tests\smoke_test.mjs
+```
+
+Browser interaction and responsive UI checks:
+
+```powershell
+node tests\ui_smoke_test.mjs
+```
+
+To regenerate the template comparison screenshots while the app is running:
+
+```powershell
+node scripts\capture-visuals.mjs reference
+set APP_BASE=http://127.0.0.1:5173/app/
+node scripts\capture-visuals.mjs app
 ```
 
 Expected result includes:

@@ -16,6 +16,7 @@ const types = {
   ".mjs": "text/javascript; charset=utf-8",
   ".rq": "text/plain; charset=utf-8",
   ".ttl": "text/turtle; charset=utf-8",
+  ".woff2": "font/woff2",
   ".xml": "application/xml; charset=utf-8",
 };
 

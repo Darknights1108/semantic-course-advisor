@@ -3,33 +3,80 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Semantic Search Results</title>
+    <title>CareerGraph · Semantic Search Results</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
-    <main class="appShell resultsShell">
-      <section class="heroCard compactHero" aria-label="Search results title">
-        <p class="eyebrow">TSW6223 Semantic Web Technology</p>
-        <h1>Semantic Search Results</h1>
-        <p class="heroCopy">
-          Ranked entity results from the career path knowledge graph with relationship-aware explanations.
-        </p>
-      </section>
-
-      <form id="resultsSearchForm" class="searchLauncher resultSearch">
-        <label for="resultsSearchInput">Search query</label>
-        <div class="searchRow">
-          <input id="resultsSearchInput" type="search" autocomplete="off" />
-          <button type="submit">Search</button>
+  <body class="resultsPage">
+    <div class="appFrame">
+      <aside class="sidebar" aria-label="CareerGraph navigation">
+        <div class="brand">
+          <span class="brandMark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="6" cy="7" r="2.4" fill="#fff"></circle>
+              <circle cx="18" cy="6" r="2" fill="#c4f03b"></circle>
+              <circle cx="16" cy="18" r="2.4" fill="#fff"></circle>
+              <path d="M7.8 8.2 14.6 16.4M8 7.2 16.4 6.4" stroke="#fff" stroke-width="1.4" stroke-linecap="round"></path>
+            </svg>
+          </span>
+          <span class="brandText"><strong><em>Career</em>Graph</strong><small>Westbridge University</small></span>
         </div>
-        <a class="backLink" href="./index.html">Back to home page</a>
-      </form>
+        <nav class="sideNav">
+          <p class="navLabel">Student tools</p>
+          <a class="tab" href="./index.html?tab=dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg><span>Dashboard</span></a>
+          <a class="tab is-active" href="./index.html?tab=search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path></svg><span>Career Search</span></a>
+          <a class="tab" href="./index.html?tab=recommendations"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="4"></circle></svg><span>Recommendations</span></a>
+          <a class="tab" href="./index.html?tab=explorer"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2 5-5 2 2-5z"></path></svg><span>Career Explorer</span></a>
+          <a class="tab" href="./index.html?tab=skillgap"><svg viewBox="0 0 24 24"><path d="M4 7h10M4 12h7M4 17h12"></path><path d="m17 6 1.7 1.7L22 4"></path></svg><span>Skill Gap &amp; Plan</span></a>
+          <p class="navLabel semanticLabel">Semantic lab <i></i></p>
+          <a class="tab" href="./index.html?tab=graph"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="7" r="2.5"></circle><circle cx="13" cy="18" r="2.5"></circle><path d="M8 7.5 11 16M8.2 6.4 15.6 6.7"></path></svg><span>Knowledge Graph</span></a>
+          <a class="tab" href="./index.html?tab=sparql"><svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"></path></svg><span>SPARQL Viewer</span></a>
+          <a class="tab" href="./index.html?tab=stats"><svg viewBox="0 0 24 24"><path d="M5 20V10M10 20V4M15 20v-7M20 20V7M3 20h19"></path></svg><span>Statistics &amp; Eval</span></a>
+        </nav>
+        <nav class="referenceNav">
+          <a class="tab" href="./index.html?tab=system"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="5" height="5" rx="1"></rect><rect x="15" y="4" width="5" height="5" rx="1"></rect><rect x="4" y="15" width="5" height="5" rx="1"></rect><rect x="15" y="15" width="5" height="5" rx="1"></rect></svg><span>Design System</span></a>
+          <a class="tab" href="./index.html?tab=mobile"><svg viewBox="0 0 24 24"><rect x="8" y="2.5" width="8" height="19" rx="2"></rect></svg><span>Mobile Layouts</span></a>
+        </nav>
+        <div class="studentCard"><span class="avatar">AH</span><span><strong>Amira Hassan</strong><small>BSc Computer Science · Yr 2</small></span></div>
+      </aside>
 
-      <section class="resultLayout">
-        <div id="resultSummary" class="metricGrid three"></div>
-        <div id="resultList" class="stack"></div>
-      </section>
-    </main>
-    <script type="module" src="./results.js"></script>
+      <div class="workspace">
+        <header class="topBar">
+          <div class="breadcrumb"><span>Discover</span><b>›</b><strong>Search Results</strong></div>
+          <a class="resultTopBack" href="./index.html?tab=search">← Back to Career Search</a>
+          <div class="profileButton"><span class="avatar">AH</span><span><strong>Amira Hassan</strong><small>@a_hassan</small></span></div>
+        </header>
+        <header class="mobileHeader"><a class="mobileHeaderButton" href="./index.html?tab=search" aria-label="Back">‹</a><strong>Search Results</strong><span class="avatar">AH</span></header>
+
+        <main class="content">
+          <div class="resultsShell">
+            <div class="pageIntro">
+              <div><p class="eyebrow">Semantic search</p><h1>Knowledge graph results</h1><p>Ranked career, skill and course entities with relationship-aware explanations.</p></div>
+              <span class="termBadge">Entity results</span>
+            </div>
+            <form id="resultsSearchForm" class="searchLauncher">
+              <div class="searchRow">
+                <label class="srOnly" for="resultsSearchInput">Search query</label>
+                <span class="searchGlyph"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path></svg></span>
+                <input id="resultsSearchInput" type="search" autocomplete="off" />
+                <button type="submit">Search</button>
+              </div>
+              <a class="backLink" href="./index.html?tab=search">← Change profile and filters</a>
+            </form>
+            <section class="resultLayout">
+              <div id="resultSummary" class="metricGrid"></div>
+              <div id="resultList" class="recommendationList"></div>
+            </section>
+          </div>
+        </main>
+        <nav class="mobileNav" aria-label="Mobile navigation">
+          <a href="./index.html?tab=dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg><span>Home</span></a>
+          <a class="is-active" href="./index.html?tab=search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path></svg><span>Search</span></a>
+          <a href="./index.html?tab=recommendations"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="4"></circle></svg><span>Matches</span></a>
+          <a href="./index.html?tab=skillgap"><svg viewBox="0 0 24 24"><path d="M4 7h10M4 12h7M4 17h12"></path></svg><span>Plan</span></a>
+          <a href="./index.html?tab=graph"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor"></circle><circle cx="12" cy="12" r="1.5" fill="currentColor"></circle><circle cx="19" cy="12" r="1.5" fill="currentColor"></circle></svg><span>More</span></a>
+        </nav>
+      </div>
+    </div>
+    <script type="module" src="./results.js?v=20260624-pixel-parity"></script>
   </body>
 </html>
