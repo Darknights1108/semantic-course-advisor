@@ -28,8 +28,6 @@ const views = [
   ["statistics-evaluation", "Statistics & Eval", "statistics"],
   ["profile", "Profile", "profile"],
   ["settings", "Settings", "settings"],
-  ["design-system", "Design System", "system"],
-  ["mobile-layouts", "Mobile Layouts", "mobile"],
 ];
 
 class Cdp {

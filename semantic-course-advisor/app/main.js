@@ -28,8 +28,6 @@ const TAB_ALIASES = {
   stats: "stats",
   profile: "profile",
   settings: "settings",
-  system: "system",
-  mobile: "mobile",
 };
 
 const PAGE_META = {
@@ -43,8 +41,6 @@ const PAGE_META = {
   stats: ["Semantic Lab", "Statistics & Evaluation"],
   profile: ["Student Account", "Profile"],
   settings: ["Preferences", "Settings"],
-  system: ["Reference", "Design System"],
-  mobile: ["Responsive", "Mobile Layouts"],
 };
 
 const state = {
@@ -76,8 +72,6 @@ const els = {
   pageKicker: document.querySelector("#pageKicker"),
   pageTitle: document.querySelector("#pageTitle"),
   mobilePageTitle: document.querySelector("#mobilePageTitle"),
-  globalSearchForm: document.querySelector("#globalSearchForm"),
-  globalSearchInput: document.querySelector("#globalSearchInput"),
   notificationButton: document.querySelector("#notificationButton"),
   notificationPanel: document.querySelector("#notificationPanel"),
   profileButton: document.querySelector("#profileButton"),
@@ -142,7 +136,6 @@ const els = {
   inferenceLead: document.querySelector("#inferenceLead"),
   inferenceCards: document.querySelector("#inferenceCards"),
   evaluationTable: document.querySelector("#evaluationTable"),
-  mobileLayoutGallery: document.querySelector("#mobileLayoutGallery"),
   profileInterestChoices: document.querySelector("#profileInterestChoices"),
   profileInterestCount: document.querySelector("#profileInterestCount"),
   profileCurrentSkills: document.querySelector("#profileCurrentSkills"),
@@ -228,13 +221,6 @@ function setupEvents() {
     }
     setActiveTab("dashboard");
     render();
-  });
-
-  els.globalSearchForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const query = els.globalSearchInput.value.trim();
-    if (!query) return;
-    goToFullResults(query);
   });
 
   els.notificationButton.addEventListener("click", () => {
@@ -426,14 +412,6 @@ function setupEvents() {
       plan.disabled = true;
       return;
     }
-    const demoButton = event.target.closest(".componentDemo button");
-    if (demoButton) {
-      document
-        .querySelectorAll(".componentDemo button")
-        .forEach((button) => button.classList.remove("is-demo-active"));
-      demoButton.classList.add("is-demo-active");
-      demoButton.setAttribute("aria-pressed", "true");
-    }
   });
 
   els.content.addEventListener("keydown", (event) => {
@@ -504,8 +482,6 @@ function mobileTitleFor(tab) {
     stats: "Statistics & Evaluation",
     profile: "Profile",
     settings: "Settings",
-    system: "Design System",
-    mobile: "Mobile Layouts",
   };
   return titles[tab];
 }
@@ -521,7 +497,6 @@ function render() {
   renderSparql();
   renderStatistics(recommendationProfile, skillGapProfile);
   renderProfile();
-  renderMobileLayouts(recommendationProfile, skillGapProfile);
   if (state.activeTab === "graph") window.requestAnimationFrame(renderGraph);
 }
 
@@ -847,11 +822,21 @@ function renderGraph() {
       const point = positions.get(node.id);
       if (!point) return "";
       if (node.type === "career") {
-        return `<g><rect x="${point.x - 72}" y="${point.y - 29}" width="144" height="58" rx="14" fill="#211d1c"></rect><text x="${point.x}" y="${point.y - 2}" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">${escapeHtml(node.label)}</text><text x="${point.x}" y="${point.y + 15}" text-anchor="middle" fill="#c4f03b" font-size="8" font-weight="700">CAREER</text></g>`;
+        const width = Math.max(160, Math.min(250, node.label.length * 8.2 + 34));
+        return `<g><title>${escapeHtml(node.label)}</title><rect x="${point.x - width / 2}" y="${point.y - 29}" width="${width}" height="58" rx="14" fill="#211d1c"></rect><text x="${point.x}" y="${point.y - 2}" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">${escapeHtml(node.label)}</text><text x="${point.x}" y="${point.y + 15}" text-anchor="middle" fill="#c4f03b" font-size="8" font-weight="700">CAREER</text></g>`;
       }
-      const width = Math.max(78, Math.min(150, node.label.length * 7 + 24));
+      const labelLines = wrapGraphLabel(node.label, 22);
+      const longestLine = Math.max(...labelLines.map((line) => line.length));
+      const width = Math.max(78, Math.min(200, longestLine * 6.5 + 28));
+      const height = labelLines.length > 1 ? 46 : 32;
       const style = graphNodeStyle(node.type);
-      return `<g><rect x="${point.x - width / 2}" y="${point.y - 16}" width="${width}" height="32" rx="8" fill="${style.fill}" stroke="${style.stroke}" ${node.type === "alternative" ? `stroke-dasharray="3 3"` : ""}></rect><text x="${point.x}" y="${point.y + 4}" text-anchor="middle" fill="${style.text}" font-size="11">${escapeHtml(shortLabel(node.label, 22))}</text></g>`;
+      const text = labelLines
+        .map(
+          (line, index) =>
+            `<tspan x="${point.x}" y="${point.y + (index - (labelLines.length - 1) / 2) * 14 + 4}">${escapeHtml(line)}</tspan>`,
+        )
+        .join("");
+      return `<g><title>${escapeHtml(node.label)}</title><rect x="${point.x - width / 2}" y="${point.y - height / 2}" width="${width}" height="${height}" rx="8" fill="${style.fill}" stroke="${style.stroke}" ${node.type === "alternative" ? `stroke-dasharray="3 3"` : ""}></rect><text x="${point.x}" text-anchor="middle" fill="${style.text}" font-size="11">${text}</text></g>`;
     })
     .join("");
   els.graphSvg.innerHTML = `<g id="graphStage">${edges}${nodes}</g>`;
@@ -1004,34 +989,6 @@ function renderStatistics(recommendationProfile, skillGapProfile) {
   els.evaluationTable.innerHTML = renderTable(rows, { statusColumn: true });
 }
 
-function renderMobileLayouts(profile, skillGapProfile) {
-  const top = profile.recommendations[0];
-  const second = profile.recommendations[1];
-  const third = profile.recommendations[2];
-  const percent = skillGapProfile.targetCareer.requiresSkills.length
-    ? Math.round(
-        (skillGapProfile.knownSkills.length / skillGapProfile.targetCareer.requiresSkills.length) *
-          100,
-      )
-    : 0;
-  els.mobileLayoutGallery.innerHTML = `
-    ${phoneMockup("Dashboard", "Home", `
-      <div class="phoneCard dark"><span style="color:#c4f03b;font-size:9px;font-weight:700">TOP MATCH</span><h3>${escapeHtml(top?.career.title ?? "Data Scientist")}</h3><div class="chips green">${renderChipList((top?.matchedInterests ?? []).map(labelFor))}</div></div>
-      <div class="phoneCard"><div style="text-align:center;margin-bottom:8px">Your matches</div><strong>${escapeHtml(second?.career.title ?? "BI Analyst")}</strong><div class="planProgress"><span style="width:74%;background:#2d5ddc"></span></div><strong>${escapeHtml(third?.career.title ?? "ML Engineer")}</strong><div class="planProgress"><span style="width:69%;background:#2d5ddc"></span></div></div>
-    `, "Dashboard", "Bottom tab bar replaces sidebar")}
-    ${phoneMockup("Recommendations", "Matches", `
-      <div class="phoneCard"><strong>Your inputs</strong><div class="chips orange" style="margin-top:8px">${renderChipList([...state.recommendationInterests].slice(0, 2).map(labelFor))}</div><div class="chips" style="margin-top:7px">${renderChipList([...state.recommendationSkills].slice(0, 2).map(labelFor))}</div></div>
-      <div class="phoneCard" style="border-left:3px solid #1f8a5a"><div style="display:flex;justify-content:space-between"><h3>${escapeHtml(top?.career.title ?? "Data Scientist")}</h3><strong style="color:#1f8a5a">87%</strong></div><span style="color:#c07a14">MISSING (${top?.missingSkills.length ?? 3})</span><div class="chips amber" style="margin-top:7px">${renderChipList((top?.missingSkills ?? []).slice(0, 2).map(labelFor))}</div></div>
-      <div class="phoneCard"><h3>${escapeHtml(second?.career.title ?? "BI Analyst")} <span style="float:right;color:#2d5ddc">74%</span></h3></div>
-    `, "Recommendations", "Grids stack to one column")}
-    ${phoneMockup("Skill Gap", "Plan", `
-      <div class="phoneCard" style="display:flex;align-items:center;gap:12px"><div class="coverageRing" style="--percent:${percent};width:60px;height:60px"><span style="width:44px;height:44px;font-size:13px">${percent}%</span></div><div><strong>${escapeHtml(skillGapProfile.targetCareer.title)}</strong><div style="color:#1f8a5a">${skillGapProfile.knownSkills.length} matched</div><div style="color:#c07a14">${skillGapProfile.missingSkills.length} missing</div></div></div>
-      <div class="phoneCard"><div style="text-align:center;color:#c07a14;margin-bottom:8px">MISSING SKILLS</div>${skillGapProfile.missingSkills.slice(0, 2).map((id) => `<div style="padding:8px;border:1px solid #ead7b7;border-radius:8px;margin-top:6px">${escapeHtml(labelFor(id))}</div>`).join("")}</div>
-      <div class="phoneCard" style="text-align:center">Plan · step 1<br><strong>${escapeHtml(labelFor(skillGapProfile.targetCareer.recommendedCourses[0] ?? ""))}</strong><div class="planProgress" style="margin-top:8px"><span style="width:60%"></span></div></div>
-    `, "Skill Gap & Plan", "Semantic Lab moves under “More”")}
-  `;
-}
-
 function renderProfile() {
   renderChoiceChips(
     els.profileInterestChoices,
@@ -1063,11 +1020,6 @@ function loadSavedPreferences() {
     state.recommendationInterests = new Set(DEFAULT_INTERESTS);
   }
   state.profileInterestDraft = new Set(state.recommendationInterests);
-}
-
-function phoneMockup(title, active, body, caption, subcaption) {
-  const nav = ["Home", "Search", "Matches", "Plan", "More"];
-  return `<div class="phoneDemoWrap"><div class="phoneDemo"><div class="phoneScreen"><div class="phoneTop"><span>‹</span><strong>${title}</strong>${title === "Dashboard" ? `<span class="avatar">AH</span>` : ""}</div><div class="phoneBody">${body}</div><div class="phoneBottom">${nav.map((item) => `<span class="${item === active ? "is-active" : ""}">${item}</span>`).join("")}</div></div></div><strong>${caption}</strong><span>${subcaption}</span></div>`;
 }
 
 function renderChoiceChips(container, entities, selectedSet) {
@@ -1134,6 +1086,25 @@ function graphNodeStyle(type) {
   if (type === "course") return { fill: "#f1edfb", stroke: "#d9cdf4", text: "#5b43a8" };
   if (type === "alternative") return { fill: "#f2f5f7", stroke: "#b9cadd", text: "#31465d" };
   return { fill: "#e9efff", stroke: "#bfd0ff", text: "#2d5ddc" };
+}
+
+function wrapGraphLabel(label, maxCharacters) {
+  const words = String(label).trim().split(/\s+/);
+  const lines = [];
+  let currentLine = "";
+
+  for (const word of words) {
+    const candidate = currentLine ? `${currentLine} ${word}` : word;
+    if (currentLine && candidate.length > maxCharacters) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = candidate;
+    }
+  }
+
+  if (currentLine) lines.push(currentLine);
+  return lines.length ? lines : [String(label)];
 }
 
 function queryTabTitle(id) {

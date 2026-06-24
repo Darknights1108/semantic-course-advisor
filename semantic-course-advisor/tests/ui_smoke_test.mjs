@@ -153,8 +153,7 @@ try {
           !document.querySelector('.sideNav [data-tab="graph"]') &&
             !document.querySelector('.sideNav [data-tab="sparql"]') &&
             !document.querySelector('.sideNav [data-tab="stats"]') &&
-            !document.querySelector('.referenceNav [data-tab="system"]') &&
-            !document.querySelector('.referenceNav [data-tab="mobile"]'),
+            document.querySelectorAll(".referenceNav [data-tab]").length === 2,
         );
 
         document.querySelector('[data-tab="dashboard"]').click();
@@ -215,6 +214,30 @@ try {
         document.querySelector("#graphZoomIn").click();
         check("graph zoom", document.querySelector("#graphStage").getAttribute("transform") !== initialTransform);
         document.querySelector("#graphFit").click();
+        const graphCareer = document.querySelector("#graphCareerSelect");
+        graphCareer.value = "cad:DatabaseAdministrator";
+        graphCareer.dispatchEvent(new Event("change", { bubbles: true }));
+        await wait();
+        const graphLabels = [...document.querySelectorAll("#graphStage > g")].map((group) => {
+          const title = group.querySelector("title")?.textContent.trim() || "";
+          const text = [...group.querySelectorAll("text")].find((item) => item.textContent.trim() !== "CAREER");
+          const rendered = text?.querySelector("tspan")
+            ? [...text.querySelectorAll("tspan")].map((item) => item.textContent.trim()).join(" ")
+            : text?.textContent.trim() || "";
+          const rectBox = group.querySelector("rect")?.getBBox();
+          const textBox = text?.getBBox();
+          const fits = rectBox && textBox &&
+            textBox.x >= rectBox.x - 0.5 &&
+            textBox.x + textBox.width <= rectBox.x + rectBox.width + 0.5 &&
+            textBox.y >= rectBox.y - 0.5 &&
+            textBox.y + textBox.height <= rectBox.y + rectBox.height + 0.5;
+          return { title, rendered, fits };
+        });
+        check(
+          "graph labels shown in full",
+          graphLabels.every((label) => label.title === label.rendered && label.fits) &&
+            !document.querySelector("#graphStage").textContent.includes("…"),
+        );
 
         document.querySelector('[data-tab="skillgap"]').click();
         await wait();
@@ -253,19 +276,6 @@ try {
         check("statistics metrics", document.querySelectorAll(".statisticsCard").length === 4);
         check("evaluation rows", document.querySelectorAll("#evaluationTable tbody tr").length === 4);
 
-        document.querySelector('[data-tab="settings"]').click();
-        await wait();
-        document.querySelector('.settingsToolGrid [data-goto-tab="system"]').click();
-        await wait();
-        const demo = document.querySelector(".componentDemo button");
-        demo.click();
-        check("design system demo button", demo.classList.contains("is-demo-active"));
-        document.querySelector('[data-tab="settings"]').click();
-        await wait();
-        document.querySelector('.settingsToolGrid [data-goto-tab="mobile"]').click();
-        await wait();
-        check("mobile layouts navigation from settings", document.querySelector(".tabPanel.is-active")?.id === "tab-mobile");
-
         document.querySelector("#notificationButton").click();
         check("notification popover", !document.querySelector("#notificationPanel").hidden);
         document.querySelector("#notificationButton").click();
@@ -299,7 +309,7 @@ try {
             !document.querySelector("#settingsEvidence") &&
             !document.querySelector("#settingsCompact") &&
             !document.querySelector("#settingsForm") &&
-            document.querySelectorAll(".settingsToolGrid [data-goto-tab]").length === 5,
+            document.querySelectorAll(".settingsToolGrid [data-goto-tab]").length === 3,
         );
         return out;
       })()`,
@@ -329,7 +339,6 @@ try {
         check("mobile more sheet", !document.querySelector("#mobileMoreSheet").hidden && !document.querySelector("#mobileSheetBackdrop").hidden);
         check("mobile profile and settings links", Boolean(document.querySelector('[data-sheet-tab="profile"]') && document.querySelector('[data-sheet-tab="settings"]')));
         check("mobile semantic tools hidden", !document.querySelector('[data-sheet-tab="graph"]') && !document.querySelector('[data-sheet-tab="sparql"]') && !document.querySelector('[data-sheet-tab="stats"]'));
-        check("mobile reference tools hidden", !document.querySelector('[data-sheet-tab="system"]') && !document.querySelector('[data-sheet-tab="mobile"]'));
         document.querySelector('[data-sheet-tab="settings"]').click();
         await wait();
         document.querySelector('.settingsToolGrid [data-goto-tab="graph"]').click();
@@ -383,8 +392,6 @@ try {
           !document.querySelector('.sideNav [href="./index.html?tab=graph"]') &&
             !document.querySelector('.sideNav [href="./index.html?tab=sparql"]') &&
             !document.querySelector('.sideNav [href="./index.html?tab=stats"]') &&
-            !document.querySelector('.referenceNav [href="./index.html?tab=system"]') &&
-            !document.querySelector('.referenceNav [href="./index.html?tab=mobile"]') &&
             Boolean(document.querySelector('.referenceNav [href="./index.html?tab=profile"]')) &&
             Boolean(document.querySelector('.referenceNav [href="./index.html?tab=settings"]')),
         );

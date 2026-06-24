@@ -20,9 +20,7 @@ Verification viewports:
 | SPARQL Viewer | Pass | Pass | Query tabs, keyword filtering, skill context and copy action tested |
 | Statistics & Evaluation | Pass | Pass | Live metrics, inference counts and evaluation table verified |
 | Profile | Pass | Pass | Interest editing, persistence and recommendation updates verified |
-| Settings | Pass | Pass | Notification, evidence and compact-layout preferences verified |
-| Design System | Pass | Pass | Exact palette, local typography and component states verified |
-| Mobile Layouts | Pass | Pass | Three template mobile reference flows reproduced |
+| Settings | Pass | Pass | Knowledge Graph, SPARQL and Statistics links verified |
 | Search Results | Pass | Pass | Query submission, result summary and result cards verified |
 | Course Learning | Pass | Pass | Course skills and topic descriptions loaded from XML relationships |
 | Topic Learning | Pass | Pass | 146 full XML lessons, curriculum navigation, reading progress and persisted completion verified |
@@ -42,7 +40,7 @@ Verification viewports:
 - `node tests/smoke_test.mjs`
 - `node tests/ui_smoke_test.mjs`
 - Browser console: no errors
-- Navigation: all 10 views pass
+- Navigation: all active views pass
 - Interactive controls: all tested buttons, filters, selectors, bookmarks, graph controls, popovers and mobile navigation pass
 - Final captures:
   - `final/desktop/`
