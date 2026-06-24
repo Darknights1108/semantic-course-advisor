@@ -10,6 +10,7 @@ cad:CareerSearchOntology a owl:Ontology ;
 cad:Career a owl:Class .
 cad:Skill a owl:Class .
 cad:Course a owl:Class .
+cad:LearningTopic a owl:Class .
 cad:Certification a owl:Class .
 cad:Industry a owl:Class .
 cad:Interest a owl:Class .
@@ -51,6 +52,14 @@ cad:alternativeCareer a owl:SymmetricProperty ;
 cad:teachesSkill a owl:ObjectProperty ;
   rdfs:domain cad:Course ;
   rdfs:range cad:Skill .
+
+cad:coversTopic a owl:ObjectProperty ;
+  rdfs:domain cad:Course ;
+  rdfs:range cad:LearningTopic .
+
+cad:hasLearningTopic a owl:ObjectProperty ;
+  rdfs:domain cad:Skill ;
+  rdfs:range cad:LearningTopic .
 
 cad:title a owl:DatatypeProperty ;
   rdfs:range xsd:string .

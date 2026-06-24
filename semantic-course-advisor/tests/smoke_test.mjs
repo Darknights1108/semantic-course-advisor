@@ -11,6 +11,8 @@ const dataset = loadDataset(xml);
 assert(dataset.careers.length === 10, "expected 10 careers");
 assert(dataset.skills.length === 29, "expected 29 skills");
 assert(dataset.courses.length === 10, "expected 10 courses");
+assert(dataset.topics.length === 146, "expected 146 learning topics");
+assert(dataset.skills.every((skill) => skill.learningTopics.length > 0), "expected every skill to have learning topics");
 assert(dataset.certifications.length === 9, "expected 9 certifications");
 assert(dataset.industries.length === 6, "expected 6 industries");
 assert(dataset.interests.length === 9, "expected 9 interests");
@@ -41,9 +43,33 @@ assert(rows.length >= 30, "expected career search query rows");
 const recommendationRows = runQuery("recommendationSupport", dataset, profile);
 assert(recommendationRows.length > 0, "expected recommendation evidence query rows");
 
+const courseTopicRows = runQuery("courseTopics", dataset, profile, "Logistic Regression");
+assert(courseTopicRows.length === 1, "expected Logistic Regression course topic row");
+
+const skillTopicRows = runQuery("skillTopics", dataset, profile, "Logistic Regression");
+assert(skillTopicRows.length === 1, "expected Logistic Regression skill topic row");
+
+const mlCourse = dataset.courses.find((course) => course.id === "cad:MachineLearningFoundations");
+assert(mlCourse?.coversTopics.includes("cad:LogisticRegression"), "expected Machine Learning course to cover Logistic Regression");
+assert(mlCourse?.coversTopics.includes("cad:SupervisedLearning"), "expected Machine Learning course to cover Supervised Learning");
+assert(mlCourse?.coversTopics.includes("cad:UnsupervisedLearning"), "expected Machine Learning course to cover Unsupervised Learning");
+
+const mlSkill = dataset.skills.find((skill) => skill.id === "cad:MachineLearning");
+assert(mlSkill?.learningTopics.includes("cad:LogisticRegression"), "expected Machine Learning skill to include Logistic Regression");
+assert(mlSkill?.learningTopics.includes("cad:SupervisedLearning"), "expected Machine Learning skill to include Supervised Learning");
+assert(mlSkill?.learningTopics.includes("cad:UnsupervisedLearning"), "expected Machine Learning skill to include Unsupervised Learning");
+
 const searchResults = searchKnowledgeGraph(dataset, profile, "AI engineer Python machine learning");
 assert(searchResults.length >= 5, "expected semantic search results");
 assert(searchResults[0].title.includes("AI Engineer"), "expected AI Engineer as top semantic search result");
+assert(
+  searchResults.some((result) => result.type === "Skill Entity" && result.topicIds?.length),
+  "expected skill search results to expose learning topics",
+);
+assert(
+  searchResults.some((result) => result.type === "Course Entity" && result.topicIds?.length),
+  "expected course search results to expose learning topics",
+);
 
 const typoSearchResults = searchKnowledgeGraph(dataset, profile, "ai enginer");
 assert(typoSearchResults[0].title === "AI Engineer", "expected typo search to focus on AI Engineer");
@@ -58,6 +84,7 @@ console.log("Smoke test passed");
 console.log(`Careers: ${dataset.careers.length}`);
 console.log(`Skills: ${dataset.skills.length}`);
 console.log(`Courses: ${dataset.courses.length}`);
+console.log(`Learning topics: ${dataset.topics.length}`);
 console.log(`Certifications: ${dataset.certifications.length}`);
 console.log(`Industries: ${dataset.industries.length}`);
 console.log(`Interests: ${dataset.interests.length}`);

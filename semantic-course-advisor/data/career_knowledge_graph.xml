@@ -1,70 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <careerKnowledgeGraph term="2610">
   <skills>
-    <skill id="Python" label="Python" />
-    <skill id="Statistics" label="Statistics" />
-    <skill id="MachineLearning" label="Machine Learning">
+    <skill id="Python" label="Python" learningTopic="PythonSyntax PythonDataStructures FunctionsModules FileHandling PythonPackages" />
+    <skill id="Statistics" label="Statistics" learningTopic="DescriptiveStatistics ProbabilityDistributions HypothesisTesting RegressionBasics StatisticalInference" />
+    <skill id="MachineLearning" label="Machine Learning" learningTopic="SupervisedLearning UnsupervisedLearning LogisticRegression DecisionTrees ModelEvaluation TrainTestSplit">
       <prerequisiteSkill>Python</prerequisiteSkill>
       <prerequisiteSkill>Statistics</prerequisiteSkill>
     </skill>
-    <skill id="SQL" label="SQL" />
-    <skill id="DataVisualization" label="Data Visualization">
+    <skill id="SQL" label="SQL" learningTopic="SQLSelectFiltering SQLJoins AggregateFunctions Subqueries IndexingTransactions" />
+    <skill id="DataVisualization" label="Data Visualization" learningTopic="VisualizationDesign ChartSelection DashboardDesign DataStorytelling AccessibilityVisualization">
       <prerequisiteSkill>Statistics</prerequisiteSkill>
     </skill>
-    <skill id="DeepLearning" label="Deep Learning">
+    <skill id="DeepLearning" label="Deep Learning" learningTopic="NeuralNetworks Backpropagation CNNs SequenceModels OverfittingRegularization TensorFlowBasics">
       <prerequisiteSkill>MachineLearning</prerequisiteSkill>
     </skill>
-    <skill id="DataEngineering" label="Data Engineering">
+    <skill id="DataEngineering" label="Data Engineering" learningTopic="ETLPipelines DataPipelines DataWarehousing BatchStreaming DataQualityChecks">
       <prerequisiteSkill>SQL</prerequisiteSkill>
       <prerequisiteSkill>Python</prerequisiteSkill>
     </skill>
-    <skill id="MLOps" label="MLOps">
+    <skill id="MLOps" label="MLOps" learningTopic="ModelDeployment ModelMonitoring ModelVersioning CICDDeployment FeatureStores">
       <prerequisiteSkill>MachineLearning</prerequisiteSkill>
       <prerequisiteSkill>CloudComputing</prerequisiteSkill>
     </skill>
-    <skill id="PromptEngineering" label="Prompt Engineering">
+    <skill id="PromptEngineering" label="Prompt Engineering" learningTopic="PromptStructure FewShotPrompting EvaluationRubrics ToolUseGrounding PromptSafety">
       <prerequisiteSkill>MachineLearning</prerequisiteSkill>
     </skill>
-    <skill id="APIDevelopment" label="API Development" />
-    <skill id="HTML" label="HTML" />
-    <skill id="CSS" label="CSS" />
-    <skill id="JavaScript" label="JavaScript" />
-    <skill id="UXDesign" label="UX Design" />
-    <skill id="Cybersecurity" label="Cybersecurity" />
-    <skill id="NetworkSecurity" label="Network Security">
+    <skill id="APIDevelopment" label="API Development" learningTopic="RestAPIDesign HTTPMethods AuthenticationAuthorization JSONContracts APIErrorHandling" />
+    <skill id="HTML" label="HTML" learningTopic="SemanticHTML FormsAccessibility MetadataSEO AccessibilityDesign" />
+    <skill id="CSS" label="CSS" learningTopic="CSSLayout FlexboxGrid CSSSelectors ResponsiveDesign VisualStyling" />
+    <skill id="JavaScript" label="JavaScript" learningTopic="JavaScriptFunctions DOMManipulation EventHandling AsyncJavaScript FetchAPI" />
+    <skill id="UXDesign" label="UX Design" learningTopic="UserResearch Wireframing UsabilityTesting InformationArchitecture AccessibilityDesign" />
+    <skill id="Cybersecurity" label="Cybersecurity" learningTopic="CIATriad RiskManagement SecurityControls OWASPTopTen IncidentResponse" />
+    <skill id="NetworkSecurity" label="Network Security" learningTopic="NetworkHardening FirewallsVPNs IntrusionDetection NetworkSegmentation SecureProtocols">
       <prerequisiteSkill>Networking</prerequisiteSkill>
     </skill>
-    <skill id="ThreatAnalysis" label="Threat Analysis">
+    <skill id="ThreatAnalysis" label="Threat Analysis" learningTopic="ThreatModeling AttackVectors LogAnalysis IncidentResponse MITREAttack">
       <prerequisiteSkill>Cybersecurity</prerequisiteSkill>
     </skill>
-    <skill id="Linux" label="Linux" />
-    <skill id="ProblemSolving" label="Problem Solving" />
-    <skill id="DataModeling" label="Data Modeling">
+    <skill id="Linux" label="Linux" learningTopic="LinuxCLI FilePermissions ProcessManagement ShellScripting LinuxSecurity" />
+    <skill id="ProblemSolving" label="Problem Solving" learningTopic="ProblemDecomposition AlgorithmicThinking Debugging RootCauseAnalysis TradeoffAnalysis" />
+    <skill id="DataModeling" label="Data Modeling" learningTopic="RelationalModeling ERDiagrams Normalization DimensionalModeling DataGovernance">
       <prerequisiteSkill>SQL</prerequisiteSkill>
     </skill>
-    <skill id="DatabaseAdministration" label="Database Administration">
+    <skill id="DatabaseAdministration" label="Database Administration" learningTopic="BackupRecovery IndexingTransactions QueryPerformance AccessControlMonitoring ReplicationHighAvailability">
       <prerequisiteSkill>SQL</prerequisiteSkill>
       <prerequisiteSkill>DataModeling</prerequisiteSkill>
     </skill>
-    <skill id="CloudComputing" label="Cloud Computing">
+    <skill id="CloudComputing" label="Cloud Computing" learningTopic="Virtualization CloudComputeStorage IAMBasics CloudNetworking ServerlessContainers">
       <prerequisiteSkill>Networking</prerequisiteSkill>
     </skill>
-    <skill id="Networking" label="Networking" />
-    <skill id="DevOps" label="DevOps">
+    <skill id="Networking" label="Networking" learningTopic="NetworkProtocols IPAddressing RoutingSwitching DNSHTTP TroubleshootingConnectivity" />
+    <skill id="DevOps" label="DevOps" learningTopic="GitWorkflow CICDDeployment InfrastructureAsCode Containerization MonitoringLogging">
       <prerequisiteSkill>Linux</prerequisiteSkill>
       <prerequisiteSkill>CloudComputing</prerequisiteSkill>
     </skill>
-    <skill id="BusinessAnalytics" label="Business Analytics">
+    <skill id="BusinessAnalytics" label="Business Analytics" learningTopic="BusinessMetrics KPIModeling DashboardDesign RequirementsAnalysis StakeholderCommunication">
       <prerequisiteSkill>SQL</prerequisiteSkill>
     </skill>
-    <skill id="SoftwareArchitecture" label="Software Architecture">
+    <skill id="SoftwareArchitecture" label="Software Architecture" learningTopic="DesignPatterns SystemDesign ScalabilityReliability ArchitectureDocumentation APIIntegration">
       <prerequisiteSkill>APIDevelopment</prerequisiteSkill>
     </skill>
-    <skill id="NLP" label="Natural Language Processing">
+    <skill id="NLP" label="Natural Language Processing" learningTopic="TextPreprocessing Tokenization WordEmbeddings TextClassification Transformers SemanticSearch">
       <prerequisiteSkill>MachineLearning</prerequisiteSkill>
     </skill>
-    <skill id="Linguistics" label="Linguistics" />
-    <skill id="DataEthics" label="Data Ethics" />
+    <skill id="Linguistics" label="Linguistics" learningTopic="SyntaxSemantics CorpusLinguistics PhoneticsMorphology DiscoursePragmatics" />
+    <skill id="DataEthics" label="Data Ethics" learningTopic="PrivacyPrinciples BiasFairness ResponsibleAI DataGovernance ConsentCompliance" />
   </skills>
 
   <interests>
@@ -89,17 +89,166 @@
   </industries>
 
   <courses>
-    <course id="DataScienceFundamentals" label="Data Science Fundamentals" teachesSkill="Python Statistics DataVisualization" />
-    <course id="MachineLearningFoundations" label="Machine Learning Foundations" teachesSkill="MachineLearning Python Statistics" />
-    <course id="DeepLearningFoundations" label="Deep Learning Foundations" teachesSkill="DeepLearning MachineLearning Python" />
-    <course id="SoftwareEngineeringPractices" label="Software Engineering Practices" teachesSkill="APIDevelopment SoftwareArchitecture ProblemSolving" />
-    <course id="WebDevelopmentBootcamp" label="Web Development Bootcamp" teachesSkill="HTML CSS JavaScript UXDesign" />
-    <course id="CybersecurityEssentials" label="Cybersecurity Essentials" teachesSkill="Cybersecurity NetworkSecurity ThreatAnalysis Linux" />
-    <course id="DatabaseSystems" label="Database Systems" teachesSkill="SQL DataModeling DatabaseAdministration" />
-    <course id="CloudComputingEssentials" label="Cloud Computing Essentials" teachesSkill="CloudComputing Linux Networking DevOps" />
-    <course id="BusinessIntelligenceAnalytics" label="Business Intelligence Analytics" teachesSkill="BusinessAnalytics SQL DataVisualization" />
-    <course id="NaturalLanguageProcessing" label="Natural Language Processing" teachesSkill="NLP Linguistics MachineLearning" />
+    <course id="DataScienceFundamentals" label="Data Science Fundamentals" teachesSkill="Python Statistics DataVisualization" coversTopic="PythonNotebooks DataCleaning ExploratoryDataAnalysis DescriptiveStatistics VisualizationDesign" />
+    <course id="MachineLearningFoundations" label="Machine Learning Foundations" teachesSkill="MachineLearning Python Statistics" coversTopic="SupervisedLearning UnsupervisedLearning LogisticRegression DecisionTrees ModelEvaluation TrainTestSplit" />
+    <course id="DeepLearningFoundations" label="Deep Learning Foundations" teachesSkill="DeepLearning MachineLearning Python" coversTopic="NeuralNetworks Backpropagation CNNs SequenceModels TensorFlowBasics OverfittingRegularization" />
+    <course id="SoftwareEngineeringPractices" label="Software Engineering Practices" teachesSkill="APIDevelopment SoftwareArchitecture ProblemSolving" coversTopic="RestAPIDesign GitWorkflow UnitTesting DesignPatterns RequirementsAnalysis" />
+    <course id="WebDevelopmentBootcamp" label="Web Development Bootcamp" teachesSkill="HTML CSS JavaScript UXDesign" coversTopic="SemanticHTML CSSLayout DOMManipulation AsyncJavaScript ResponsiveDesign" />
+    <course id="CybersecurityEssentials" label="Cybersecurity Essentials" teachesSkill="Cybersecurity NetworkSecurity ThreatAnalysis Linux" coversTopic="CIATriad VulnerabilityAssessment NetworkHardening IncidentResponse LinuxSecurity" />
+    <course id="DatabaseSystems" label="Database Systems" teachesSkill="SQL DataModeling DatabaseAdministration" coversTopic="RelationalModeling Normalization SQLJoins IndexingTransactions BackupRecovery" />
+    <course id="CloudComputingEssentials" label="Cloud Computing Essentials" teachesSkill="CloudComputing Linux Networking DevOps" coversTopic="Virtualization CloudComputeStorage IAMBasics CICDDeployment MonitoringLogging" />
+    <course id="BusinessIntelligenceAnalytics" label="Business Intelligence Analytics" teachesSkill="BusinessAnalytics SQL DataVisualization" coversTopic="ETLPipelines KPIModeling DashboardDesign PowerBIReporting DimensionalModeling" />
+    <course id="NaturalLanguageProcessing" label="Natural Language Processing" teachesSkill="NLP Linguistics MachineLearning" coversTopic="TextPreprocessing Tokenization WordEmbeddings TextClassification Transformers SemanticSearch" />
   </courses>
+
+  <learningTopics>
+    <topic id="PythonNotebooks" label="Python Notebooks" description="Use notebook environments to load data, write Python code and document analysis steps." />
+    <topic id="DataCleaning" label="Data Cleaning" description="Handle missing values, inconsistent formats, duplicated records and noisy datasets." />
+    <topic id="ExploratoryDataAnalysis" label="Exploratory Data Analysis" description="Explore distributions, correlations and early patterns before modelling." />
+    <topic id="DescriptiveStatistics" label="Descriptive Statistics" description="Summarize datasets using mean, median, variance, percentiles and simple statistical measures." />
+    <topic id="VisualizationDesign" label="Visualization Design" description="Choose charts and visual encodings that communicate insights clearly." />
+    <topic id="SupervisedLearning" label="Supervised Learning" description="Train models using labelled data for classification and regression tasks." />
+    <topic id="UnsupervisedLearning" label="Unsupervised Learning" description="Discover hidden patterns using clustering, dimensionality reduction and similarity analysis." />
+    <topic id="LogisticRegression" label="Logistic Regression" description="Build an interpretable classification model for binary or multi-class prediction." />
+    <topic id="DecisionTrees" label="Decision Trees" description="Learn rule-based models that split data into explainable decision paths." />
+    <topic id="ModelEvaluation" label="Model Evaluation" description="Evaluate models using accuracy, precision, recall, F1 score and confusion matrices." />
+    <topic id="TrainTestSplit" label="Train/Test Split" description="Separate training and testing data to estimate model performance on unseen cases." />
+    <topic id="NeuralNetworks" label="Neural Networks" description="Understand layers, activations and weights used in deep learning models." />
+    <topic id="Backpropagation" label="Backpropagation" description="Learn how neural networks update weights by propagating error gradients." />
+    <topic id="CNNs" label="Convolutional Neural Networks" description="Use convolutional layers for image and spatial pattern recognition." />
+    <topic id="SequenceModels" label="Sequence Models" description="Model ordered data such as text, time series and language sequences." />
+    <topic id="TensorFlowBasics" label="TensorFlow Basics" description="Build and train basic neural network models using TensorFlow tools." />
+    <topic id="OverfittingRegularization" label="Overfitting and Regularization" description="Reduce overfitting using dropout, regularization and validation strategies." />
+    <topic id="RestAPIDesign" label="REST API Design" description="Design endpoints, resources, request methods and response formats for APIs." />
+    <topic id="GitWorkflow" label="Git Workflow" description="Use branching, commits and version control practices for team software development." />
+    <topic id="UnitTesting" label="Unit Testing" description="Write tests that verify small units of program behaviour." />
+    <topic id="DesignPatterns" label="Design Patterns" description="Apply reusable software design solutions for common implementation problems." />
+    <topic id="RequirementsAnalysis" label="Requirements Analysis" description="Translate user needs into clear functional and technical requirements." />
+    <topic id="SemanticHTML" label="Semantic HTML" description="Structure web pages with meaningful HTML elements." />
+    <topic id="CSSLayout" label="CSS Layout" description="Build page layouts using box model, flexbox and grid." />
+    <topic id="DOMManipulation" label="DOM Manipulation" description="Use JavaScript to read, change and respond to page elements." />
+    <topic id="AsyncJavaScript" label="Asynchronous JavaScript" description="Work with promises, fetch requests and asynchronous browser behaviour." />
+    <topic id="ResponsiveDesign" label="Responsive Design" description="Design interfaces that adapt to mobile and desktop screen sizes." />
+    <topic id="CIATriad" label="CIA Triad" description="Understand confidentiality, integrity and availability as core security goals." />
+    <topic id="VulnerabilityAssessment" label="Vulnerability Assessment" description="Identify weaknesses in systems, applications and networks." />
+    <topic id="NetworkHardening" label="Network Hardening" description="Reduce attack surfaces using secure configuration and access control." />
+    <topic id="IncidentResponse" label="Incident Response" description="Prepare, detect, contain and recover from security incidents." />
+    <topic id="LinuxSecurity" label="Linux Security" description="Use Linux permissions, users, logs and hardening practices." />
+    <topic id="RelationalModeling" label="Relational Modeling" description="Design tables, keys and relationships for structured data." />
+    <topic id="Normalization" label="Normalization" description="Reduce redundancy and improve data integrity through normal forms." />
+    <topic id="SQLJoins" label="SQL Joins" description="Combine records from multiple tables using join operations." />
+    <topic id="IndexingTransactions" label="Indexing and Transactions" description="Improve query performance and maintain reliable database changes." />
+    <topic id="BackupRecovery" label="Backup and Recovery" description="Protect data using backup plans and restore procedures." />
+    <topic id="Virtualization" label="Virtualization" description="Run isolated compute environments on shared hardware." />
+    <topic id="CloudComputeStorage" label="Cloud Compute and Storage" description="Use cloud virtual machines, object storage and managed infrastructure services." />
+    <topic id="IAMBasics" label="IAM Basics" description="Control cloud access using users, roles, policies and permissions." />
+    <topic id="CICDDeployment" label="CI/CD Deployment" description="Automate build, test and deployment workflows." />
+    <topic id="MonitoringLogging" label="Monitoring and Logging" description="Observe system health and diagnose production issues." />
+    <topic id="ETLPipelines" label="ETL Pipelines" description="Extract, transform and load data for analytics workflows." />
+    <topic id="KPIModeling" label="KPI Modeling" description="Define business metrics that measure performance and outcomes." />
+    <topic id="DashboardDesign" label="Dashboard Design" description="Design dashboards that support fast business decision making." />
+    <topic id="PowerBIReporting" label="Power BI Reporting" description="Build interactive reports and visuals using Power BI concepts." />
+    <topic id="DimensionalModeling" label="Dimensional Modeling" description="Organize facts and dimensions for business intelligence analysis." />
+    <topic id="TextPreprocessing" label="Text Preprocessing" description="Clean and normalize text before language processing." />
+    <topic id="Tokenization" label="Tokenization" description="Split text into tokens for machine learning and NLP pipelines." />
+    <topic id="WordEmbeddings" label="Word Embeddings" description="Represent words as vectors that capture semantic similarity." />
+    <topic id="TextClassification" label="Text Classification" description="Assign labels to text such as sentiment, topic or intent." />
+    <topic id="Transformers" label="Transformers" description="Understand attention-based neural architectures used in modern NLP." />
+    <topic id="SemanticSearch" label="Semantic Search" description="Retrieve information using meaning and entity relationships rather than exact keywords only." />
+    <topic id="PythonSyntax" label="Python Syntax" description="Learn variables, expressions, control flow, loops and basic Python program structure." />
+    <topic id="PythonDataStructures" label="Python Data Structures" description="Use lists, tuples, dictionaries, sets and common data manipulation patterns." />
+    <topic id="FunctionsModules" label="Functions and Modules" description="Organize reusable code using functions, imports, modules and packages." />
+    <topic id="FileHandling" label="File Handling" description="Read and write text, CSV, JSON and other local data files." />
+    <topic id="PythonPackages" label="Python Packages" description="Install and use third-party packages with virtual environments and package managers." />
+    <topic id="ProbabilityDistributions" label="Probability Distributions" description="Understand common distributions and how uncertainty is represented in data." />
+    <topic id="HypothesisTesting" label="Hypothesis Testing" description="Use statistical tests, p-values and confidence intervals to evaluate assumptions." />
+    <topic id="RegressionBasics" label="Regression Basics" description="Model relationships between variables using simple and multiple regression ideas." />
+    <topic id="StatisticalInference" label="Statistical Inference" description="Draw conclusions from samples while accounting for uncertainty." />
+    <topic id="SQLSelectFiltering" label="SQL Select and Filtering" description="Retrieve rows and columns using SELECT, WHERE, ORDER BY and filtering logic." />
+    <topic id="AggregateFunctions" label="Aggregate Functions" description="Summarize records using COUNT, SUM, AVG, MIN, MAX and GROUP BY." />
+    <topic id="Subqueries" label="Subqueries" description="Use nested queries to solve multi-step database questions." />
+    <topic id="ChartSelection" label="Chart Selection" description="Choose appropriate charts for comparison, trend, distribution, composition and relationship tasks." />
+    <topic id="DataStorytelling" label="Data Storytelling" description="Explain insights using context, visual hierarchy and narrative structure." />
+    <topic id="AccessibilityVisualization" label="Accessible Visualization" description="Design charts with readable labels, contrast and inclusive color choices." />
+    <topic id="DataPipelines" label="Data Pipelines" description="Move data through reliable collection, transformation and delivery steps." />
+    <topic id="DataWarehousing" label="Data Warehousing" description="Store integrated analytical data for reporting and decision support." />
+    <topic id="BatchStreaming" label="Batch and Streaming Processing" description="Compare scheduled batch workloads with near-real-time streaming data processing." />
+    <topic id="DataQualityChecks" label="Data Quality Checks" description="Validate completeness, consistency, accuracy and freshness of data." />
+    <topic id="ModelDeployment" label="Model Deployment" description="Package and serve trained models for application or API use." />
+    <topic id="ModelMonitoring" label="Model Monitoring" description="Track model quality, drift, latency and production behaviour over time." />
+    <topic id="ModelVersioning" label="Model Versioning" description="Manage model artifacts, datasets and experiment versions for reproducibility." />
+    <topic id="FeatureStores" label="Feature Stores" description="Store and reuse machine learning features consistently between training and serving." />
+    <topic id="PromptStructure" label="Prompt Structure" description="Write clear task instructions, context, constraints and output formats." />
+    <topic id="FewShotPrompting" label="Few-shot Prompting" description="Guide model output by providing examples inside the prompt." />
+    <topic id="EvaluationRubrics" label="Evaluation Rubrics" description="Check AI output using criteria such as accuracy, completeness, safety and format compliance." />
+    <topic id="ToolUseGrounding" label="Tool Use and Grounding" description="Use external tools, retrieved context and evidence to ground model responses." />
+    <topic id="PromptSafety" label="Prompt Safety" description="Reduce harmful, misleading or policy-violating model outputs with constraints and review." />
+    <topic id="HTTPMethods" label="HTTP Methods" description="Use GET, POST, PUT, PATCH and DELETE correctly in web APIs." />
+    <topic id="AuthenticationAuthorization" label="Authentication and Authorization" description="Verify identity and control access using tokens, sessions, roles and permissions." />
+    <topic id="JSONContracts" label="JSON Contracts" description="Design predictable request and response schemas for API consumers." />
+    <topic id="APIErrorHandling" label="API Error Handling" description="Return useful status codes, error bodies and recovery information." />
+    <topic id="FormsAccessibility" label="Forms and Accessibility" description="Build usable forms with labels, validation, keyboard support and assistive technology support." />
+    <topic id="MetadataSEO" label="Metadata and SEO" description="Use document metadata, headings and semantic structure to improve discoverability." />
+    <topic id="AccessibilityDesign" label="Accessibility Design" description="Design interfaces that support keyboard navigation, readable contrast and inclusive interaction." />
+    <topic id="FlexboxGrid" label="Flexbox and Grid" description="Build responsive two-dimensional layouts using modern CSS layout systems." />
+    <topic id="CSSSelectors" label="CSS Selectors" description="Target elements using selectors, specificity and cascade rules." />
+    <topic id="VisualStyling" label="Visual Styling" description="Apply typography, spacing, colors and component styling consistently." />
+    <topic id="JavaScriptFunctions" label="JavaScript Functions" description="Write functions, callbacks and reusable logic in JavaScript." />
+    <topic id="EventHandling" label="Event Handling" description="Respond to clicks, forms, keyboard input and browser events." />
+    <topic id="FetchAPI" label="Fetch API" description="Request data from APIs and handle responses asynchronously." />
+    <topic id="UserResearch" label="User Research" description="Understand users through interviews, observation, surveys and behaviour analysis." />
+    <topic id="Wireframing" label="Wireframing" description="Sketch low-fidelity layouts to explore information structure and user flows." />
+    <topic id="UsabilityTesting" label="Usability Testing" description="Test interfaces with users to find confusion, friction and task failure." />
+    <topic id="InformationArchitecture" label="Information Architecture" description="Organize content and navigation so users can find information easily." />
+    <topic id="RiskManagement" label="Risk Management" description="Identify, assess and reduce security and operational risks." />
+    <topic id="SecurityControls" label="Security Controls" description="Apply preventive, detective and corrective controls to protect systems." />
+    <topic id="OWASPTopTen" label="OWASP Top 10" description="Understand common web application security risks such as injection and broken access control." />
+    <topic id="FirewallsVPNs" label="Firewalls and VPNs" description="Control network traffic and secure remote access using network security tools." />
+    <topic id="IntrusionDetection" label="Intrusion Detection" description="Detect suspicious traffic, events and attack patterns in systems or networks." />
+    <topic id="NetworkSegmentation" label="Network Segmentation" description="Separate systems into zones to limit access and reduce blast radius." />
+    <topic id="SecureProtocols" label="Secure Protocols" description="Use encrypted and authenticated protocols such as HTTPS, SSH and TLS." />
+    <topic id="ThreatModeling" label="Threat Modeling" description="Identify assets, adversaries, attack paths and mitigation strategies." />
+    <topic id="AttackVectors" label="Attack Vectors" description="Understand common ways attackers enter, move through and exploit systems." />
+    <topic id="LogAnalysis" label="Log Analysis" description="Review logs to detect anomalies, incidents and operational problems." />
+    <topic id="MITREAttack" label="MITRE ATT&CK" description="Use the ATT&CK knowledge base to reason about adversary tactics and techniques." />
+    <topic id="LinuxCLI" label="Linux Command Line" description="Navigate files, run commands and manage tasks from the shell." />
+    <topic id="FilePermissions" label="File Permissions" description="Control access using users, groups, ownership and permission modes." />
+    <topic id="ProcessManagement" label="Process Management" description="Inspect, start, stop and monitor Linux processes and services." />
+    <topic id="ShellScripting" label="Shell Scripting" description="Automate command-line tasks using shell scripts and environment variables." />
+    <topic id="ProblemDecomposition" label="Problem Decomposition" description="Break complex problems into smaller parts that can be solved and tested." />
+    <topic id="AlgorithmicThinking" label="Algorithmic Thinking" description="Design step-by-step logic using conditions, loops, data structures and tradeoffs." />
+    <topic id="Debugging" label="Debugging" description="Find and fix defects using observation, logging, reproduction and isolation." />
+    <topic id="RootCauseAnalysis" label="Root Cause Analysis" description="Identify underlying causes rather than only treating symptoms." />
+    <topic id="TradeoffAnalysis" label="Trade-off Analysis" description="Compare options across cost, complexity, risk, accuracy and maintainability." />
+    <topic id="ERDiagrams" label="ER Diagrams" description="Model entities, attributes and relationships using entity-relationship diagrams." />
+    <topic id="DataGovernance" label="Data Governance" description="Manage ownership, quality, privacy and responsible use of data assets." />
+    <topic id="QueryPerformance" label="Query Performance" description="Analyze and improve slow database queries using indexes and execution plans." />
+    <topic id="AccessControlMonitoring" label="Access Control and Monitoring" description="Protect database access and monitor activity for reliability and security." />
+    <topic id="ReplicationHighAvailability" label="Replication and High Availability" description="Keep databases resilient using replication, failover and recovery planning." />
+    <topic id="CloudNetworking" label="Cloud Networking" description="Design virtual networks, subnets, routing and secure service connectivity in cloud platforms." />
+    <topic id="ServerlessContainers" label="Serverless and Containers" description="Deploy applications using managed functions, containers and orchestration concepts." />
+    <topic id="NetworkProtocols" label="Network Protocols" description="Understand TCP/IP, UDP, HTTP, DNS and other communication protocols." />
+    <topic id="IPAddressing" label="IP Addressing" description="Use IPv4, IPv6, subnetting and address planning for networks." />
+    <topic id="RoutingSwitching" label="Routing and Switching" description="Move traffic between devices and networks using routing and switching concepts." />
+    <topic id="DNSHTTP" label="DNS and HTTP" description="Understand domain resolution and web request-response communication." />
+    <topic id="TroubleshootingConnectivity" label="Connectivity Troubleshooting" description="Diagnose network failures using systematic checks and diagnostic tools." />
+    <topic id="InfrastructureAsCode" label="Infrastructure as Code" description="Define infrastructure using versioned, repeatable configuration files." />
+    <topic id="Containerization" label="Containerization" description="Package applications with dependencies using containers and image workflows." />
+    <topic id="BusinessMetrics" label="Business Metrics" description="Define measurable indicators that connect analysis to business outcomes." />
+    <topic id="StakeholderCommunication" label="Stakeholder Communication" description="Translate technical findings into decisions, tradeoffs and recommendations." />
+    <topic id="SystemDesign" label="System Design" description="Design software components, boundaries, data flows and service responsibilities." />
+    <topic id="ScalabilityReliability" label="Scalability and Reliability" description="Design systems that handle growth, failure and operational load." />
+    <topic id="ArchitectureDocumentation" label="Architecture Documentation" description="Document decisions, diagrams, constraints and system responsibilities clearly." />
+    <topic id="APIIntegration" label="API Integration" description="Connect systems through APIs, data contracts and integration error handling." />
+    <topic id="SyntaxSemantics" label="Syntax and Semantics" description="Understand sentence structure and meaning in human language." />
+    <topic id="CorpusLinguistics" label="Corpus Linguistics" description="Analyze language patterns using large collections of real text." />
+    <topic id="PhoneticsMorphology" label="Phonetics and Morphology" description="Study speech sounds and word formation patterns." />
+    <topic id="DiscoursePragmatics" label="Discourse and Pragmatics" description="Analyze language use across context, conversation and intent." />
+    <topic id="PrivacyPrinciples" label="Privacy Principles" description="Apply privacy-aware collection, storage, sharing and minimization practices." />
+    <topic id="BiasFairness" label="Bias and Fairness" description="Identify and reduce unfair outcomes in data, models and decisions." />
+    <topic id="ResponsibleAI" label="Responsible AI" description="Design AI systems with transparency, accountability, safety and human oversight." />
+    <topic id="ConsentCompliance" label="Consent and Compliance" description="Respect consent, policy and regulatory requirements for data use." />
+  </learningTopics>
 
   <certifications>
     <certification id="GoogleDataAnalytics" label="Google Data Analytics Certificate" />
@@ -184,6 +333,7 @@
       <relatedToInterest>SoftwareDevelopment</relatedToInterest>
       <belongsToIndustry>Technology</belongsToIndustry>
       <belongsToIndustry>Healthcare</belongsToIndustry>
+      <recommendedCourse>MachineLearningFoundations</recommendedCourse>
       <recommendedCourse>DeepLearningFoundations</recommendedCourse>
       <recommendedCourse>SoftwareEngineeringPractices</recommendedCourse>
       <recommendedCertification>TensorFlowDeveloper</recommendedCertification>

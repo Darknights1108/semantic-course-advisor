@@ -375,6 +375,7 @@ function renderStatistics() {
     ["Careers", state.dataset.careers.length],
     ["Skills", state.dataset.skills.length],
     ["Courses", state.dataset.courses.length],
+    ["Learning topics", state.dataset.topics.length],
     ["Certifications", state.dataset.certifications.length],
     ["Industries", state.dataset.industries.length],
     ["Interests", state.dataset.interests.length],
@@ -479,6 +480,8 @@ function queryDescription(queryId) {
     recommendationSupport: "Shows the graph evidence used for ranked career recommendation output.",
     skillGap: "Lists required skills and prerequisite expansions for careers in the knowledge graph.",
     classInstances: "Lists instances of the main OWL classes in the knowledge graph.",
+    courseTopics: "Expands course entities into the skills taught and detailed learning topics covered.",
+    skillTopics: "Expands skill entities into the detailed learning topics a learner should study.",
   };
   return descriptions[queryId] ?? "Runs a semantic graph query over the career path knowledge graph.";
 }
@@ -489,6 +492,8 @@ function queryKeywordPlaceholder(queryId) {
     recommendationSupport: "Try: Python, Artificial Intelligence, AI Engineer, Missing",
     skillGap: "Try: Data Scientist, Python, Deep Learning, Missing",
     classInstances: "Try: Career, Skill, Course, Python, AWS",
+    courseTopics: "Try: Machine Learning, Logistic Regression, Supervised Learning",
+    skillTopics: "Try: Python, SQL, Cybersecurity, Logistic Regression",
   };
   return placeholders[queryId] ?? "Type a keyword to filter the result rows";
 }
@@ -499,6 +504,8 @@ function queryKeywordHelp(queryId) {
     recommendationSupport: "Use a career, matched interest, matched skill, missing skill or score value.",
     skillGap: "Use a career name, required skill, prerequisite skill, or status such as Matched/Missing.",
     classInstances: "Use an ontology class name or entity name. Examples: Career, Skill, Course, Python.",
+    courseTopics: "Use a course, skill, or learning topic. Example: Machine Learning or Logistic Regression.",
+    skillTopics: "Use a skill or learning topic. Example: Machine Learning, SQL, or Prompt Safety.",
   };
   return help[queryId] ?? "Leave blank to show all rows, or type a keyword to filter.";
 }
@@ -691,6 +698,7 @@ function buildEntityMap(dataset) {
       ...dataset.interests,
       ...dataset.industries,
       ...dataset.courses,
+      ...dataset.topics,
       ...dataset.certifications,
       ...dataset.resources,
     ].map((entity) => [entity.id, entity]),

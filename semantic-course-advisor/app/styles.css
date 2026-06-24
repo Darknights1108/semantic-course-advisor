@@ -753,6 +753,22 @@ th {
   padding: 16px;
 }
 
+.clickableResult {
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.clickableResult:hover,
+.clickableResult:focus-visible {
+  border-color: var(--teal);
+  box-shadow: 0 20px 52px rgba(0, 127, 122, 0.16);
+  transform: translateY(-1px);
+  outline: none;
+}
+
 .resultBadge {
   display: grid;
   place-items: center;
@@ -770,6 +786,13 @@ th {
   margin-bottom: 8px;
   color: var(--teal) !important;
   font-weight: 800;
+}
+
+.courseHint {
+  margin: 10px 0 0;
+  color: var(--teal) !important;
+  font-size: 0.84rem;
+  font-weight: 900;
 }
 
 .scoreBox {
@@ -799,6 +822,90 @@ th {
   font-weight: 700;
 }
 
+.courseDetail {
+  display: grid;
+  gap: 16px;
+}
+
+.secondaryBack {
+  width: fit-content;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--teal);
+  padding: 0 14px;
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.courseHero {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+.courseHero h2 {
+  margin-bottom: 10px;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+.courseHero p {
+  max-width: 860px;
+  color: #4b5563;
+  line-height: 1.55;
+}
+
+.courseEvidenceGrid,
+.topicGrid {
+  display: grid;
+  gap: 14px;
+}
+
+.courseEvidenceGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.topicGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.topicCard {
+  min-height: 170px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.topicCard span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  min-height: 28px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background: var(--teal-soft);
+  color: var(--teal);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.topicCard h3 {
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+}
+
+.topicCard p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 @media (max-width: 980px) {
   .heroCard {
     grid-template-columns: 1fr;
@@ -810,6 +917,8 @@ th {
   .inputGrid,
   .techGrid,
   .evidenceGrid,
+  .courseEvidenceGrid,
+  .topicGrid,
   .metricGrid,
   .metricGrid.three,
   .toolbarLine,

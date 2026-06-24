@@ -81,7 +81,48 @@ WHERE {
 SELECT ?class ?instance
 WHERE {
   ?instance a ?class .
-  FILTER (?class IN (cad:Career, cad:Skill, cad:Course, cad:Certification, cad:Industry, cad:Interest, cad:LearningResource))
+  FILTER (?class IN (cad:Career, cad:Skill, cad:Course, cad:LearningTopic, cad:Certification, cad:Industry, cad:Interest, cad:LearningResource))
+}`,
+  },
+  {
+    id: "courseTopics",
+    title: "Course topic expansion",
+    query: `PREFIX cad: <http://example.org/career#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?course ?skill ?topic
+WHERE {
+  ?course a cad:Course ;
+          cad:teachesSkill ?skill ;
+          cad:coversTopic ?topic .
+  ?course rdfs:label ?courseLabel .
+  ?skill rdfs:label ?skillLabel .
+  ?topic rdfs:label ?topicLabel .
+  FILTER (
+    CONTAINS(LCASE(STR(?courseLabel)), "{{keyword}}") ||
+    CONTAINS(LCASE(STR(?skillLabel)), "{{keyword}}") ||
+    CONTAINS(LCASE(STR(?topicLabel)), "{{keyword}}")
+  )
+}`,
+  },
+  {
+    id: "skillTopics",
+    title: "Skill learning topics",
+    query: `PREFIX cad: <http://example.org/career#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?skill ?topic ?description
+WHERE {
+  ?skill a cad:Skill ;
+         cad:hasLearningTopic ?topic .
+  ?skill rdfs:label ?skillLabel .
+  ?topic rdfs:label ?topicLabel ;
+         cad:description ?description .
+  FILTER (
+    CONTAINS(LCASE(STR(?skillLabel)), "{{keyword}}") ||
+    CONTAINS(LCASE(STR(?topicLabel)), "{{keyword}}") ||
+    CONTAINS(LCASE(STR(?description)), "{{keyword}}")
+  )
 }`,
   },
 ];
@@ -91,6 +132,7 @@ const CLASS_CONFIG = {
   interests: { tag: "interest", type: "Interest", idPrefix: "cad:" },
   industries: { tag: "industry", type: "Industry", idPrefix: "cad:" },
   courses: { tag: "course", type: "Course", idPrefix: "cad:" },
+  learningTopics: { tag: "topic", type: "LearningTopic", idPrefix: "cad:" },
   certifications: { tag: "certification", type: "Certification", idPrefix: "cad:" },
   learningResources: { tag: "resource", type: "LearningResource", idPrefix: "cad:" },
 };
@@ -148,6 +190,7 @@ export function parseCareerKnowledgeGraphXml(xmlText) {
     interests: collections.interests,
     industries: collections.industries,
     courses: collections.courses,
+    topics: collections.learningTopics,
     certifications: collections.certifications,
     resources: collections.learningResources,
   };
@@ -159,8 +202,11 @@ function parseSimpleEntity(attrSource, body, type) {
     id: idFor(attrs.id),
     rawId: attrs.id,
     label: attrs.label ?? attrs.id,
+    description: attrs.description ?? "",
     type,
     teachesSkills: attrList(attrs.teachesSkill).map(idFor),
+    coversTopics: attrList(attrs.coversTopic).map(idFor),
+    learningTopics: attrList(attrs.learningTopic).map(idFor),
     prerequisiteSkills: listOf(body, "prerequisiteSkill").map(idFor),
   };
 }
@@ -168,7 +214,7 @@ function parseSimpleEntity(attrSource, body, type) {
 export function buildTriples(dataset) {
   const triples = [];
 
-  for (const className of ["Career", "Skill", "Course", "Certification", "Industry", "Interest", "LearningResource"]) {
+  for (const className of ["Career", "Skill", "Course", "LearningTopic", "Certification", "Industry", "Interest", "LearningResource"]) {
     triples.push(uriTriple(`cad:${className}`, "rdf:type", "owl:Class"));
   }
 
@@ -181,6 +227,9 @@ export function buildTriples(dataset) {
     ["hasLearningResource", "Career", "LearningResource"],
     ["prerequisiteSkill", "Skill", "Skill"],
     ["alternativeCareer", "Career", "Career"],
+    ["coversTopic", "Course", "LearningTopic"],
+    ["hasLearningTopic", "Skill", "LearningTopic"],
+    ["teachesSkill", "Course", "Skill"],
   ];
 
   for (const [property, domain, range] of objectProperties) {
@@ -194,13 +243,23 @@ export function buildTriples(dataset) {
     ...dataset.interests,
     ...dataset.industries,
     ...dataset.courses,
+    ...dataset.topics,
     ...dataset.certifications,
     ...dataset.resources,
   ]) {
     triples.push(uriTriple(entity.id, "rdf:type", `cad:${entity.type}`));
     triples.push(literalTriple(entity.id, "rdfs:label", entity.label));
+    if (entity.description) {
+      triples.push(literalTriple(entity.id, "cad:description", entity.description));
+    }
     for (const skill of entity.teachesSkills ?? []) {
       triples.push(uriTriple(entity.id, "cad:teachesSkill", skill));
+    }
+    for (const topic of entity.coversTopics ?? []) {
+      triples.push(uriTriple(entity.id, "cad:coversTopic", topic));
+    }
+    for (const topic of entity.learningTopics ?? []) {
+      triples.push(uriTriple(entity.id, "cad:hasLearningTopic", topic));
     }
     for (const prerequisite of entity.prerequisiteSkills ?? []) {
       triples.push(uriTriple(entity.id, "cad:prerequisiteSkill", prerequisite));
@@ -324,7 +383,14 @@ export function searchKnowledgeGraph(dataset, profileResult, query) {
   for (const skill of dataset.skills) {
     const requiredBy = dataset.careers.filter((career) => career.requiresSkills.includes(skill.id));
     if (focusedCareer && !focusedCareer.requiresSkills.includes(skill.id)) continue;
-    const text = [skill.label, "skill entity", ...requiredBy.map((career) => career.title)].join(" ");
+    const skillTopics = skill.learningTopics ?? [];
+    const text = [
+      skill.label,
+      "skill entity",
+      ...labelsFor(dataset, skillTopics),
+      ...skillTopics.map((topicId) => findEntity(dataset, topicId)?.description ?? ""),
+      ...requiredBy.map((career) => career.title),
+    ].join(" ");
     const focusBoost = focusedCareer ? 10 : 0;
     const gapBoost = !focusedCareer && profileResult.missingSkills.includes(skill.id) ? 8 : 0;
     const score = scoreText(text, tokens) + focusBoost + gapBoost;
@@ -337,21 +403,31 @@ export function searchKnowledgeGraph(dataset, profileResult, query) {
         description: "A skill node links user abilities to career requirements and prerequisite chains.",
         score,
         matchedTerms: matchingTerms(text, tokens),
+        topicIds: skillTopics,
         relationships: compact([
           requiredBy.length ? `required by ${requiredBy.map((career) => career.title).join(", ")}` : "",
           skill.prerequisiteSkills.length ? `prerequisites: ${labelsFor(dataset, skill.prerequisiteSkills).join(", ")}` : "no prerequisite skill",
+          skillTopics.length ? `learn topics: ${labelsFor(dataset, skillTopics).join(", ")}` : "",
           profileResult.missingSkills.includes(skill.id) ? "missing for selected target career" : "",
         ]),
-        explanation: "Retrieved as a skill entity by linking career requirements and prerequisiteSkill relationships.",
+        explanation: "Retrieved as a skill entity by linking career requirements, prerequisiteSkill and hasLearningTopic relationships.",
       });
     }
   }
 
   for (const course of dataset.courses) {
     const taughtSkills = course.teachesSkills ?? [];
+    const coveredTopics = course.coversTopics ?? [];
     const relevantCareers = dataset.careers.filter((career) => career.recommendedCourses.includes(course.id));
     if (focusedCareer && !focusedCareer.recommendedCourses.includes(course.id)) continue;
-    const text = [course.label, "course entity", ...labelsFor(dataset, taughtSkills), ...relevantCareers.map((career) => career.title)].join(" ");
+    const text = [
+      course.label,
+      "course entity",
+      ...labelsFor(dataset, taughtSkills),
+      ...labelsFor(dataset, coveredTopics),
+      ...coveredTopics.map((topicId) => findEntity(dataset, topicId)?.description ?? ""),
+      ...relevantCareers.map((career) => career.title),
+    ].join(" ");
     const focusBoost = focusedCareer ? 8 : 0;
     const targetBoost = !focusedCareer ? relevantCareers.filter((career) => career.id === profileResult.targetCareer.id).length * 6 : 0;
     const score = scoreText(text, tokens) + focusBoost + targetBoost;
@@ -364,11 +440,13 @@ export function searchKnowledgeGraph(dataset, profileResult, query) {
         description: "A learning course connected to careers and the skills it teaches.",
         score,
         matchedTerms: matchingTerms(text, tokens),
+        topicIds: coveredTopics,
         relationships: compact([
           taughtSkills.length ? `teaches ${labelsFor(dataset, taughtSkills).join(", ")}` : "",
+          coveredTopics.length ? `learn topics: ${labelsFor(dataset, coveredTopics).join(", ")}` : "",
           relevantCareers.length ? `recommended for ${relevantCareers.map((career) => career.title).join(", ")}` : "",
         ]),
-        explanation: "Retrieved as a course entity through recommendedCourse and teachesSkill graph links.",
+        explanation: "Retrieved as a course entity through recommendedCourse, teachesSkill and coversTopic graph links.",
       });
     }
   }
@@ -411,11 +489,33 @@ export function runQuery(queryId, dataset, profileResult, keyword = "") {
       ...dataset.careers.map((item) => ({ class: "Career", instance: item.title })),
       ...dataset.skills.map((item) => ({ class: "Skill", instance: item.label })),
       ...dataset.courses.map((item) => ({ class: "Course", instance: item.label })),
+      ...dataset.topics.map((item) => ({ class: "LearningTopic", instance: item.label })),
       ...dataset.certifications.map((item) => ({ class: "Certification", instance: item.label })),
       ...dataset.industries.map((item) => ({ class: "Industry", instance: item.label })),
       ...dataset.interests.map((item) => ({ class: "Interest", instance: item.label })),
       ...dataset.resources.map((item) => ({ class: "LearningResource", instance: item.label })),
     ], keyword);
+  }
+
+  if (queryId === "courseTopics") {
+    return filterRowsByKeyword(dataset.courses.flatMap((course) =>
+      (course.coversTopics ?? []).map((topic) => ({
+        course: course.label,
+        skill: labelsFor(dataset, course.teachesSkills ?? []).join(", "),
+        topic: labelFor(dataset, topic),
+        description: findEntity(dataset, topic)?.description ?? "-",
+      })),
+    ), keyword);
+  }
+
+  if (queryId === "skillTopics") {
+    return filterRowsByKeyword(dataset.skills.flatMap((skill) =>
+      (skill.learningTopics ?? []).map((topic) => ({
+        skill: skill.label,
+        topic: labelFor(dataset, topic),
+        description: findEntity(dataset, topic)?.description ?? "-",
+      })),
+    ), keyword);
   }
 
   return [];
@@ -464,6 +564,7 @@ export function countEntities(dataset) {
     dataset.careers.length +
     dataset.skills.length +
     dataset.courses.length +
+    dataset.topics.length +
     dataset.certifications.length +
     dataset.industries.length +
     dataset.interests.length +
@@ -602,6 +703,7 @@ function findEntity(dataset, id) {
     ...dataset.interests,
     ...dataset.industries,
     ...dataset.courses,
+    ...dataset.topics,
     ...dataset.certifications,
     ...dataset.resources,
   ].find((entity) => entity.id === id);

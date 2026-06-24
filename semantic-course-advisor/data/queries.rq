@@ -45,5 +45,21 @@ WHERE {
 SELECT ?class ?instance
 WHERE {
   ?instance a ?class .
-  FILTER (?class IN (cad:Career, cad:Skill, cad:Course, cad:Certification, cad:Industry, cad:Interest, cad:LearningResource))
+  FILTER (?class IN (cad:Career, cad:Skill, cad:Course, cad:LearningTopic, cad:Certification, cad:Industry, cad:Interest, cad:LearningResource))
+}
+
+# Q5: Course topic expansion.
+SELECT ?course ?skill ?topic
+WHERE {
+  ?course a cad:Course ;
+          cad:teachesSkill ?skill ;
+          cad:coversTopic ?topic .
+}
+
+# Q6: Skill learning topic expansion.
+SELECT ?skill ?topic ?description
+WHERE {
+  ?skill a cad:Skill ;
+         cad:hasLearningTopic ?topic .
+  ?topic cad:description ?description .
 }
