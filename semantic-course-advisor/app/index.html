@@ -24,7 +24,7 @@
           </span>
           <span class="brandText">
             <strong><em>Career</em>Graph</strong>
-            <small>Westbridge University</small>
+            <small>Multimedia University</small>
           </span>
         </div>
 
@@ -51,36 +51,23 @@
             <span>Skill Gap &amp; Plan</span>
           </button>
 
-          <p class="navLabel semanticLabel">Semantic lab <i aria-hidden="true"></i></p>
-          <button class="tab" type="button" data-tab="graph" role="tab">
-            <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="7" r="2.5"></circle><circle cx="13" cy="18" r="2.5"></circle><path d="M8 7.5 11 16M8.2 6.4 15.6 6.7" stroke-linecap="round"></path></svg>
-            <span>Knowledge Graph</span>
-          </button>
-          <button class="tab" type="button" data-tab="sparql" role="tab">
-            <svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            <span>SPARQL Viewer</span>
-          </button>
-          <button class="tab" type="button" data-tab="stats" role="tab">
-            <svg viewBox="0 0 24 24"><path d="M5 20V10M10 20V4M15 20v-7M20 20V7M3 20h19" stroke-linecap="round"></path></svg>
-            <span>Statistics &amp; Eval</span>
-          </button>
         </nav>
 
         <nav class="referenceNav" aria-label="Reference views">
-          <button class="tab" type="button" data-tab="system" role="tab">
-            <svg viewBox="0 0 24 24"><rect x="4" y="4" width="5" height="5" rx="1"></rect><rect x="15" y="4" width="5" height="5" rx="1"></rect><rect x="4" y="15" width="5" height="5" rx="1"></rect><rect x="15" y="15" width="5" height="5" rx="1"></rect></svg>
-            <span>Design System</span>
+          <button class="tab" type="button" data-tab="profile" role="tab">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg>
+            <span>Profile</span>
           </button>
-          <button class="tab" type="button" data-tab="mobile" role="tab">
-            <svg viewBox="0 0 24 24"><rect x="8" y="2.5" width="8" height="19" rx="2"></rect><path d="M11 18.5h2" stroke-linecap="round"></path></svg>
-            <span>Mobile Layouts</span>
+          <button class="tab" type="button" data-tab="settings" role="tab">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21h-4v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1A1.7 1.7 0 0 0 4.6 15 1.7 1.7 0 0 0 3 14H3v-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3V3h4v.1A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.6 1h.1v4H21a1.7 1.7 0 0 0-1.6 1z"></path></svg>
+            <span>Settings</span>
           </button>
         </nav>
 
-        <div class="studentCard">
+        <button class="studentCard" type="button" data-open-tab="profile" aria-label="Open student profile">
           <span class="avatar">AH</span>
           <span><strong>Amira Hassan</strong><small>BSc Computer Science · Yr 2</small></span>
-        </div>
+        </button>
       </aside>
 
       <div class="workspace">
@@ -115,7 +102,8 @@
               </button>
               <div id="profilePanel" class="topPopover" hidden>
                 <strong>Student profile</strong>
-                <span>Artificial Intelligence · Data Analytics · Python</span>
+                <span id="profilePanelSummary">Artificial Intelligence · Data Analytics · Python</span>
+                <button class="popoverAction" type="button" data-open-tab="profile">Edit profile &amp; interests</button>
               </div>
             </div>
           </div>
@@ -154,7 +142,7 @@
             <div class="dashboardLower">
               <section class="lessonCard">
                 <div class="cardHeading"><h2>My next lessons</h2><button type="button" data-goto-tab="skillgap">View all lessons</button></div>
-                <div class="lessonHeader"><span>Lesson</span><span>Teacher</span><span>Duration</span></div>
+                <div class="lessonHeader"><span>Lesson</span></div>
                 <div id="dashboardLessons" class="lessonList"></div>
               </section>
               <div class="dashboardSide">
@@ -262,6 +250,76 @@
             <section class="evaluationPanel"><h2>Evaluation — demo test cases</h2><div id="evaluationTable" class="tableWrap"></div></section>
           </section>
 
+          <section class="tabPanel" id="tab-profile" aria-label="Student Profile">
+            <div class="pageIntro profilePageIntro">
+              <div><p class="eyebrow">Student account</p><h1>Your profile</h1><p>Update the interests that power your semantic career recommendations.</p></div>
+              <span class="termBadge">Multimedia University</span>
+            </div>
+            <div class="profilePageGrid">
+              <aside class="profileIdentityCard">
+                <span class="profileAvatarLarge">AH</span>
+                <h2>Amira Hassan</h2>
+                <p>@a_hassan</p>
+                <dl>
+                  <div><dt>Programme</dt><dd>BSc Computer Science</dd></div>
+                  <div><dt>Study year</dt><dd>Year 2</dd></div>
+                  <div><dt>Institution</dt><dd>Multimedia University</dd></div>
+                </dl>
+              </aside>
+              <section class="profileEditorCard">
+                <div class="profileSectionHeading">
+                  <div><p class="eyebrow">Recommendation profile</p><h2>Edit your interests</h2><p>Select the areas you want CareerGraph to prioritize.</p></div>
+                  <span id="profileInterestCount">0 selected</span>
+                </div>
+                <div id="profileInterestChoices" class="profileInterestChoices" aria-label="Profile interests"></div>
+                <div class="profileSkillSummary">
+                  <span>Existing skills used for matching</span>
+                  <div id="profileCurrentSkills" class="chips"></div>
+                </div>
+                <div class="profileFormActions">
+                  <button id="profileSaveButton" class="primaryButton" type="button">Save interests</button>
+                  <button id="profileResetButton" class="secondaryButton" type="button">Undo changes</button>
+                  <span id="profileSavedStatus" role="status"></span>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <section class="tabPanel" id="tab-settings" aria-label="Settings">
+            <div class="pageIntro">
+              <div><p class="eyebrow">Settings</p><h1>Advanced tools</h1><p>Open CareerGraph's technical, evaluation, and interface reference views.</p></div>
+            </div>
+            <div class="settingsLayout">
+              <section class="settingsAdvanced">
+                <div class="settingsAdvancedHeading">
+                  <div><p class="eyebrow semanticEyebrow"><i></i>Advanced tools</p><h2>Semantic Lab</h2><p>Technical graph and evaluation views are kept here so they do not appear in the normal student navigation.</p></div>
+                </div>
+                <div class="settingsToolGrid">
+                  <button type="button" data-goto-tab="graph">
+                    <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="7" r="2.5"></circle><circle cx="13" cy="18" r="2.5"></circle><path d="M8 7.5 11 16M8.2 6.4 15.6 6.7"></path></svg>
+                    <span><strong>Knowledge Graph</strong><small>Inspect RDF entities and relationships</small></span><b>›</b>
+                  </button>
+                  <button type="button" data-goto-tab="sparql">
+                    <svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"></path></svg>
+                    <span><strong>SPARQL Viewer</strong><small>Run semantic graph queries</small></span><b>›</b>
+                  </button>
+                  <button type="button" data-goto-tab="stats">
+                    <svg viewBox="0 0 24 24"><path d="M5 20V10M10 20V4M15 20v-7M20 20V7M3 20h19"></path></svg>
+                    <span><strong>Statistics &amp; Evaluation</strong><small>Review graph metrics and test cases</small></span><b>›</b>
+                  </button>
+                  <button type="button" data-goto-tab="system">
+                    <svg viewBox="0 0 24 24"><rect x="4" y="4" width="5" height="5" rx="1"></rect><rect x="15" y="4" width="5" height="5" rx="1"></rect><rect x="4" y="15" width="5" height="5" rx="1"></rect><rect x="15" y="15" width="5" height="5" rx="1"></rect></svg>
+                    <span><strong>Design System</strong><small>Review interface colors and components</small></span><b>›</b>
+                  </button>
+                  <button type="button" data-goto-tab="mobile">
+                    <svg viewBox="0 0 24 24"><rect x="8" y="2.5" width="8" height="19" rx="2"></rect><path d="M11 18.5h2"></path></svg>
+                    <span><strong>Mobile Layouts</strong><small>Preview responsive interface patterns</small></span><b>›</b>
+                  </button>
+                </div>
+              </section>
+            </div>
+          </section>
+
           <section class="tabPanel" id="tab-system" aria-label="Design System">
             <div class="pageIntro referenceIntro"><div><p class="eyebrow">Reference</p><h1>Design system</h1><p>The building blocks behind the portal — trustworthy, accessible, and consistent across every view.</p></div></div>
             <section class="designSection"><h2>Color palette</h2><div class="colorPalette">
@@ -293,11 +351,8 @@
 
     <div id="mobileMoreSheet" class="mobileMoreSheet" hidden>
       <button type="button" data-sheet-tab="explorer">Career Explorer</button>
-      <button type="button" data-sheet-tab="graph">Knowledge Graph</button>
-      <button type="button" data-sheet-tab="sparql">SPARQL Viewer</button>
-      <button type="button" data-sheet-tab="stats">Statistics &amp; Evaluation</button>
-      <button type="button" data-sheet-tab="system">Design System</button>
-      <button type="button" data-sheet-tab="mobile">Mobile Layouts</button>
+      <button type="button" data-sheet-tab="profile">Profile</button>
+      <button type="button" data-sheet-tab="settings">Settings</button>
     </div>
     <div id="mobileSheetBackdrop" class="mobileSheetBackdrop" hidden></div>
 

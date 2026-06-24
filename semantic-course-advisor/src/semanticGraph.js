@@ -154,7 +154,7 @@ export function parseCareerKnowledgeGraphXml(xmlText) {
 
   for (const [collectionName, config] of Object.entries(CLASS_CONFIG)) {
     const block = between(xmlText, `<${collectionName}>`, `</${collectionName}>`);
-    const paired = [...block.matchAll(new RegExp(`<${config.tag}\\s+([^>/]*?)>([\\s\\S]*?)<\\/${config.tag}>`, "g"))].map((match) =>
+    const paired = [...block.matchAll(new RegExp(`<${config.tag}\\s+([^>]*?)(?<!/)>([\\s\\S]*?)<\\/${config.tag}>`, "g"))].map((match) =>
       parseSimpleEntity(match[1], match[2], config.type),
     );
     const selfClosing = [...block.matchAll(new RegExp(`<${config.tag}\\s+([^>]*?)\\/>`, "g"))].map((match) =>
@@ -198,7 +198,7 @@ export function parseCareerKnowledgeGraphXml(xmlText) {
 
 function parseSimpleEntity(attrSource, body, type) {
   const attrs = parseAttributes(attrSource);
-  return {
+  const entity = {
     id: idFor(attrs.id),
     rawId: attrs.id,
     label: attrs.label ?? attrs.id,
@@ -208,6 +208,53 @@ function parseSimpleEntity(attrSource, body, type) {
     coversTopics: attrList(attrs.coversTopic).map(idFor),
     learningTopics: attrList(attrs.learningTopic).map(idFor),
     prerequisiteSkills: listOf(body, "prerequisiteSkill").map(idFor),
+  };
+  if (type === "LearningTopic") {
+    Object.assign(entity, parseTopicLesson(body));
+  }
+  return entity;
+}
+
+function parseTopicLesson(body) {
+  const match = body.match(/<lesson\s*([^>]*)>([\s\S]*?)<\/lesson>/);
+  if (!match) {
+    return {
+      overview: "",
+      estimatedMinutes: 0,
+      lessonWordCount: 0,
+      objectives: [],
+      sections: [],
+      workedExample: { title: "", paragraphs: [] },
+      practice: { title: "", paragraphs: [] },
+      takeaways: [],
+    };
+  }
+
+  const attrs = parseAttributes(match[1]);
+  const lessonBody = match[2];
+  return {
+    overview: textOf(lessonBody, "overview"),
+    estimatedMinutes: Number(attrs.estimatedMinutes || 0),
+    lessonWordCount: Number(attrs.wordCount || 0),
+    objectives: listOf(between(lessonBody, "<objectives>", "</objectives>"), "objective"),
+    sections: [...lessonBody.matchAll(/<section\s+([^>]*)>([\s\S]*?)<\/section>/g)].map(
+      (sectionMatch) => ({
+        title: parseAttributes(sectionMatch[1]).title ?? "",
+        paragraphs: listOf(sectionMatch[2], "paragraph"),
+      }),
+    ),
+    workedExample: parseLessonPanel(lessonBody, "workedExample"),
+    practice: parseLessonPanel(lessonBody, "practice"),
+    takeaways: listOf(between(lessonBody, "<takeaways>", "</takeaways>"), "takeaway"),
+  };
+}
+
+function parseLessonPanel(body, tag) {
+  const match = body.match(new RegExp(`<${tag}\\s+([^>]*)>([\\s\\S]*?)<\\/${tag}>`));
+  if (!match) return { title: "", paragraphs: [] };
+  return {
+    title: parseAttributes(match[1]).title ?? "",
+    paragraphs: listOf(match[2], "paragraph"),
   };
 }
 

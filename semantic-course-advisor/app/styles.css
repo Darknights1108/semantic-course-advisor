@@ -270,15 +270,25 @@ svg {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: calc(100% - 20px);
   margin: 8px 10px 10px;
   border: 1px solid #e4e7eb;
   border-radius: 16px;
   background: #fff;
+  color: var(--ink);
   padding: 11px 13px;
+  text-align: left;
 }
 
 .studentCard strong {
   font-size: 12.5px;
+}
+
+.studentCard:hover,
+.studentCard:focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 8px 20px rgba(45, 93, 220, 0.1);
+  outline: none;
 }
 
 .avatar {
@@ -858,8 +868,7 @@ svg {
 .lessonHeader,
 .lessonRow {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 180px 65px;
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .lessonHeader {
@@ -870,15 +879,44 @@ svg {
   text-transform: uppercase;
 }
 
-.lessonHeader span:last-child {
-  text-align: right;
-}
-
 .lessonRow {
   align-items: center;
   min-height: 61px;
   border-top: 1px solid #edf0f3;
   font-size: 12px;
+}
+
+.popoverAction {
+  margin-top: 6px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  padding: 8px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.lessonLink {
+  width: 100%;
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  text-align: left;
+}
+
+.lessonLink:hover,
+.lessonLink:focus-visible {
+  background: #f7f9fc;
+  outline: none;
+}
+
+.lessonLink strong {
+  color: var(--primary);
 }
 
 .lessonRow > span:first-child {
@@ -895,29 +933,6 @@ svg {
   font-size: 10px;
 }
 
-.lessonTeacher {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.lessonTeacher i {
-  display: grid;
-  place-items: center;
-  width: 29px;
-  height: 29px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: #fff;
-  font-size: 9px;
-  font-style: normal;
-  font-weight: 700;
-}
-
-.lessonRow time {
-  text-align: right;
-}
-
 .dashboardSide {
   display: grid;
   align-content: start;
@@ -925,40 +940,99 @@ svg {
 }
 
 .spotlightCard {
-  display: grid;
-  min-height: 218px;
-  align-content: space-between;
+  display: flex;
+  flex-direction: column;
   border-radius: 22px;
   background: var(--lime);
-  padding: 20px;
+  padding: 22px 22px 20px;
 }
 
-.spotlightCard p {
-  margin-bottom: 10px;
-  font-size: 12px;
+.spotlightCard .spotlightContent {
+  color: var(--ink);
 }
 
-.spotlightCard h2 {
-  margin-bottom: 8px;
-  font-size: 24px;
+.spotlightCard .spotlightMeta {
+  margin: 0 0 14px;
+  color: #3c4a12;
+  font-size: 13px;
   font-weight: 600;
+  line-height: 1.2;
 }
 
 .spotlightCard .matchPill {
+  display: inline-flex;
   width: fit-content;
+  align-items: center;
+  padding: 4px 11px;
+  margin-bottom: 12px;
   background: var(--ink);
   color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.spotlightCard .spotlightHeading {
+  margin: 0 0 16px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.18;
+}
+
+.spotlightCard .spotlightStudents {
+  margin: 0 0 8px;
+  color: #3c4a12;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.spotlightCard .studentDots {
+  gap: 0;
+  margin-bottom: 18px;
+}
+
+.spotlightCard .studentDots i,
+.spotlightCard .studentDots b {
+  width: 30px;
+  height: 30px;
+  margin-left: -10px;
+  border: 2px solid var(--lime);
+}
+
+.spotlightCard .studentDots i:first-child {
+  margin-left: 0;
+  background: #8fb6e8;
+}
+
+.spotlightCard .studentDots i:nth-child(2) {
+  background: #f2b49b;
+}
+
+.spotlightCard .studentDots i:nth-child(3) {
+  background: var(--ink);
+}
+
+.spotlightCard .studentDots b {
+  width: auto;
+  min-width: 48px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
 }
 
 .spotlightCard button {
   width: 100%;
-  min-height: 40px;
+  padding: 12px;
   border: 0;
-  border-radius: 11px;
+  border-radius: 12px;
   background: var(--accent);
   color: #fff;
-  font-size: 11px;
+  font-size: 13.5px;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 .profileSummary {
@@ -1219,6 +1293,29 @@ svg {
 
 .inlineResultCard.is-top {
   border-left: 3px solid var(--primary);
+}
+
+.inlineResultCard.is-course-link {
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.inlineResultCard.is-course-link:hover,
+.inlineResultCard.is-course-link:focus-visible {
+  border-color: var(--violet);
+  box-shadow: 0 15px 34px rgba(91, 67, 168, 0.12);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.learningLinkHint {
+  margin: 10px 0 0 !important;
+  color: var(--violet) !important;
+  font-size: 10px !important;
+  font-weight: 700;
 }
 
 .inlineResultTitle {
@@ -1587,8 +1684,8 @@ svg {
 }
 
 .careerHero {
-  height: 393px;
-  min-height: 393px;
+  height: auto;
+  min-height: 0;
   border-radius: 17px;
   background: #211d1c;
   color: #fff;
@@ -1718,11 +1815,19 @@ svg {
 }
 
 .courseLine {
+  width: 100%;
   min-height: 31px;
   border-radius: 6px;
   background: #f3f6fa;
   padding: 7px 10px;
   font-size: 11px;
+}
+
+.entityLinks button.courseLine:hover,
+.entityLinks button.courseLine:focus-visible {
+  border-color: var(--violet);
+  color: var(--violet);
+  outline: none;
 }
 
 .resourceLine {
@@ -1981,6 +2086,23 @@ svg {
   margin-bottom: 4px;
   font-size: 13px;
   font-weight: 600;
+}
+
+.planCourseLink {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.planCourseLink:hover,
+.planCourseLink:focus-visible {
+  color: var(--primary);
+  text-decoration: underline;
+  outline: none;
 }
 
 .planStep p {
@@ -2795,6 +2917,253 @@ td:first-child {
   font-size: 11px;
 }
 
+/* Profile and settings */
+.profilePageGrid {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.profileIdentityCard,
+.profileEditorCard {
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--surface);
+}
+
+.settingsAdvanced {
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--surface);
+  padding: 24px;
+}
+
+.settingsAdvancedHeading {
+  margin-bottom: 18px;
+}
+
+.settingsAdvancedHeading .eyebrow {
+  margin-bottom: 6px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.settingsAdvancedHeading h2 {
+  margin-bottom: 6px;
+  font-size: 18px;
+}
+
+.settingsAdvancedHeading p:last-child {
+  max-width: 650px;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.settingsToolGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.settingsToolGrid button {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 90px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #f8fafc;
+  color: var(--ink);
+  padding: 14px;
+  text-align: left;
+}
+
+.settingsToolGrid button:hover,
+.settingsToolGrid button:focus-visible {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  outline: none;
+}
+
+.settingsToolGrid svg {
+  width: 27px;
+  height: 27px;
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1.7;
+}
+
+.settingsToolGrid button > span {
+  display: grid;
+  gap: 4px;
+}
+
+.settingsToolGrid strong {
+  font-size: 11px;
+}
+
+.settingsToolGrid small {
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.settingsToolGrid button > b {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+.profileIdentityCard {
+  display: grid;
+  justify-items: center;
+  padding: 30px 24px 24px;
+  text-align: center;
+}
+
+.profileAvatarLarge {
+  display: grid;
+  place-items: center;
+  width: 78px;
+  height: 78px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.profileIdentityCard h2 {
+  margin-bottom: 3px;
+  font-size: 20px;
+}
+
+.profileIdentityCard > p {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.profileIdentityCard dl {
+  display: grid;
+  width: 100%;
+  gap: 0;
+  margin: 12px 0 0;
+  text-align: left;
+}
+
+.profileIdentityCard dl > div {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+
+.profileIdentityCard dt {
+  color: var(--muted);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.profileIdentityCard dd {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.profileEditorCard {
+  padding: 25px;
+}
+
+.profileSectionHeading {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.profileSectionHeading .eyebrow {
+  margin-bottom: 5px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.profileSectionHeading h2 {
+  margin-bottom: 5px;
+  font-size: 21px;
+}
+
+.profileSectionHeading p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.profileSectionHeading > span {
+  height: max-content;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  padding: 6px 10px;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.profileInterestChoices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  min-height: 118px;
+  align-content: flex-start;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #f8fafc;
+  padding: 16px;
+}
+
+.profileSkillSummary {
+  margin-top: 18px;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+.profileSkillSummary > span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.profileFormActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.profileFormActions > span {
+  color: var(--matched);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.settingsLayout {
+  display: grid;
+  max-width: 900px;
+  gap: 14px;
+}
+
 /* Search results page */
 .resultsPage .content {
   padding-top: 28px;
@@ -3055,6 +3424,443 @@ td:first-child {
   color: var(--muted);
   font-size: 10px;
   line-height: 1.5;
+}
+
+.topicCard > b {
+  display: block;
+  margin-top: 12px;
+  color: var(--primary);
+  font-size: 10px;
+}
+
+.topicLink {
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.topicLink:hover,
+.topicLink:focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 14px 30px rgba(45, 93, 220, 0.12);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.topicHero > p:not(.eyebrow) {
+  max-width: 900px;
+  font-size: 13px;
+}
+
+.learningDetail {
+  gap: 18px;
+}
+
+.learningProgressCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 18px;
+  align-items: end;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  padding: 16px 18px;
+}
+
+.learningProgressCard > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.learningProgressCard span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.learningProgressCard strong {
+  font-size: 13px;
+}
+
+.learningProgressCard > b {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+.learningProgressTrack {
+  grid-column: 1 / -1;
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e8edf4;
+}
+
+.learningProgressTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+  transition: width 180ms ease;
+}
+
+.learningReader {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.learningOutline {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--surface);
+}
+
+.outlineToggle {
+  display: none;
+}
+
+.learningOutlineHeader {
+  border-bottom: 1px solid var(--line);
+  padding: 19px;
+}
+
+.learningOutlineHeader > span {
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.learningOutlineHeader h2 {
+  margin: 7px 0 5px;
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.learningOutlineHeader p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.learningOutlineList {
+  display: grid;
+  max-height: calc(100vh - 320px);
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.learningOutlineList button {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 9px;
+  align-items: center;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ink);
+  padding: 10px;
+  text-align: left;
+}
+
+.learningOutlineList button:hover,
+.learningOutlineList button:focus-visible {
+  background: var(--pale);
+  outline: none;
+}
+
+.learningOutlineList button.is-current {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.learningOutlineList button > i {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid #ccd6e3;
+  border-radius: 50%;
+  color: #7e91a6;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.learningOutlineList button.is-complete > i {
+  border-color: var(--matched);
+  background: var(--matched);
+  color: #fff;
+}
+
+.learningOutlineList button span {
+  display: grid;
+  gap: 2px;
+}
+
+.learningOutlineList button small {
+  color: #8a9bad;
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.learningOutlineList button strong {
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.lessonArticle {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--surface);
+  padding: 34px 42px;
+}
+
+.lessonArticleHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 27px;
+}
+
+.lessonArticleHeader > div {
+  max-width: 760px;
+}
+
+.lessonArticleHeader .eyebrow {
+  margin-bottom: 9px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lessonArticleHeader h1 {
+  margin-bottom: 12px;
+  font-size: 34px;
+  line-height: 1.15;
+}
+
+.lessonArticleHeader > div > p:last-child {
+  margin-bottom: 0;
+  color: #586b7f;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.completionBadge {
+  height: max-content;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--gap-soft);
+  color: var(--gap);
+  padding: 7px 11px;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.completionBadge.is-complete {
+  background: var(--matched-soft);
+  color: var(--matched);
+}
+
+.lessonObjectives {
+  margin: 28px 0;
+  border-left: 4px solid var(--primary);
+  border-radius: 0 12px 12px 0;
+  background: var(--primary-soft);
+  padding: 20px 24px;
+}
+
+.lessonObjectives h2,
+.lessonCallout h2,
+.lessonTakeaways h2 {
+  margin-bottom: 7px;
+  font-size: 18px;
+}
+
+.lessonObjectives > p {
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.lessonObjectives ul,
+.lessonTakeaways ul {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding-left: 20px;
+  color: #35495d;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.lessonSections {
+  display: grid;
+  gap: 4px;
+}
+
+.lessonSections > section {
+  position: relative;
+  padding: 25px 0 25px 48px;
+}
+
+.lessonSections > section + section {
+  border-top: 1px solid var(--line);
+}
+
+.lessonSectionNumber {
+  position: absolute;
+  top: 27px;
+  left: 0;
+  color: var(--accent);
+  font: 700 11px "JetBrains Mono", monospace;
+}
+
+.lessonSections h2 {
+  margin-bottom: 13px;
+  font-size: 22px;
+}
+
+.lessonSections p,
+.lessonCallout p {
+  color: #42566a;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.lessonSections p:last-child,
+.lessonCallout p:last-child {
+  margin-bottom: 0;
+}
+
+.lessonCallout {
+  margin-top: 24px;
+  border: 1px solid #d9e3f0;
+  border-radius: 16px;
+  background: #f7f9fc;
+  padding: 24px 26px;
+}
+
+.lessonCallout > span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--primary);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lessonCallout.practice {
+  border-color: #dceab9;
+  background: #f7fbe9;
+}
+
+.lessonCallout.practice > span {
+  color: #648413;
+}
+
+.lessonTakeaways {
+  margin-top: 24px;
+  border-radius: 16px;
+  background: var(--ink);
+  color: #fff;
+  padding: 25px 27px;
+}
+
+.lessonTakeaways ul {
+  color: #e0e6ec;
+}
+
+.semanticEvidence {
+  margin-top: 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.semanticEvidence summary {
+  cursor: pointer;
+  padding: 16px 18px;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.semanticEvidence .courseEvidenceGrid {
+  grid-template-columns: 1fr;
+  border-top: 1px solid var(--line);
+  padding: 16px;
+}
+
+.lessonNavigation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  margin-top: 30px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+
+.lessonNavButton {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: #fff;
+  color: var(--ink);
+  padding: 11px 14px;
+  text-align: left;
+}
+
+.lessonNavButton.next {
+  text-align: right;
+}
+
+.lessonNavButton:hover,
+.lessonNavButton:focus-visible {
+  border-color: var(--primary);
+  color: var(--primary);
+  outline: none;
+}
+
+.lessonNavButton small {
+  color: var(--muted);
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.lessonNavButton strong {
+  font-size: 10px;
+}
+
+.completeTopicButton {
+  min-height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  padding: 0 18px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.completeTopicButton.is-complete {
+  background: var(--matched);
+}
+
+.completeTopicButton:disabled {
+  cursor: default;
+  opacity: 1;
 }
 
 @media (max-width: 1180px) {
@@ -3618,6 +4424,114 @@ td:first-child {
   .scoreBox {
     justify-items: start;
     text-align: left;
+  }
+}
+
+@media (max-width: 900px) {
+  .profilePageGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .profileIdentityCard {
+    padding: 22px 18px;
+  }
+
+  .profileEditorCard {
+    padding: 18px;
+  }
+
+  .profileSectionHeading {
+    display: grid;
+  }
+
+  .profileSectionHeading > span {
+    width: max-content;
+  }
+
+  .settingsAdvanced {
+    padding: 18px;
+  }
+
+  .settingsToolGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .resultsPage.learningMode .metricGrid {
+    display: none;
+  }
+
+  .learningReader {
+    grid-template-columns: 1fr;
+  }
+
+  .learningOutline {
+    position: static;
+  }
+
+  .outlineToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--ink);
+    color: #fff;
+    padding: 14px 16px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .outlineToggle b {
+    color: var(--lime);
+    font-size: 9px;
+  }
+
+  .learningOutlineHeader {
+    padding: 16px;
+  }
+
+  .learningOutlineList {
+    display: none;
+    max-height: 320px;
+  }
+
+  .learningOutlineList.is-open {
+    display: grid;
+  }
+
+  .lessonArticle {
+    padding: 24px 20px;
+  }
+
+  .lessonArticleHeader {
+    display: grid;
+    gap: 14px;
+  }
+
+  .lessonArticleHeader h1 {
+    font-size: 28px;
+  }
+
+  .completionBadge {
+    width: max-content;
+  }
+
+  .lessonSections > section {
+    padding-left: 36px;
+  }
+
+  .lessonNavigation {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .completeTopicButton {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .learningProgressCard {
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 }
 

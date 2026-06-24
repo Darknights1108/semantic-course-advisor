@@ -13,6 +13,33 @@ assert(dataset.skills.length === 29, "expected 29 skills");
 assert(dataset.courses.length === 10, "expected 10 courses");
 assert(dataset.topics.length === 146, "expected 146 learning topics");
 assert(dataset.skills.every((skill) => skill.learningTopics.length > 0), "expected every skill to have learning topics");
+assert(
+  dataset.topics.every(
+    (topic) =>
+      topic.overview &&
+      topic.estimatedMinutes > 0 &&
+      topic.lessonWordCount >= 600 &&
+      topic.lessonWordCount <= 900 &&
+      topic.objectives.length >= 4 &&
+      topic.objectives.length <= 6 &&
+      topic.sections.length >= 3 &&
+      topic.sections.length <= 4 &&
+      topic.workedExample.paragraphs.length > 0 &&
+      topic.practice.paragraphs.length > 0 &&
+      topic.takeaways.length >= 4 &&
+      topic.takeaways.length <= 6,
+  ),
+  "expected every learning topic to have a complete 600-900 word lesson",
+);
+const topicIds = new Set(dataset.topics.map((topic) => topic.id));
+assert(
+  dataset.courses.every((course) => course.coversTopics.every((topicId) => topicIds.has(topicId))),
+  "expected every course topic relationship to resolve",
+);
+assert(
+  dataset.skills.every((skill) => skill.learningTopics.every((topicId) => topicIds.has(topicId))),
+  "expected every skill topic relationship to resolve",
+);
 assert(dataset.certifications.length === 9, "expected 9 certifications");
 assert(dataset.industries.length === 6, "expected 6 industries");
 assert(dataset.interests.length === 9, "expected 9 interests");

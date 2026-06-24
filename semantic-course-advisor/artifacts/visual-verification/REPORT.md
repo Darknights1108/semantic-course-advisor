@@ -19,9 +19,13 @@ Verification viewports:
 | Knowledge Graph | Pass | Pass | Career selection, SVG graph, zoom and fit controls tested |
 | SPARQL Viewer | Pass | Pass | Query tabs, keyword filtering, skill context and copy action tested |
 | Statistics & Evaluation | Pass | Pass | Live metrics, inference counts and evaluation table verified |
+| Profile | Pass | Pass | Interest editing, persistence and recommendation updates verified |
+| Settings | Pass | Pass | Notification, evidence and compact-layout preferences verified |
 | Design System | Pass | Pass | Exact palette, local typography and component states verified |
 | Mobile Layouts | Pass | Pass | Three template mobile reference flows reproduced |
 | Search Results | Pass | Pass | Query submission, result summary and result cards verified |
+| Course Learning | Pass | Pass | Course skills and topic descriptions loaded from XML relationships |
+| Topic Learning | Pass | Pass | 146 full XML lessons, curriculum navigation, reading progress and persisted completion verified |
 
 ## Typography and Alignment
 

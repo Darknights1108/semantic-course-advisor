@@ -26,6 +26,8 @@ const views = [
   ["knowledge-graph", "Knowledge Graph", "graph"],
   ["sparql", "SPARQL Viewer", "sparql"],
   ["statistics-evaluation", "Statistics & Eval", "statistics"],
+  ["profile", "Profile", "profile"],
+  ["settings", "Settings", "settings"],
   ["design-system", "Design System", "system"],
   ["mobile-layouts", "Mobile Layouts", "mobile"],
 ];
@@ -181,6 +183,16 @@ async function captureApp(cdp) {
     `${appBase}results.html?q=${encodeURIComponent("AI engineer Python machine learning")}`,
   );
   await screenshot(cdp, path.join(desktopDir, "search-results.png"));
+  await navigate(
+    cdp,
+    `${appBase}results.html?q=${encodeURIComponent("Data Science Fundamentals")}&course=${encodeURIComponent("cad:DataScienceFundamentals")}&from=skillgap`,
+  );
+  await screenshot(cdp, path.join(desktopDir, "course-learning.png"));
+  await navigate(
+    cdp,
+    `${appBase}results.html?q=${encodeURIComponent("Data Science Fundamentals")}&course=${encodeURIComponent("cad:DataScienceFundamentals")}&topic=${encodeURIComponent("cad:PythonNotebooks")}&from=skillgap`,
+  );
+  await screenshot(cdp, path.join(desktopDir, "topic-learning.png"));
 
   await setViewport(cdp, 390, 844, true);
   for (const [slug, , tab] of views) {
@@ -193,6 +205,16 @@ async function captureApp(cdp) {
     `${appBase}results.html?q=${encodeURIComponent("AI engineer Python machine learning")}`,
   );
   await screenshot(cdp, path.join(mobileDir, "search-results.png"));
+  await navigate(
+    cdp,
+    `${appBase}results.html?q=${encodeURIComponent("Data Science Fundamentals")}&course=${encodeURIComponent("cad:DataScienceFundamentals")}&from=skillgap`,
+  );
+  await screenshot(cdp, path.join(mobileDir, "course-learning.png"));
+  await navigate(
+    cdp,
+    `${appBase}results.html?q=${encodeURIComponent("Data Science Fundamentals")}&course=${encodeURIComponent("cad:DataScienceFundamentals")}&topic=${encodeURIComponent("cad:PythonNotebooks")}&from=skillgap`,
+  );
+  await screenshot(cdp, path.join(mobileDir, "topic-learning.png"));
 }
 
 await mkdir(outputRoot, { recursive: true });

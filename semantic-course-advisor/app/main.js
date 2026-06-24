@@ -9,6 +9,9 @@ import {
   shortTerm,
 } from "../src/semanticGraph.js";
 
+const PROFILE_INTERESTS_KEY = "careergraph.profileInterests.v1";
+const DEFAULT_INTERESTS = ["cad:ArtificialIntelligence", "cad:DataAnalytics"];
+
 const TAB_ALIASES = {
   overview: "dashboard",
   dashboard: "dashboard",
@@ -23,6 +26,8 @@ const TAB_ALIASES = {
   statistics: "stats",
   evaluation: "stats",
   stats: "stats",
+  profile: "profile",
+  settings: "settings",
   system: "system",
   mobile: "mobile",
 };
@@ -36,6 +41,8 @@ const PAGE_META = {
   graph: ["Semantic Lab", "Knowledge Graph"],
   sparql: ["Semantic Lab", "SPARQL Viewer"],
   stats: ["Semantic Lab", "Statistics & Evaluation"],
+  profile: ["Student Account", "Profile"],
+  settings: ["Preferences", "Settings"],
   system: ["Reference", "Design System"],
   mobile: ["Responsive", "Mobile Layouts"],
 };
@@ -44,7 +51,8 @@ const state = {
   dataset: null,
   entityMap: new Map(),
   activeTab: "dashboard",
-  recommendationInterests: new Set(["cad:ArtificialIntelligence", "cad:DataAnalytics"]),
+  recommendationInterests: new Set(DEFAULT_INTERESTS),
+  profileInterestDraft: new Set(DEFAULT_INTERESTS),
   recommendationSkills: new Set(["cad:Python", "cad:Statistics", "cad:SQL"]),
   skillGapCareerId: "cad:DataScientist",
   skillGapSkills: new Set(["cad:Python", "cad:Statistics", "cad:SQL"]),
@@ -53,7 +61,7 @@ const state = {
   queryId: "careerSearch",
   sparqlKeyword: "machine learning",
   sparqlSkillGapSkills: new Set(["cad:Python", "cad:Statistics", "cad:SQL"]),
-  searchQuery: "AI engineer Python machine learning",
+  searchQuery: "",
   searchTypes: new Set(["Career Entity", "Skill Entity", "Course Entity"]),
   searchIndustry: "Technology",
   dashboardFilter: "all",
@@ -74,6 +82,7 @@ const els = {
   notificationPanel: document.querySelector("#notificationPanel"),
   profileButton: document.querySelector("#profileButton"),
   profilePanel: document.querySelector("#profilePanel"),
+  profilePanelSummary: document.querySelector("#profilePanelSummary"),
   mobileBackButton: document.querySelector("#mobileBackButton"),
   mobileNavButtons: document.querySelectorAll("[data-mobile-tab]"),
   mobileMoreButton: document.querySelector("#mobileMoreButton"),
@@ -134,6 +143,12 @@ const els = {
   inferenceCards: document.querySelector("#inferenceCards"),
   evaluationTable: document.querySelector("#evaluationTable"),
   mobileLayoutGallery: document.querySelector("#mobileLayoutGallery"),
+  profileInterestChoices: document.querySelector("#profileInterestChoices"),
+  profileInterestCount: document.querySelector("#profileInterestCount"),
+  profileCurrentSkills: document.querySelector("#profileCurrentSkills"),
+  profileSaveButton: document.querySelector("#profileSaveButton"),
+  profileResetButton: document.querySelector("#profileResetButton"),
+  profileSavedStatus: document.querySelector("#profileSavedStatus"),
 };
 
 async function init() {
@@ -143,6 +158,7 @@ async function init() {
   });
   state.dataset = loadDataset(xml);
   state.entityMap = buildEntityMap(state.dataset);
+  loadSavedPreferences();
   readInitialTab();
   setupSelects();
   setupEvents();
@@ -190,6 +206,12 @@ function setupEvents() {
       render();
     });
   });
+  document.querySelectorAll("[data-open-tab]").forEach((button) => {
+    button.addEventListener("click", () => {
+      setActiveTab(button.dataset.openTab);
+      render();
+    });
+  });
 
   els.mobileMoreButton.addEventListener("click", () => {
     const willOpen = els.mobileMoreSheet.hidden;
@@ -210,7 +232,8 @@ function setupEvents() {
 
   els.globalSearchForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const query = els.globalSearchInput.value.trim() || state.searchQuery;
+    const query = els.globalSearchInput.value.trim();
+    if (!query) return;
     goToFullResults(query);
   });
 
@@ -219,6 +242,31 @@ function setupEvents() {
   });
   els.profileButton.addEventListener("click", () => {
     togglePopover(els.profileButton, els.profilePanel);
+  });
+
+  els.profileInterestChoices.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-id]");
+    if (!button) return;
+    toggleSetValue(state.profileInterestDraft, button.dataset.id);
+    renderProfile();
+  });
+  els.profileSaveButton.addEventListener("click", () => {
+    if (!state.profileInterestDraft.size) {
+      els.profileSavedStatus.textContent = "Select at least one interest.";
+      return;
+    }
+    state.recommendationInterests = new Set(state.profileInterestDraft);
+    localStorage.setItem(
+      PROFILE_INTERESTS_KEY,
+      JSON.stringify([...state.recommendationInterests]),
+    );
+    els.profileSavedStatus.textContent = "Interests saved ✓";
+    render();
+  });
+  els.profileResetButton.addEventListener("click", () => {
+    state.profileInterestDraft = new Set(state.recommendationInterests);
+    els.profileSavedStatus.textContent = "Changes undone";
+    renderProfile();
   });
 
   els.dashboardFilters.addEventListener("click", (event) => {
@@ -231,7 +279,7 @@ function setupEvents() {
   els.searchInput.value = state.searchQuery;
   els.searchForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    state.searchQuery = els.searchInput.value.trim() || state.searchQuery;
+    state.searchQuery = els.searchInput.value.trim();
     renderSearch(getRecommendationProfile());
   });
   for (const button of els.exampleButtons) {
@@ -259,7 +307,13 @@ function setupEvents() {
     const button = event.target.closest("[data-id]");
     if (!button) return;
     toggleSetValue(state.recommendationInterests, button.dataset.id);
+    state.profileInterestDraft = new Set(state.recommendationInterests);
+    localStorage.setItem(
+      PROFILE_INTERESTS_KEY,
+      JSON.stringify([...state.recommendationInterests]),
+    );
     renderRecommendations(getRecommendationProfile());
+    renderProfile();
   });
   els.recommendSkillChoices.addEventListener("click", (event) => {
     const button = event.target.closest("[data-id]");
@@ -342,6 +396,11 @@ function setupEvents() {
   });
 
   els.content.addEventListener("click", (event) => {
+    const course = event.target.closest("[data-course-id]");
+    if (course) {
+      goToCourseLearning(course.dataset.courseId);
+      return;
+    }
     const goto = event.target.closest("[data-goto-tab]");
     if (goto) {
       setActiveTab(goto.dataset.gotoTab);
@@ -352,13 +411,6 @@ function setupEvents() {
     if (career) {
       state.explorerCareerId = career.dataset.careerId;
       setActiveTab("explorer");
-      render();
-      return;
-    }
-    const graph = event.target.closest("[data-graph-career]");
-    if (graph) {
-      state.graphCareerId = graph.dataset.graphCareer;
-      setActiveTab("graph");
       render();
       return;
     }
@@ -382,6 +434,14 @@ function setupEvents() {
       demoButton.classList.add("is-demo-active");
       demoButton.setAttribute("aria-pressed", "true");
     }
+  });
+
+  els.content.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const course = event.target.closest('[data-course-id][role="button"]');
+    if (!course) return;
+    event.preventDefault();
+    goToCourseLearning(course.dataset.courseId);
   });
 
   document.addEventListener("keydown", (event) => {
@@ -442,6 +502,8 @@ function mobileTitleFor(tab) {
     graph: "Knowledge Graph",
     sparql: "SPARQL Viewer",
     stats: "Statistics & Evaluation",
+    profile: "Profile",
+    settings: "Settings",
     system: "Design System",
     mobile: "Mobile Layouts",
   };
@@ -458,6 +520,7 @@ function render() {
   renderSkillGap(skillGapProfile);
   renderSparql();
   renderStatistics(recommendationProfile, skillGapProfile);
+  renderProfile();
   renderMobileLayouts(recommendationProfile, skillGapProfile);
   if (state.activeTab === "graph") window.requestAnimationFrame(renderGraph);
 }
@@ -550,22 +613,18 @@ function renderDashboard(profile) {
     const candidate = lessonFallback.shift();
     if (findEntity(candidate) && !lessonIds.includes(candidate)) lessonIds.push(candidate);
   }
-  const teachers = [
-    ["AC", "Alex Chen", "22 min", "#2d5ddc"],
-    ["MR", "Mia Roberts", "18 min", "#ff5734"],
-    ["PK", "Priya Kapoor", "25 min", "#1f8a5a"],
-    ["SW", "Samuel Wright", "20 min", "#6043b7"],
-    ["DM", "Diego Martinez", "16 min", "#151313"],
-  ];
   els.dashboardLessons.innerHTML = lessonIds
     .map((id, index) => {
-      const [initials, teacher, duration, color] = teachers[index];
+      const entity = findEntity(id);
+      const isCourse = entity?.type === "Course";
+      const openingTag = isCourse
+        ? `<button class="lessonRow lessonLink" type="button" data-course-id="${id}" aria-label="Start learning ${escapeHtml(labelFor(id))}">`
+        : `<div class="lessonRow">`;
+      const closingTag = isCourse ? "</button>" : "</div>";
       return `
-        <div class="lessonRow">
+        ${openingTag}
           <span><strong>${escapeHtml(labelFor(id))}</strong><small>${lessonSubtitle(id, index)}</small></span>
-          <span class="lessonTeacher"><i style="background:${color}">${initials}</i>${teacher}</span>
-          <time>${duration}</time>
-        </div>
+        ${closingTag}
       `;
     })
     .join("");
@@ -574,7 +633,7 @@ function renderDashboard(profile) {
     profile.recommendations.find((item) => item.career.id === "cad:AIEngineer") ??
     profile.recommendations[0];
   els.dashboardSpotlight.innerHTML = spotlight
-    ? `<div><p>New career matching your interests</p><span class="matchPill">Career</span><h2>${escapeHtml(spotlight.career.title)}</h2><p>12 students are on this path</p><span class="studentDots"><i></i><i></i><i style="background:#151313"></i><b>+100</b></span></div><button type="button" data-career-id="${spotlight.career.id}">More details</button>`
+    ? `<div class="spotlightContent"><p class="spotlightMeta">New career matching your interests</p><span class="matchPill">Career</span><h2 class="spotlightHeading">${escapeHtml(spotlight.career.title)}</h2><p class="spotlightStudents">12 students are on this path</p><span class="studentDots"><i></i><i></i><i></i><b>+100</b></span></div><button type="button" data-career-id="${spotlight.career.id}">More details</button>`
     : "";
   els.dashboardProfile.innerHTML = `
     <div><strong>Your interests</strong><span class="chips orange">${renderChipList([...state.recommendationInterests].map(labelFor))}</span></div>
@@ -593,7 +652,8 @@ function renderSearch(profile) {
     button.classList.toggle("is-active", button.dataset.searchIndustry === state.searchIndustry);
   }
 
-  const results = searchKnowledgeGraph(state.dataset, profile, state.searchQuery)
+  const hasQuery = Boolean(state.searchQuery.trim());
+  const results = (hasQuery ? searchKnowledgeGraph(state.dataset, profile, state.searchQuery) : [])
     .filter((item) => state.searchTypes.has(item.type))
     .filter((item) => {
       if (item.type !== "Career Entity") return true;
@@ -603,32 +663,35 @@ function renderSearch(profile) {
         career.industries.some((industry) => labelFor(industry) === state.searchIndustry)
       );
     });
-  const visible = (results.length ? results : searchKnowledgeGraph(state.dataset, profile, state.searchQuery))
-    .slice(0, 8);
+  const visible = hasQuery
+    ? (results.length ? results : searchKnowledgeGraph(state.dataset, profile, state.searchQuery)).slice(0, 8)
+    : [];
   els.searchResultCount.textContent = String(visible.length);
   els.inlineSearchResults.innerHTML = visible.length
     ? visible
         .map((item, index) => {
           const score = Math.max(45, 94 - index * 6);
+          const isCourse = item.type === "Course Entity";
           const badgeClass = item.type.startsWith("Skill")
             ? "skill"
             : item.type.startsWith("Course")
               ? "course"
               : "";
           return `
-            <article class="inlineResultCard ${index === 0 ? "is-top" : ""}">
+            <article class="inlineResultCard ${index === 0 ? "is-top" : ""} ${isCourse ? "is-course-link" : ""}" ${isCourse ? `role="button" tabindex="0" data-course-id="${item.id}" aria-label="Start learning ${escapeHtml(item.title)}"` : ""}>
               <div>
                 <div class="inlineResultTitle"><span>#${index + 1}</span><h2>${escapeHtml(item.title)}</h2><span class="entityBadge ${badgeClass}">${escapeHtml(item.type.replace(" Entity", ""))}</span></div>
                 <p>${escapeHtml(item.description)}</p>
                 <div class="chips ${badgeClass === "skill" ? "orange" : ""}">${renderChipList(item.matchedTerms.slice(0, 4).map(titleCase))}</div>
                 <div class="predicateList">${item.relationships.slice(0, 3).map((value) => `<code>${escapeHtml(predicateSummary(value))}</code>`).join("")}</div>
+                ${isCourse ? `<p class="learningLinkHint">Open subject learning topics →</p>` : ""}
               </div>
               <div class="resultScore"><strong>${score}%</strong><span>Relevance</span>${index === 0 && item.type === "Career Entity" ? `<div class="resultActions"><button type="button" data-career-id="${item.id}">Explore</button><button type="button" data-goto-tab="skillgap">+ Plan</button></div>` : ""}</div>
             </article>
           `;
         })
         .join("")
-    : `<p class="empty">No matching graph entities. Try another term.</p>`;
+    : `<p class="empty">${hasQuery ? "No matching graph entities. Try another term." : "Enter a career, skill or course to begin searching."}</p>`;
 }
 
 function renderRecommendations(profile) {
@@ -689,13 +752,12 @@ function renderCareerExplorer() {
         <span><strong>${career.recommendedCourses.length}</strong>courses</span>
         <span><strong>${career.alternativeCareers.length}</strong>alternatives</span>
       </div>
-      <button class="limeButton" type="button" data-graph-career="${career.id}">Visualize subgraph</button>
     </article>
     <div class="relationshipGrid">
       <article class="relationshipCard wide"><h2>Required skills <span class="predicateBadge">requiresSkill</span></h2><div class="chips">${renderChipList(career.requiresSkills.map(labelFor))}</div></article>
       <article class="relationshipCard"><h2>Related interests</h2><div class="chips orange">${renderChipList(career.relatedInterests.map(labelFor))}</div></article>
       <article class="relationshipCard"><h2>Alternative careers <span class="predicateBadge inferred">inferred · symmetric</span></h2><div class="entityLinks">${career.alternativeCareers.map((id) => `<button type="button" data-career-id="${id}">${escapeHtml(labelFor(id))}<span>›</span></button>`).join("") || "<span>None</span>"}</div></article>
-      <article class="relationshipCard"><h2>Recommended courses</h2><div class="entityLinks">${career.recommendedCourses.map((id) => `<div class="courseLine">${escapeHtml(labelFor(id))}</div>`).join("") || "<span>None</span>"}</div></article>
+      <article class="relationshipCard"><h2>Recommended courses</h2><div class="entityLinks">${career.recommendedCourses.map((id) => `<button class="courseLine" type="button" data-course-id="${id}">${escapeHtml(labelFor(id))}<span>›</span></button>`).join("") || "<span>None</span>"}</div></article>
       <article class="relationshipCard"><h2>Certifications &amp; resources</h2><div class="entityLinks">${career.recommendedCertifications.slice(0, 1).map((id) => `<div class="resourceLine">🎓 ${escapeHtml(labelFor(id))}</div>`).join("")}${combinedResources ? `<div class="resourceLine violet">↗ ${escapeHtml(combinedResources)}</div>` : ""}</div></article>
     </div>
   `;
@@ -752,7 +814,10 @@ function renderSkillGap(profile) {
       <div class="planTimeline">
         ${learningItems.map((item, index) => {
           const closes = profile.missingSkills[index] ? labelFor(profile.missingSkills[index]) : "the remaining skill gap";
-          return `<article class="planStep ${index === 0 ? "active" : index === 1 ? "next" : ""}" data-step="${index + 1}"><div class="planStepHeader"><h3>${escapeHtml(labelFor(item.id))}</h3><span class="chip ${item.type === "Certificate" ? "amber" : item.type === "Resource" ? "violet" : "violet"}">${item.type}</span></div><p>${item.type === "Course" ? `Closes <strong>${escapeHtml(closes)}</strong>` : item.type === "Certificate" ? "Validates the full skill set for employers" : "Supporting learning material"}</p>${index === 0 ? `<div class="planProgress"><span style="width:60%"></span></div><p style="color:#1f8a5a;margin-top:5px">60% complete</p>` : index === 1 ? `<button class="primaryButton" type="button">Start course</button>` : ""}</article>`;
+          const title = item.type === "Course"
+            ? `<button class="planCourseLink" type="button" data-course-id="${item.id}">${escapeHtml(labelFor(item.id))}</button>`
+            : `<h3>${escapeHtml(labelFor(item.id))}</h3>`;
+          return `<article class="planStep ${index === 0 ? "active" : index === 1 ? "next" : ""}" data-step="${index + 1}"><div class="planStepHeader">${title}<span class="chip ${item.type === "Certificate" ? "amber" : item.type === "Resource" ? "violet" : "violet"}">${item.type}</span></div><p>${item.type === "Course" ? `Closes <strong>${escapeHtml(closes)}</strong>` : item.type === "Certificate" ? "Validates the full skill set for employers" : "Supporting learning material"}</p>${index === 0 ? `<div class="planProgress"><span style="width:60%"></span></div><p style="color:#1f8a5a;margin-top:5px">60% complete</p>` : index === 1 && item.type === "Course" ? `<button class="primaryButton" type="button" data-course-id="${item.id}">Start course</button>` : ""}</article>`;
         }).join("")}
       </div>
     </section>
@@ -965,6 +1030,39 @@ function renderMobileLayouts(profile, skillGapProfile) {
       <div class="phoneCard" style="text-align:center">Plan · step 1<br><strong>${escapeHtml(labelFor(skillGapProfile.targetCareer.recommendedCourses[0] ?? ""))}</strong><div class="planProgress" style="margin-top:8px"><span style="width:60%"></span></div></div>
     `, "Skill Gap & Plan", "Semantic Lab moves under “More”")}
   `;
+}
+
+function renderProfile() {
+  renderChoiceChips(
+    els.profileInterestChoices,
+    state.dataset.interests,
+    state.profileInterestDraft,
+  );
+  els.profileInterestCount.textContent = `${state.profileInterestDraft.size} selected`;
+  els.profileCurrentSkills.innerHTML = renderChipList(
+    [...state.recommendationSkills].map(labelFor),
+  );
+  const interestLabels = [...state.recommendationInterests].map(labelFor);
+  els.profilePanelSummary.textContent = [
+    ...interestLabels,
+    labelFor([...state.recommendationSkills][0]),
+  ]
+    .filter(Boolean)
+    .join(" · ");
+}
+
+function loadSavedPreferences() {
+  try {
+    const savedInterests = JSON.parse(localStorage.getItem(PROFILE_INTERESTS_KEY) || "null");
+    if (Array.isArray(savedInterests) && savedInterests.length) {
+      const validIds = new Set(state.dataset.interests.map((interest) => interest.id));
+      const filtered = savedInterests.filter((id) => validIds.has(id));
+      if (filtered.length) state.recommendationInterests = new Set(filtered);
+    }
+  } catch {
+    state.recommendationInterests = new Set(DEFAULT_INTERESTS);
+  }
+  state.profileInterestDraft = new Set(state.recommendationInterests);
 }
 
 function phoneMockup(title, active, body, caption, subcaption) {
@@ -1185,6 +1283,22 @@ function goToFullResults(query) {
   url.searchParams.set("interests", [...state.recommendationInterests].join(","));
   url.searchParams.set("skills", [...state.recommendationSkills].join(","));
   url.searchParams.set("career", state.explorerCareerId);
+  window.location.href = url.toString();
+}
+
+function goToCourseLearning(courseId) {
+  const course = findEntity(courseId);
+  if (!course || course.type !== "Course") return;
+  const url = new URL("./results.html", window.location.href);
+  url.searchParams.set("q", course.label);
+  url.searchParams.set("course", course.id);
+  url.searchParams.set("from", state.activeTab);
+  url.searchParams.set("interests", [...state.recommendationInterests].join(","));
+  url.searchParams.set("skills", [...state.recommendationSkills].join(","));
+  url.searchParams.set(
+    "career",
+    state.activeTab === "skillgap" ? state.skillGapCareerId : state.explorerCareerId,
+  );
   window.location.href = url.toString();
 }
 
