@@ -210,7 +210,7 @@
     <topic id="ThreatModeling" label="Threat Modeling" description="Identify assets, adversaries, attack paths and mitigation strategies." />
     <topic id="AttackVectors" label="Attack Vectors" description="Understand common ways attackers enter, move through and exploit systems." />
     <topic id="LogAnalysis" label="Log Analysis" description="Review logs to detect anomalies, incidents and operational problems." />
-    <topic id="MITREAttack" label="MITRE ATT&CK" description="Use the ATT&CK knowledge base to reason about adversary tactics and techniques." />
+    <topic id="MITREAttack" label="MITRE ATT&amp;CK" description="Use the ATT&amp;CK knowledge base to reason about adversary tactics and techniques." />
     <topic id="LinuxCLI" label="Linux Command Line" description="Navigate files, run commands and manage tasks from the shell." />
     <topic id="FilePermissions" label="File Permissions" description="Control access using users, groups, ownership and permission modes." />
     <topic id="ProcessManagement" label="Process Management" description="Inspect, start, stop and monitor Linux processes and services." />
