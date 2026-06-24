@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Semantic Career Recommendation Platform</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="appShell">
+      <nav class="tabBar" role="tablist" aria-label="Demo sections">
+        <button class="tab" type="button" data-tab="overview">Overview</button>
+        <button class="tab is-active" type="button" data-tab="search">Search</button>
+        <button class="tab" type="button" data-tab="recommendations">Recommendations</button>
+        <button class="tab" type="button" data-tab="career">Career Explorer</button>
+        <button class="tab" type="button" data-tab="skillgap">Skill Gap Planner</button>
+        <button class="tab" type="button" data-tab="graph">Graph Visualization</button>
+        <button class="tab" type="button" data-tab="sparql">SPARQL Viewer</button>
+        <button class="tab" type="button" data-tab="statistics">Statistics</button>
+        <button class="tab" type="button" data-tab="evaluation">Evaluation</button>
+      </nav>
+
+      <section class="tabPanel" id="tab-overview" aria-label="Overview">
+        <section class="heroCard" aria-label="Project title">
+          <div>
+            <p class="eyebrow">TSW6223 Semantic Web Technology</p>
+            <h1>Semantic Career Recommendation Platform</h1>
+            <p class="heroCopy">
+              Explore career paths through an RDF/OWL knowledge graph, SPARQL queries, and traceable
+              rule-based recommendations.
+            </p>
+          </div>
+          <div class="statPills" aria-label="Knowledge graph summary">
+            <span><strong id="rdfTripleCount">0</strong> RDF triples</span>
+            <span><strong id="careerCount">0</strong> careers</span>
+            <span><strong id="skillCount">0</strong> skills</span>
+            <span><strong id="courseCount">0</strong> courses</span>
+            <span><strong id="certificationCount">0</strong> certifications</span>
+          </div>
+        </section>
+        <div class="sectionHeader">
+          <p class="eyebrow">Project overview</p>
+          <h2>Semantic career search with explainable recommendations</h2>
+          <p>
+            The system models careers, skills, interests, industries, courses, certifications and
+            learning resources as linked entities. Results are produced from graph relationships,
+            not only keyword matching.
+          </p>
+        </div>
+        <div class="cardGrid three">
+          <article class="infoCard">
+            <span>Problem</span>
+            <p>
+              Plain keyword search can retrieve a career title, but it does not explain which skills,
+              learning paths or alternative careers are connected to that result.
+            </p>
+          </article>
+          <article class="infoCard">
+            <span>Semantic Web Solution</span>
+            <p>
+              XML source data is converted into RDF triples, queried with SPARQL-style patterns and
+              expanded with OWL-style inference rules.
+            </p>
+          </article>
+          <article class="infoCard">
+            <span>Demo Evidence</span>
+            <p>
+              Each tab shows a different part of the knowledge graph: search, recommendation,
+              skill gap planning, visualization, SPARQL and inferred facts.
+            </p>
+          </article>
+        </div>
+        <div class="wideCard">
+          <h3>Semantic Web technologies used</h3>
+          <div class="techGrid">
+            <div><strong>RDF/RDFS</strong><span>Career data is represented as subject-predicate-object triples and class instances.</span></div>
+            <div><strong>SPARQL</strong><span>Query examples retrieve careers, skills, recommendations and class instances.</span></div>
+            <div><strong>OWL/Inference</strong><span>Rules infer alternative-career links, inverse skill facts and prerequisite expansion.</span></div>
+            <div><strong>Entity Search</strong><span>Search returns career, skill and course entities with graph relationship evidence.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tabPanel is-active" id="tab-search" aria-label="Search">
+        <div class="sectionHeader">
+          <p class="eyebrow">Search</p>
+          <h2>Search the career knowledge graph</h2>
+          <p>
+            Enter a natural language query. The current page changes to a ranked result view for
+            career, skill and course entities using semantic relationships.
+          </p>
+        </div>
+        <form id="searchForm" class="searchLauncher">
+          <label for="searchInput">Search query</label>
+          <div class="searchRow">
+            <input
+              id="searchInput"
+              type="search"
+              autocomplete="off"
+              placeholder="Try: AI engineer Python machine learning"
+            />
+            <button type="submit">Search</button>
+          </div>
+          <div class="examples" aria-label="Example searches">
+            <button type="button" data-query="AI engineer Python machine learning">AI engineer Python machine learning</button>
+            <button type="button" data-query="data scientist analytics visualization">data scientist analytics visualization</button>
+            <button type="button" data-query="cybersecurity analyst network threat">cybersecurity analyst network threat</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="tabPanel" id="tab-recommendations" aria-label="Recommendations">
+        <div class="sectionHeader">
+          <p class="eyebrow">Career recommendation</p>
+          <h2>Rank careers from interests and existing skills</h2>
+          <p>Select interests and skills to score careers from explicit knowledge graph relationships.</p>
+        </div>
+        <div class="inputGrid">
+          <section class="inputBlock">
+            <h3>Interests</h3>
+            <div id="recommendInterestChoices" class="choiceGrid"></div>
+          </section>
+          <section class="inputBlock">
+            <h3>Existing skills</h3>
+            <div id="recommendSkillChoices" class="choiceGrid"></div>
+          </section>
+        </div>
+        <div id="recommendationResults" class="stack"></div>
+      </section>
+
+      <section class="tabPanel" id="tab-career" aria-label="Career Explorer">
+        <div class="sectionHeader">
+          <p class="eyebrow">Career explorer</p>
+          <h2>Inspect one career entity</h2>
+          <p>Explore the direct RDF links connected to a selected career node.</p>
+        </div>
+        <div class="toolbarLine">
+          <label for="careerExplorerSelect">Career entity</label>
+          <select id="careerExplorerSelect"></select>
+        </div>
+        <div id="careerExplorer" class="stack"></div>
+      </section>
+
+      <section class="tabPanel" id="tab-skillgap" aria-label="Skill Gap Planner">
+        <div class="sectionHeader">
+          <p class="eyebrow">Skill gap planner</p>
+          <h2>Compare selected skills with a target career</h2>
+          <p>The planner identifies matched skills, missing skills and prerequisite expansion.</p>
+        </div>
+        <div class="toolbarLine two">
+          <div>
+            <label for="skillGapCareerSelect">Target career</label>
+            <select id="skillGapCareerSelect"></select>
+          </div>
+          <div>
+            <label>Your current skills</label>
+            <div id="skillGapSkillChoices" class="choiceGrid compact"></div>
+          </div>
+        </div>
+        <div id="skillGapPlanner" class="stack"></div>
+      </section>
+
+      <section class="tabPanel" id="tab-graph" aria-label="Graph Visualization">
+        <div class="sectionHeader">
+          <p class="eyebrow">Graph visualization</p>
+          <h2>Career-skill-course knowledge graph</h2>
+          <p>Visualize required skills, related interests, recommended courses and alternative careers.</p>
+        </div>
+        <div class="toolbarLine">
+          <label for="graphCareerSelect">Career entity</label>
+          <select id="graphCareerSelect"></select>
+        </div>
+        <div class="legend" aria-label="Graph legend">
+          <span><i class="dot career"></i>Career</span>
+          <span><i class="dot skill"></i>Skill</span>
+          <span><i class="dot interest"></i>Interest</span>
+          <span><i class="dot course"></i>Course</span>
+          <span><i class="dot alternative"></i>Alternative career</span>
+        </div>
+        <canvas id="graphCanvas" width="960" height="520" aria-label="Knowledge graph visualization"></canvas>
+      </section>
+
+      <section class="tabPanel" id="tab-sparql" aria-label="SPARQL Viewer">
+        <div class="sectionHeader">
+          <p class="eyebrow">SPARQL viewer</p>
+          <h2>SPARQL Query Viewer</h2>
+          <p>Inspect the exact queries used by the app.</p>
+        </div>
+        <div class="sparqlControls">
+          <label for="querySelect">
+            Query
+            <select id="querySelect"></select>
+          </label>
+          <label id="queryKeywordField" for="queryKeywordInput">
+            Search query keyword
+            <input id="queryKeywordInput" type="search" autocomplete="off" />
+          </label>
+          <p id="queryKeywordHelp" class="fieldHint"></p>
+          <section id="sparqlSkillContext" class="sparqlSkillContext" aria-label="Existing skills for skill gap facts">
+            <h3>Existing skills for skill gap facts</h3>
+            <p>This selection only affects the Matched/Missing status in the Skill gap facts query.</p>
+            <div id="sparqlSkillChoices" class="choiceGrid compact"></div>
+          </section>
+        </div>
+        <div id="queryExplanation" class="noteCard"></div>
+        <pre id="queryText" class="queryText"></pre>
+        <div id="queryResults" class="tableWrap"></div>
+      </section>
+
+      <section class="tabPanel" id="tab-statistics" aria-label="Statistics">
+        <div class="sectionHeader">
+          <p class="eyebrow">Statistics</p>
+          <h2>Knowledge graph size</h2>
+          <p>Counts are loaded directly from the XML/RDF model used by the demo.</p>
+        </div>
+        <div id="statisticsGrid" class="metricGrid"></div>
+      </section>
+
+      <section class="tabPanel" id="tab-evaluation" aria-label="Evaluation">
+        <div class="sectionHeader">
+          <p class="eyebrow">Evaluation</p>
+          <h2>Demo test cases</h2>
+          <p>These cases can be used as evidence during the project report and presentation.</p>
+        </div>
+        <div id="evaluationTable" class="tableWrap"></div>
+      </section>
+    </main>
+    <script type="module" src="./main.js?v=20260624-space-input-fix"></script>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+@prefix cad: <http://example.org/career#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+cad:CareerSearchOntology a owl:Ontology ;
+  rdfs:label "Explainable Career Search Ontology" .
+
+cad:Career a owl:Class .
+cad:Skill a owl:Class .
+cad:Course a owl:Class .
+cad:Certification a owl:Class .
+cad:Industry a owl:Class .
+cad:Interest a owl:Class .
+cad:LearningResource a owl:Class .
+cad:UserProfile a owl:Class .
+
+cad:requiresSkill a owl:ObjectProperty ;
+  rdfs:domain cad:Career ;
+  rdfs:range cad:Skill .
+
+cad:relatedToInterest a owl:ObjectProperty ;
+  rdfs:domain cad:Career ;
+  rdfs:range cad:Interest .
+
+cad:belongsToIndustry a owl:ObjectProperty ;
+  rdfs:domain cad:Career ;
+  rdfs:range cad:Industry .
+
+cad:recommendedCourse a owl:ObjectProperty ;
+  rdfs:domain cad:Career ;
+  rdfs:range cad:Course .
+
+cad:recommendedCertification a owl:ObjectProperty ;
+  rdfs:domain cad:Career ;
+  rdfs:range cad:Certification .
+
+cad:hasLearningResource a owl:ObjectProperty ;
+  rdfs:domain cad:Career ;
+  rdfs:range cad:LearningResource .
+
+cad:prerequisiteSkill a owl:ObjectProperty ;
+  rdfs:domain cad:Skill ;
+  rdfs:range cad:Skill .
+
+cad:alternativeCareer a owl:SymmetricProperty ;
+  rdfs:domain cad:Career ;
+  rdfs:range cad:Career .
+
+cad:teachesSkill a owl:ObjectProperty ;
+  rdfs:domain cad:Course ;
+  rdfs:range cad:Skill .
+
+cad:title a owl:DatatypeProperty ;
+  rdfs:range xsd:string .
+
+cad:description a owl:DatatypeProperty ;
+  rdfs:range xsd:string .
