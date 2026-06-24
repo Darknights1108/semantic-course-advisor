@@ -13,11 +13,11 @@ Presentation-ready demo for **TSW6223 Semantic Web Technology**.
 
 The program demonstrates a semantic search and recommendation system over a career path knowledge graph. A normal keyword search can find career pages, but it cannot explain relationships such as which skills a career requires, which interests match a career, what skills are missing, which courses or certifications support the path, and which alternative careers are related.
 
-The application solves this by modelling careers, skills, interests, industries, courses, certifications and learning resources as linked entities:
+The application solves this by modelling careers, skills, interests, industries, courses, learning topics, certifications and learning resources as linked entities:
 
 - **XML** stores structured source data for the career knowledge graph.
 - **RDF/Turtle** represents the data as subject-predicate-object triples.
-- **RDFS/OWL** defines classes and properties such as `Career`, `Skill`, `Course`, `Certification`, `Industry`, `Interest`, `LearningResource`, `requiresSkill`, `relatedToInterest`, `recommendedCourse`, `recommendedCertification`, `hasLearningResource`, `prerequisiteSkill` and `alternativeCareer`.
+- **RDFS/OWL** defines classes and properties such as `Career`, `Skill`, `Course`, `LearningTopic`, `Certification`, `Industry`, `Interest`, `LearningResource`, `requiresSkill`, `relatedToInterest`, `recommendedCourse`, `recommendedCertification`, `hasLearningResource`, `prerequisiteSkill`, `coversTopic` and `alternativeCareer`.
 - **SPARQL-style queries** retrieve semantic graph patterns.
 - **Relationship-aware information retrieval** ranks results using skills, interests, industries, learning resources and alternative career links.
 - **Entity-based search** returns career, skill and course entities instead of only plain text matches.
@@ -26,7 +26,7 @@ The application solves this by modelling careers, skills, interests, industries,
 ## Demo Views
 
 - **Overview:** explains the project problem, RDF/RDFS, SPARQL, OWL-style inference and entity search.
-- **Search:** the home page view; enter a query and the current browser tab changes to a ranked search results page.
+- **Search:** the home page view; enter a query and the current browser tab changes to a ranked search results page. Course and skill results can be clicked to open a second-level detail view showing what topics the course covers or what the skill requires learning.
 - **Recommendations:** score careers from selected interests and existing skills.
 - **Career Explorer:** inspect one career entity and its direct graph relationships.
 - **Skill Gap Planner:** compare current skills with a target career and view missing/prerequisite skills.
@@ -103,11 +103,12 @@ Expected result includes:
 - `Careers: 10`
 - `Skills: 29`
 - `Courses: 10`
+- `Learning topics: 146`
 - `Certifications: 9`
 - `Industries: 6`
 - `Interests: 9`
 - `Learning resources: 11`
-- `Asserted triples: 423`
+- `Asserted triples: 1071`
 - `Inferred triples: 98`
 - `Top search result: AI Engineer`
 

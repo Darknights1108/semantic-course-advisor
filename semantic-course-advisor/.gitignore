@@ -1,0 +1,27 @@
+# Runtime and dependency folders
+node_modules/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Word/Office temporary lock files
+~$*.docx
+~$*.pptx
+~$*.xlsx
+
+# Generated render/check folders
+render_check/
+report/render_check/
+
+# Local report and presentation deliverables are kept out of GitHub
+report/
+slides/
+scripts/build_project_report_docx.py
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
