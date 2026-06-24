@@ -875,24 +875,41 @@ function renderSparql() {
 
 function renderStatistics(recommendationProfile, skillGapProfile) {
   const metrics = [
-    ["Careers", state.dataset.careers.length],
-    ["Skills", state.dataset.skills.length],
-    ["Courses", state.dataset.courses.length],
-    ["Certifications", state.dataset.certifications.length],
-    ["Industries", state.dataset.industries.length],
-    ["Interests", state.dataset.interests.length],
-    ["Learning resources", state.dataset.resources.length],
-    ["Asserted triples", state.dataset.triples.length],
-    ["Inferred triples", state.dataset.inferredTriples.length],
-    ["Total RDF facts", state.dataset.allTriples.length],
-    ["All entities", countEntities(state.dataset)],
+    ["Asserted triples", state.dataset.triples.length, "dark"],
+    ["Inferred triples", state.dataset.inferredTriples.length, "gradient"],
+    ["Total triples", state.dataset.allTriples.length, ""],
+    ["Total entities", countEntities(state.dataset), ""],
   ];
+  els.statisticsSummary.innerHTML = metrics
+    .map(([label, value, tone]) => `<article class="statisticsCard ${tone}"><strong>${value}</strong><span>${label}</span></article>`)
+    .join("");
 
-  els.statisticsGrid.innerHTML = metrics.map(([label, value]) => metricCard(label, value)).join("");
-}
+  const classMetrics = [
+    ["cad:Skill", state.dataset.skills.length, "#ff5734"],
+    ["cad:LearningTopic", state.dataset.topics.length, "#0e9ca6"],
+    ["cad:LearningResource", state.dataset.resources.length, "#5b43a8"],
+    ["cad:Career", state.dataset.careers.length, "#2d5ddc"],
+    ["cad:Course", state.dataset.courses.length, "#2d5ddc"],
+    ["cad:Certification", state.dataset.certifications.length, "#c07a14"],
+    ["cad:Interest", state.dataset.interests.length, "#ff5734"],
+    ["cad:Industry", state.dataset.industries.length, "#8298af"],
+  ];
+  const max = Math.max(...classMetrics.map(([, value]) => value));
+  els.classInstanceBars.innerHTML = classMetrics
+    .map(([label, value, color]) => `<div class="classBar"><span>${label}</span><span class="classBarTrack"><span style="width:${Math.max(15, (value / max) * 100)}%;background:${color}"></span></span><strong>${value}</strong></div>`)
+    .join("");
 
-function renderEvaluation(recommendationProfile, skillGapProfile) {
-  const topRecommendation = recommendationProfile.recommendations[0]?.career.title ?? "No result";
+  const inference = [
+    ["Inverse required-skill", "Skill :requiredBy ← Career", countInferred("cad:isRequiredBy")],
+    ["Symmetric alternative-career", "owl:SymmetricProperty", countInferred("cad:alternativeCareer")],
+    ["Prerequisite expansion", "transitive prerequisiteSkill", countInferred("cad:hasPrerequisiteSkill")],
+  ];
+  els.inferenceLead.textContent = `${state.dataset.inferredTriples.length} facts the platform derived, not authored.`;
+  els.inferenceCards.innerHTML = inference
+    .map(([title, code, count]) => `<article class="inferenceCard"><strong>${title}</strong><code>${code}</code><b>${count}</b></article>`)
+    .join("");
+
+  const top = recommendationProfile.recommendations[0];
   const rows = [
     {
       "Test case": "Search “AI engineer Python ML”",
@@ -922,154 +939,37 @@ function renderEvaluation(recommendationProfile, skillGapProfile) {
   els.evaluationTable.innerHTML = renderTable(rows, { statusColumn: true });
 }
 
-function goToSearchResults(query) {
-  const url = new URL("./results.html", window.location.href);
-  url.searchParams.set("q", query);
-  url.searchParams.set("interests", [...state.recommendationInterests].join(","));
-  url.searchParams.set("skills", [...state.recommendationSkills].join(","));
-  url.searchParams.set("career", state.explorerCareerId);
-  window.location.href = url.toString();
-}
-
-function evidenceBlock(title, ids, tone = "") {
-  return `
-    <div class="evidenceBlock">
-      <span>${escapeHtml(title)}</span>
-      <div class="chips ${tone}">
-        ${ids.length ? ids.map((id) => `<em>${escapeHtml(labelFor(id))}</em>`).join("") : "<em>None</em>"}
-      </div>
-    </div>
+function renderMobileLayouts(profile, skillGapProfile) {
+  const top = profile.recommendations[0];
+  const second = profile.recommendations[1];
+  const third = profile.recommendations[2];
+  const percent = skillGapProfile.targetCareer.requiresSkills.length
+    ? Math.round(
+        (skillGapProfile.knownSkills.length / skillGapProfile.targetCareer.requiresSkills.length) *
+          100,
+      )
+    : 0;
+  els.mobileLayoutGallery.innerHTML = `
+    ${phoneMockup("Dashboard", "Home", `
+      <div class="phoneCard dark"><span style="color:#c4f03b;font-size:9px;font-weight:700">TOP MATCH</span><h3>${escapeHtml(top?.career.title ?? "Data Scientist")}</h3><div class="chips green">${renderChipList((top?.matchedInterests ?? []).map(labelFor))}</div></div>
+      <div class="phoneCard"><div style="text-align:center;margin-bottom:8px">Your matches</div><strong>${escapeHtml(second?.career.title ?? "BI Analyst")}</strong><div class="planProgress"><span style="width:74%;background:#2d5ddc"></span></div><strong>${escapeHtml(third?.career.title ?? "ML Engineer")}</strong><div class="planProgress"><span style="width:69%;background:#2d5ddc"></span></div></div>
+    `, "Dashboard", "Bottom tab bar replaces sidebar")}
+    ${phoneMockup("Recommendations", "Matches", `
+      <div class="phoneCard"><strong>Your inputs</strong><div class="chips orange" style="margin-top:8px">${renderChipList([...state.recommendationInterests].slice(0, 2).map(labelFor))}</div><div class="chips" style="margin-top:7px">${renderChipList([...state.recommendationSkills].slice(0, 2).map(labelFor))}</div></div>
+      <div class="phoneCard" style="border-left:3px solid #1f8a5a"><div style="display:flex;justify-content:space-between"><h3>${escapeHtml(top?.career.title ?? "Data Scientist")}</h3><strong style="color:#1f8a5a">87%</strong></div><span style="color:#c07a14">MISSING (${top?.missingSkills.length ?? 3})</span><div class="chips amber" style="margin-top:7px">${renderChipList((top?.missingSkills ?? []).slice(0, 2).map(labelFor))}</div></div>
+      <div class="phoneCard"><h3>${escapeHtml(second?.career.title ?? "BI Analyst")} <span style="float:right;color:#2d5ddc">74%</span></h3></div>
+    `, "Recommendations", "Grids stack to one column")}
+    ${phoneMockup("Skill Gap", "Plan", `
+      <div class="phoneCard" style="display:flex;align-items:center;gap:12px"><div class="coverageRing" style="--percent:${percent};width:60px;height:60px"><span style="width:44px;height:44px;font-size:13px">${percent}%</span></div><div><strong>${escapeHtml(skillGapProfile.targetCareer.title)}</strong><div style="color:#1f8a5a">${skillGapProfile.knownSkills.length} matched</div><div style="color:#c07a14">${skillGapProfile.missingSkills.length} missing</div></div></div>
+      <div class="phoneCard"><div style="text-align:center;color:#c07a14;margin-bottom:8px">MISSING SKILLS</div>${skillGapProfile.missingSkills.slice(0, 2).map((id) => `<div style="padding:8px;border:1px solid #ead7b7;border-radius:8px;margin-top:6px">${escapeHtml(labelFor(id))}</div>`).join("")}</div>
+      <div class="phoneCard" style="text-align:center">Plan · step 1<br><strong>${escapeHtml(labelFor(skillGapProfile.targetCareer.recommendedCourses[0] ?? ""))}</strong><div class="planProgress" style="margin-top:8px"><span style="width:60%"></span></div></div>
+    `, "Skill Gap & Plan", "Semantic Lab moves under “More”")}
   `;
 }
 
-function relationshipCard(title, ids, tone = "") {
-  return `
-    <article class="infoCard">
-      <span>${escapeHtml(title)}</span>
-      <div class="chips ${tone}">
-        ${ids.length ? ids.map((id) => `<em>${escapeHtml(labelFor(id))}</em>`).join("") : "<em>None</em>"}
-      </div>
-    </article>
-  `;
-}
-
-function metricCard(label, value) {
-  return `
-    <article class="metricCard">
-      <span>${escapeHtml(label)}</span>
-      <strong>${escapeHtml(value)}</strong>
-    </article>
-  `;
-}
-
-function inferenceRulesFor(item) {
-  const rules = [];
-  if (item.matchedInterests.length) rules.push("Rule 1 Interest + Career");
-  if (item.matchedSkills.length) rules.push("Rule 2 Skill + Career");
-  if (item.missingSkills.length) rules.push("Rule 3 Missing Skill Expansion");
-  if (item.alternatives.length) rules.push("Rule 4 Alternative Career Suggestions");
-  if (item.courses.length) rules.push("Rule 5 Learning Path Recommendation");
-  return rules;
-}
-
-function queryDescription(queryId) {
-  const descriptions = {
-    careerSearch: "Matches careers through titles, descriptions, required skills, interests and industries.",
-    recommendationSupport: "Shows the graph evidence used for ranked career recommendation output.",
-    skillGap: "Lists required skills and prerequisite expansions for careers in the knowledge graph.",
-    classInstances: "Lists instances of the main OWL classes in the knowledge graph.",
-  };
-  return descriptions[queryId] ?? "Runs a semantic graph query over the career path knowledge graph.";
-}
-
-function queryKeywordPlaceholder(queryId) {
-  const placeholders = {
-    careerSearch: "Try: data, AI, Python, security, cloud",
-    recommendationSupport: "Try: Python, Artificial Intelligence, AI Engineer, Missing",
-    skillGap: "Try: Data Scientist, Python, Deep Learning, Missing",
-    classInstances: "Try: Career, Skill, Course, Python, AWS",
-  };
-  return placeholders[queryId] ?? "Type a keyword to filter the result rows";
-}
-
-function queryKeywordHelp(queryId) {
-  const help = {
-    careerSearch: "Use career, skill, interest or industry words. Leave blank to show all query rows.",
-    recommendationSupport: "Use a career, matched interest, matched skill, missing skill or score value.",
-    skillGap: "Use a career name, required skill, prerequisite skill, or status such as Matched/Missing.",
-    classInstances: "Use an ontology class name or entity name. Examples: Career, Skill, Course, Python.",
-  };
-  return help[queryId] ?? "Leave blank to show all rows, or type a keyword to filter.";
-}
-
-function formatQueryText(query, keyword) {
-  return query.replaceAll("{{keyword}}", escapeSparqlString(String(keyword || "").toLowerCase()));
-}
-
-function escapeSparqlString(value) {
-  return String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-}
-
-function renderTable(rows) {
-  if (!rows.length) return `<p class="empty">No rows.</p>`;
-  const columns = Object.keys(rows[0]);
-  return `
-    <table>
-      <thead>
-        <tr>${columns.map((column) => `<th>${escapeHtml(column)}</th>`).join("")}</tr>
-      </thead>
-      <tbody>
-        ${rows
-          .map((row) => `<tr>${columns.map((column) => `<td>${escapeHtml(row[column])}</td>`).join("")}</tr>`)
-          .join("")}
-      </tbody>
-    </table>
-  `;
-}
-
-function renderSkillGapFactSummary(rows) {
-  if (!rows.length) return `<p class="empty">No matching skill gap facts.</p>`;
-  const groups = groupRowsBy(rows, "career");
-
-  return `
-    <div class="skillGapFactList">
-      ${groups
-        .map(([career, careerRows]) => {
-          const matched = careerRows.filter((row) => row.status === "Matched");
-          const missing = careerRows.filter((row) => row.status === "Missing");
-          const prerequisites = unique(
-            careerRows
-              .flatMap((row) => String(row.prerequisiteSkill).split(",").map((item) => item.trim()))
-              .filter((item) => item && item !== "-"),
-          );
-          const open = groups.length <= 3 ? "open" : "";
-          return `
-            <details class="skillGapFactCard" ${open}>
-              <summary>
-                <span>${escapeHtml(career)}</span>
-                <strong>${matched.length}/${careerRows.length} matched</strong>
-                <em>${missing.length} missing</em>
-              </summary>
-              <div class="skillGapFactBody">
-                <div>
-                  <h3>Matched skills</h3>
-                  <div class="chips">${renderChipList(matched.map((row) => row.requiredSkill))}</div>
-                </div>
-                <div>
-                  <h3>Missing skills</h3>
-                  <div class="chips danger">${renderChipList(missing.map((row) => row.requiredSkill))}</div>
-                </div>
-                <div>
-                  <h3>Prerequisite skills</h3>
-                  <div class="chips rule">${renderChipList(prerequisites)}</div>
-                </div>
-              </div>
-            </details>
-          `;
-        })
-        .join("")}
-    </div>
-  `;
+function phoneMockup(title, active, body, caption, subcaption) {
+  const nav = ["Home", "Search", "Matches", "Plan", "More"];
+  return `<div class="phoneDemoWrap"><div class="phoneDemo"><div class="phoneScreen"><div class="phoneTop"><span>‹</span><strong>${title}</strong>${title === "Dashboard" ? `<span class="avatar">AH</span>` : ""}</div><div class="phoneBody">${body}</div><div class="phoneBottom">${nav.map((item) => `<span class="${item === active ? "is-active" : ""}">${item}</span>`).join("")}</div></div></div><strong>${caption}</strong><span>${subcaption}</span></div>`;
 }
 
 function renderChoiceChips(container, entities, selectedSet) {
@@ -1144,6 +1044,8 @@ function queryTabTitle(id) {
     recommendationSupport: "Recommendation evidence",
     skillGap: "Skill gap facts",
     classInstances: "Class instances",
+    courseTopics: "Course topics",
+    skillTopics: "Skill topics",
   }[id];
 }
 
@@ -1157,6 +1059,10 @@ function queryDescription(id) {
       "Skill gap facts and prerequisite expansion. Required skills are compared with the selected profile and enriched with inferred prerequisite links.",
     classInstances:
       "Main ontology class instances and counts. These rows provide the source facts for the Statistics & Evaluation view.",
+    courseTopics:
+      "Course topic expansion connects courses to the skills they teach and the detailed learning topics they cover.",
+    skillTopics:
+      "Skill learning topics expand each skill into the specific concepts and descriptions a student needs to study.",
   }[id];
 }
 
@@ -1166,6 +1072,8 @@ function queryKeywordHelp(id) {
     recommendationSupport: "Filter careers, skills, interests or learning evidence.",
     skillGap: "Select skills below to update matched and missing facts.",
     classInstances: "Filter ontology class and instance names.",
+    courseTopics: "Filter course, skill or learning-topic names.",
+    skillTopics: "Filter skill, topic or topic-description text.",
   }[id];
 }
 
@@ -1175,6 +1083,8 @@ function queryFeedText(id) {
     recommendationSupport: "Evidence feeds the Recommendations view",
     skillGap: "Facts feed the Skill Gap & Plan view",
     classInstances: "Counts feed the Statistics view",
+    courseTopics: "Topics feed course learning detail",
+    skillTopics: "Topics feed skill learning detail",
   }[id];
 }
 

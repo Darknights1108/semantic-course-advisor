@@ -27,9 +27,11 @@ Verification viewports:
 
 - Plus Jakarta Sans and JetBrains Mono are served locally from the template bundle.
 - Browser font loading checks pass for both families.
-- The desktop shell uses the template dimensions: 20px outer margin, 30px frame radius, 248px sidebar and 64px top bar.
+- The desktop shell preserves the template's 248px sidebar and 64px top bar.
+- The outer blue margin and rounded frame were intentionally removed as requested; the app now fills the viewport without the large rounded-square border.
 - Desktop and mobile checks report no horizontal overflow.
 - Shared spacing, border, radius, shadow and color tokens match the template design system.
+- LearningTopic data from the newer semantic commit is retained in search, SPARQL and Statistics without replacing the template page layouts.
 
 ## Automated Checks
 
@@ -37,8 +39,7 @@ Verification viewports:
 - `node tests/ui_smoke_test.mjs`
 - Browser console: no errors
 - Navigation: all 10 views pass
+- Interactive controls: all tested buttons, filters, selectors, bookmarks, graph controls, popovers and mobile navigation pass
 - Final captures:
   - `final/desktop/`
   - `final/mobile/`
-  - `final/desktop-contact-sheet.png`
-  - `final/mobile-contact-sheet.png`

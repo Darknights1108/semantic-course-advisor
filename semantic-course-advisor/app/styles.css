@@ -2868,8 +2868,8 @@ td:first-child {
 
 .clickableResult:hover,
 .clickableResult:focus-visible {
-  border-color: var(--teal);
-  box-shadow: 0 20px 52px rgba(0, 127, 122, 0.16);
+  border-color: var(--primary);
+  box-shadow: 0 18px 42px rgba(45, 93, 220, 0.14);
   transform: translateY(-1px);
   outline: none;
 }
@@ -2899,16 +2899,15 @@ td:first-child {
   line-height: 1.45;
 }
 
+.courseHint {
+  margin: 10px 0 0;
+  color: var(--primary) !important;
+  font-weight: 700;
+}
+
 .resultSubtitle {
   color: var(--primary) !important;
   font-weight: 600;
-}
-
-.courseHint {
-  margin: 10px 0 0;
-  color: var(--teal) !important;
-  font-size: 0.84rem;
-  font-weight: 900;
 }
 
 .scoreBox {
@@ -2923,6 +2922,139 @@ td:first-child {
 .scoreBox strong {
   color: var(--matched);
   font-size: 30px;
+}
+
+.courseDetail {
+  display: grid;
+  gap: 16px;
+}
+
+.secondaryBack {
+  width: max-content;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  padding: 0;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.secondaryBack::before {
+  content: "← ";
+}
+
+.courseHero,
+.topicPanel {
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--surface);
+  padding: 24px;
+}
+
+.courseHero {
+  background: var(--ink);
+  color: #fff;
+}
+
+.courseHero .eyebrow {
+  margin-bottom: 8px;
+  color: var(--lime);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.courseHero h2 {
+  margin-bottom: 9px;
+  font-size: 26px;
+}
+
+.courseHero > p:not(.eyebrow) {
+  max-width: 760px;
+  color: #d9e1e8;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.courseHero .chips {
+  margin-top: 15px;
+}
+
+.courseEvidenceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.courseEvidenceGrid .infoCard {
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--surface);
+  padding: 18px;
+}
+
+.courseEvidenceGrid .infoCard > span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.courseEvidenceGrid .infoCard p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.topicPanel .sectionHeader {
+  margin-bottom: 18px;
+}
+
+.topicPanel .sectionHeader h2 {
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.topicPanel .sectionHeader p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.topicGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.topicCard {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--pale);
+  padding: 16px;
+}
+
+.topicCard > span {
+  color: var(--accent);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.topicCard h3 {
+  margin: 8px 0 6px;
+  font-size: 13px;
+}
+
+.topicCard p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
 }
 
 @media (max-width: 1180px) {
@@ -2986,14 +3118,145 @@ td:first-child {
     font-size: 9px;
   }
 
-.empty {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--surface);
-  padding: 18px;
-  color: var(--muted);
-  font-weight: 700;
+.mobileHeaderButton {
+    width: 24px;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    padding: 0;
+  font-size: 27px;
+  text-align: center;
+  text-decoration: none;
 }
+
+  .content {
+    padding: 14px 14px 24px;
+  }
+
+  .mobileNav {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-top: 1px solid var(--line);
+    background: #fff;
+    z-index: 15;
+  }
+
+  .mobileNav button,
+  .mobileNav a {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    min-width: 53px;
+    border: 0;
+    background: transparent;
+    color: #91a2b5;
+    padding: 5px;
+    font-size: 8px;
+    text-decoration: none;
+  }
+
+  .mobileNav button.is-active,
+  .mobileNav a.is-active {
+    color: var(--primary);
+  }
+
+  .mobileNav svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+  }
+
+  .mobileMoreSheet {
+    position: fixed;
+    right: 12px;
+    bottom: 70px;
+    left: 12px;
+    display: grid;
+    gap: 7px;
+    border-radius: 18px;
+    background: #fff;
+    padding: 14px;
+    box-shadow: 0 20px 50px rgba(10, 23, 38, 0.24);
+    z-index: 40;
+  }
+
+  .mobileMoreSheet button {
+    min-height: 42px;
+    border: 0;
+    border-radius: 9px;
+    background: #f2f4f7;
+    color: #40536b;
+    text-align: left;
+    padding: 8px 13px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .mobileSheetBackdrop {
+    position: fixed;
+    inset: 0;
+    display: block;
+    background: rgba(13, 25, 39, 0.42);
+    z-index: 35;
+  }
+
+  .pageIntro,
+  .pageIntro.withControl {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .pageIntro h1 {
+    font-size: 23px;
+  }
+
+  .pageIntro p:last-child {
+    font-size: 12px;
+  }
+
+  .dashboardIntro,
+  .journeyRail,
+  .dashboardFilters,
+  .dashboardLower,
+  .dashboardCareerCards {
+    display: none;
+  }
+
+  .mobileDashboardSummary {
+    display: grid;
+    gap: 11px;
+    margin: 0;
+  }
+
+  .mobileTopMatch {
+    display: grid;
+    grid-template-columns: 1fr 63px;
+    align-items: center;
+    min-height: 125px;
+    border-radius: 20px;
+    background: #211d1c;
+    color: #fff;
+    padding: 15px;
+  }
+
+  .mobileTopMatch > div:first-child {
+    display: grid;
+    gap: 10px;
+  }
+
+  .mobileTopMatch > div:first-child > span {
+    width: fit-content;
+    border-radius: 999px;
+    background: #151313;
+    padding: 4px 10px;
+    font-size: 9px;
+    font-weight: 700;
+  }
 
   .mobileTopMatch > div:first-child > strong {
     font-size: 18px;
@@ -3033,12 +3296,81 @@ td:first-child {
     font-size: 10px;
   }
 
-  .statPills,
-  .cardGrid.two,
-  .cardGrid.three,
-  .inputGrid,
-  .techGrid,
-  .evidenceGrid,
+  .mobileOtherMatches > div strong {
+    color: var(--primary);
+  }
+
+  .mobileOtherMatches i {
+    grid-column: 1 / -1;
+    height: 5px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: #e9eef3;
+  }
+
+  .mobileOtherMatches b {
+    display: block;
+    height: 100%;
+    background: var(--primary);
+  }
+
+  .matchCard {
+    min-height: 124px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: #fff !important;
+    color: var(--ink);
+    padding: 15px;
+  }
+
+  .matchCard:first-child {
+    min-height: 125px;
+    background: #211d1c !important;
+    color: #fff;
+  }
+
+  .matchCard:nth-child(n + 4) {
+    display: none;
+  }
+
+  .matchCard h2 {
+    min-height: auto;
+    margin: 8px 0;
+    font-size: 18px;
+  }
+
+  .matchCard .matchStat,
+  .matchCard .studentDots,
+  .matchCard .viewButton,
+  .matchCard .bookmark {
+    display: none;
+  }
+
+  .matchCard .matchProgress {
+    height: 5px;
+    margin: auto 0 0;
+    background: #e7edf3;
+  }
+
+  .matchCard .matchProgress span {
+    background: var(--primary);
+  }
+
+  .matchCard:first-child .matchProgress span {
+    background: var(--lime);
+  }
+
+  .searchLayout,
+  .recommendationInputs,
+  .recommendationEvidence,
+  .explorerLayout,
+  .relationshipGrid,
+  .skillGapLayout,
+  .graphLayout,
+  .sparqlLayout,
+  .statisticsMiddle,
+  .designTwoColumns,
+  .componentDemo > div,
   .metricGrid,
   .resultCard {
     grid-template-columns: 1fr;
@@ -3276,6 +3608,11 @@ td:first-child {
 
   .resultCard {
     gap: 12px;
+  }
+
+  .courseEvidenceGrid,
+  .topicGrid {
+    grid-template-columns: 1fr;
   }
 
   .scoreBox {
