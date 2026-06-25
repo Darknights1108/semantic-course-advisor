@@ -32,6 +32,7 @@ The application solves this by modelling careers, skills, interests, industries,
 - **Skill Gap Planner:** compare current skills with a target career and view missing/prerequisite skills.
 - **Graph Visualization:** view the selected career subgraph with required skills, interests, courses and alternative careers.
 - **SPARQL Viewer:** inspect example queries and result tables.
+- **Ontology Viewer:** inspect the `data/ontology.ttl` Turtle file, including OWL classes, properties, domains and ranges.
 - **Statistics:** show class counts, asserted triples and inferred triples.
 - **Evaluation:** show demo test cases for report and presentation evidence.
 

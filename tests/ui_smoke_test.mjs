@@ -309,7 +309,15 @@ try {
             !document.querySelector("#settingsEvidence") &&
             !document.querySelector("#settingsCompact") &&
             !document.querySelector("#settingsForm") &&
-            document.querySelectorAll(".settingsToolGrid [data-goto-tab]").length === 3,
+            document.querySelectorAll(".settingsToolGrid [data-goto-tab]").length === 4,
+        );
+        document.querySelector('.settingsToolGrid [data-goto-tab="ontology"]').click();
+        await wait();
+        check(
+          "ontology viewer",
+          document.querySelector(".tabPanel.is-active")?.id === "tab-ontology" &&
+            document.querySelector("#ontologyText")?.textContent.includes("cad:Career a owl:Class") &&
+            document.querySelectorAll(".ontologyPropertyCard").length >= 10,
         );
         return out;
       })()`,

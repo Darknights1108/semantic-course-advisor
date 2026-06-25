@@ -65,8 +65,8 @@
         </nav>
 
         <button class="studentCard" type="button" data-open-tab="profile" aria-label="Open student profile">
-          <span class="avatar">AH</span>
-          <span><strong>Amira Hassan</strong><small>BSc Computer Science · Yr 2</small></span>
+          <span class="avatar">G48</span>
+          <span><strong>Group 48</strong><small>BSc Computer Science · Yr 3</small></span>
         </button>
       </aside>
 
@@ -90,8 +90,8 @@
             </div>
             <div class="popoverWrap profileWrap">
               <button id="profileButton" class="profileButton" type="button" aria-expanded="false">
-                <span class="avatar">AH</span>
-                <span><strong>Amira Hassan</strong><small>@a_hassan</small></span>
+                <span class="avatar">G48</span>
+                <span><strong>Group 48</strong><small>@group48</small></span>
               </button>
               <div id="profilePanel" class="topPopover" hidden>
                 <strong>Student profile</strong>
@@ -105,13 +105,13 @@
         <header class="mobileHeader">
           <button id="mobileBackButton" class="mobileHeaderButton" type="button" aria-label="Go back">‹</button>
           <strong id="mobilePageTitle">Dashboard</strong>
-          <span class="avatar">AH</span>
+          <span class="avatar">G48</span>
         </header>
 
         <main class="content">
           <section class="tabPanel is-active" id="tab-dashboard" aria-label="Dashboard">
             <div class="pageIntro dashboardIntro">
-              <div><p class="eyebrow">Student home</p><h1>Welcome back, Amira.</h1><p>Your career pathway is built from the knowledge graph — every match is explainable.</p></div>
+              <div><p class="eyebrow">Student home</p><h1>Welcome back, Group 48.</h1><p>Your career pathway is built from the knowledge graph — every match is explainable.</p></div>
               <span class="termBadge">● Term 2610</span>
             </div>
             <div class="journeyRail" aria-label="Career journey">
@@ -250,12 +250,12 @@
             </div>
             <div class="profilePageGrid">
               <aside class="profileIdentityCard">
-                <span class="profileAvatarLarge">AH</span>
-                <h2>Amira Hassan</h2>
-                <p>@a_hassan</p>
+                <span class="profileAvatarLarge">G48</span>
+                <h2>Group 48</h2>
+                <p>@group48</p>
                 <dl>
                   <div><dt>Programme</dt><dd>BSc Computer Science</dd></div>
-                  <div><dt>Study year</dt><dd>Year 2</dd></div>
+                  <div><dt>Study year</dt><dd>Year 3</dd></div>
                   <div><dt>Institution</dt><dd>Multimedia University</dd></div>
                 </dl>
               </aside>
@@ -280,12 +280,12 @@
 
           <section class="tabPanel" id="tab-settings" aria-label="Settings">
             <div class="pageIntro">
-              <div><p class="eyebrow">Settings</p><h1>Advanced tools</h1><p>Open CareerGraph's technical graph and evaluation views.</p></div>
+              <div><p class="eyebrow">Settings</p><h1>Advanced tools</h1><p>Open CareerGraph's technical graph, ontology, query and evaluation views.</p></div>
             </div>
             <div class="settingsLayout">
               <section class="settingsAdvanced">
                 <div class="settingsAdvancedHeading">
-                  <div><p class="eyebrow semanticEyebrow"><i></i>Advanced tools</p><h2>Semantic Lab</h2><p>Technical graph and evaluation views are kept here so they do not appear in the normal student navigation.</p></div>
+                  <div><p class="eyebrow semanticEyebrow"><i></i>Advanced tools</p><h2>Semantic Lab</h2><p>Technical graph, ontology, query and evaluation views are kept here so they do not appear in the normal student navigation.</p></div>
                 </div>
                 <div class="settingsToolGrid">
                   <button type="button" data-goto-tab="graph">
@@ -296,6 +296,10 @@
                     <svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"></path></svg>
                     <span><strong>SPARQL Viewer</strong><small>Run semantic graph queries</small></span><b>›</b>
                   </button>
+                  <button type="button" data-goto-tab="ontology">
+                    <svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"></path><path d="M15 4v5h5M8 13h8M8 16h8M8 10h4"></path></svg>
+                    <span><strong>Ontology Viewer</strong><small>Inspect OWL classes and properties</small></span><b>&rsaquo;</b>
+                  </button>
                   <button type="button" data-goto-tab="stats">
                     <svg viewBox="0 0 24 24"><path d="M5 20V10M10 20V4M15 20v-7M20 20V7M3 20h19"></path></svg>
                     <span><strong>Statistics &amp; Evaluation</strong><small>Review graph metrics and test cases</small></span><b>›</b>
@@ -303,6 +307,24 @@
                 </div>
               </section>
             </div>
+          </section>
+          <section class="tabPanel" id="tab-ontology" aria-label="Ontology Viewer">
+            <div class="pageIntro"><div><p class="eyebrow semanticEyebrow"><i></i>Semantic lab</p><h1>Ontology viewer</h1><p>Inspect the Turtle ontology file that defines CareerGraph classes, properties, domains and ranges.</p></div></div>
+            <div class="ontologySummary" id="ontologySummary"></div>
+            <div class="ontologyLayout">
+              <section class="ontologyPanel">
+                <div class="ontologyPanelHeader"><h2>OWL classes</h2><span id="ontologyClassCount">0 classes</span></div>
+                <div id="ontologyClasses" class="ontologyGrid"></div>
+              </section>
+              <section class="ontologyPanel">
+                <div class="ontologyPanelHeader"><h2>Properties</h2><span id="ontologyPropertyCount">0 properties</span></div>
+                <div id="ontologyProperties" class="ontologyPropertyList"></div>
+              </section>
+            </div>
+            <section class="ontologyRaw">
+              <div class="queryCodeHeader"><span>data/ontology.ttl</span><button id="copyOntologyButton" type="button">Copy</button></div>
+              <pre id="ontologyText" class="queryText ontologyText"></pre>
+            </section>
           </section>
         </main>
 

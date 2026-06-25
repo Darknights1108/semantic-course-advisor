@@ -25,6 +25,7 @@ const views = [
   ["skill-gap", "Skill Gap & Plan", "skillgap"],
   ["knowledge-graph", "Knowledge Graph", "graph"],
   ["sparql", "SPARQL Viewer", "sparql"],
+  ["ontology", "Ontology Viewer", "ontology"],
   ["statistics-evaluation", "Statistics & Eval", "statistics"],
   ["profile", "Profile", "profile"],
   ["settings", "Settings", "settings"],

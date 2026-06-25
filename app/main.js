@@ -23,6 +23,7 @@ const TAB_ALIASES = {
   skillgap: "skillgap",
   graph: "graph",
   sparql: "sparql",
+  ontology: "ontology",
   statistics: "stats",
   evaluation: "stats",
   stats: "stats",
@@ -38,6 +39,7 @@ const PAGE_META = {
   skillgap: ["Planning", "Skill Gap & Learning Plan"],
   graph: ["Semantic Lab", "Knowledge Graph"],
   sparql: ["Semantic Lab", "SPARQL Viewer"],
+  ontology: ["Semantic Lab", "Ontology Viewer"],
   stats: ["Semantic Lab", "Statistics & Evaluation"],
   profile: ["Student Account", "Profile"],
   settings: ["Preferences", "Settings"],
@@ -55,6 +57,8 @@ const state = {
   explorerCareerId: "cad:DataScientist",
   graphCareerId: "cad:DataScientist",
   queryId: "careerSearch",
+  ontologyText: "",
+  ontology: { classes: [], properties: [] },
   sparqlKeyword: "machine learning",
   sparqlSkillGapSkills: new Set(["cad:Python", "cad:Statistics", "cad:SQL"]),
   searchQuery: "",
@@ -131,6 +135,13 @@ const els = {
   queryResults: document.querySelector("#queryResults"),
   queryRowCount: document.querySelector("#queryRowCount"),
   queryFeedNote: document.querySelector("#queryFeedNote"),
+  ontologySummary: document.querySelector("#ontologySummary"),
+  ontologyClassCount: document.querySelector("#ontologyClassCount"),
+  ontologyPropertyCount: document.querySelector("#ontologyPropertyCount"),
+  ontologyClasses: document.querySelector("#ontologyClasses"),
+  ontologyProperties: document.querySelector("#ontologyProperties"),
+  ontologyText: document.querySelector("#ontologyText"),
+  copyOntologyButton: document.querySelector("#copyOntologyButton"),
   statisticsSummary: document.querySelector("#statisticsSummary"),
   classInstanceBars: document.querySelector("#classInstanceBars"),
   inferenceLead: document.querySelector("#inferenceLead"),
@@ -150,6 +161,11 @@ async function init() {
     return response.text();
   });
   state.dataset = loadDataset(xml);
+  state.ontologyText = await fetch("../data/ontology.ttl").then((response) => {
+    if (!response.ok) throw new Error("Unable to load the ontology file");
+    return response.text();
+  });
+  state.ontology = parseOntologyTurtle(state.ontologyText);
   state.entityMap = buildEntityMap(state.dataset);
   loadSavedPreferences();
   readInitialTab();
@@ -380,6 +396,17 @@ function setupEvents() {
       els.copyQueryButton.textContent = "Copy";
     }, 900);
   });
+  els.copyOntologyButton.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(els.ontologyText.textContent);
+      els.copyOntologyButton.textContent = "Copied";
+    } catch {
+      els.copyOntologyButton.textContent = "Select ontology text";
+    }
+    window.setTimeout(() => {
+      els.copyOntologyButton.textContent = "Copy";
+    }, 900);
+  });
 
   els.content.addEventListener("click", (event) => {
     const course = event.target.closest("[data-course-id]");
@@ -479,6 +506,7 @@ function mobileTitleFor(tab) {
     skillgap: "Skill Gap",
     graph: "Knowledge Graph",
     sparql: "SPARQL Viewer",
+    ontology: "Ontology Viewer",
     stats: "Statistics & Evaluation",
     profile: "Profile",
     settings: "Settings",
@@ -495,6 +523,7 @@ function render() {
   renderCareerExplorer();
   renderSkillGap(skillGapProfile);
   renderSparql();
+  renderOntology();
   renderStatistics(recommendationProfile, skillGapProfile);
   renderProfile();
   if (state.activeTab === "graph") window.requestAnimationFrame(renderGraph);
@@ -893,13 +922,15 @@ function applyGraphScale() {
 function renderSparql() {
   const selected = queryCatalog.find((query) => query.id === state.queryId) ?? queryCatalog[0];
   const index = queryCatalog.indexOf(selected);
+  const skillGap = selected.id === "skillGap";
+  const queryKeyword = skillGap ? "" : state.sparqlKeyword;
   els.queryTabs.innerHTML = queryCatalog
     .map((query, queryIndex) => `<button class="queryTab ${query.id === selected.id ? "is-active" : ""}" type="button" data-query-id="${query.id}">Q${queryIndex + 1} · ${escapeHtml(queryTabTitle(query.id))}</button>`)
     .join("");
-  els.queryKeywordInput.value = state.sparqlKeyword;
+  els.queryKeywordField.hidden = skillGap;
+  els.queryKeywordInput.value = queryKeyword;
   els.queryKeywordInput.placeholder = selected.id === "careerSearch" ? "machine learning" : "Filter query rows";
   els.queryKeywordHelp.textContent = queryKeywordHelp(selected.id);
-  const skillGap = selected.id === "skillGap";
   els.sparqlSkillContext.hidden = !skillGap;
   renderChoiceChips(
     els.sparqlSkillChoices,
@@ -914,13 +945,69 @@ function renderSparql() {
         selectedSkills: [...state.sparqlSkillGapSkills],
       })
     : getRecommendationProfile();
-  const rows = runQuery(selected.id, state.dataset, profile, state.sparqlKeyword);
+  const rows = runQuery(selected.id, state.dataset, profile, queryKeyword);
   els.queryExplanation.innerHTML = `<strong>ⓘ &nbsp; What this query does</strong><span>${escapeHtml(queryDescription(selected.id))}</span>`;
   els.queryFilename.textContent = `query-${index + 1}.rq`;
-  els.queryText.textContent = formatQueryText(selected.query, state.sparqlKeyword);
+  els.queryText.textContent = formatQueryText(selected.query, queryKeyword);
   els.queryRowCount.textContent = `${rows.length} row${rows.length === 1 ? "" : "s"}`;
   els.queryResults.innerHTML = renderTable(rows);
   els.queryFeedNote.innerHTML = `${queryFeedText(selected.id)} <span style="color:#2d5ddc">→</span>`;
+}
+
+function renderOntology() {
+  const classes = state.ontology.classes;
+  const properties = state.ontology.properties;
+  const objectProperties = properties.filter((item) => item.type !== "DatatypeProperty");
+  const datatypeProperties = properties.filter((item) => item.type === "DatatypeProperty");
+  const symmetricCount = properties.filter((item) => item.type === "SymmetricProperty").length;
+
+  els.ontologySummary.innerHTML = [
+    ["Source file", "data/ontology.ttl", "Turtle"],
+    ["OWL classes", classes.length, "Class definitions"],
+    ["Object properties", objectProperties.length, "Domain and range"],
+    ["Datatype properties", datatypeProperties.length, "Literal values"],
+    ["Symmetric rules", symmetricCount, "OWL inference evidence"],
+  ]
+    .map(
+      ([label, value, hint]) => `
+        <article class="ontologyMetric">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+          <small>${escapeHtml(hint)}</small>
+        </article>`,
+    )
+    .join("");
+
+  els.ontologyClassCount.textContent = `${classes.length} classes`;
+  els.ontologyClasses.innerHTML = classes
+    .map(
+      (item) => `
+        <article class="ontologyClassCard">
+          <code>cad:${escapeHtml(item.name)}</code>
+          <strong>${escapeHtml(item.name)}</strong>
+          <span>${classInstanceCount(item.name)} instances in the current graph</span>
+        </article>`,
+    )
+    .join("");
+
+  els.ontologyPropertyCount.textContent = `${properties.length} properties`;
+  els.ontologyProperties.innerHTML = properties
+    .map(
+      (item) => `
+        <article class="ontologyPropertyCard ${item.type === "SymmetricProperty" ? "is-symmetric" : ""}">
+          <div>
+            <code>cad:${escapeHtml(item.name)}</code>
+            <strong>${escapeHtml(item.type.replace("Property", " property"))}</strong>
+          </div>
+          <dl>
+            <div><dt>Domain</dt><dd>${escapeHtml(item.domain || "-")}</dd></div>
+            <div><dt>Range</dt><dd>${escapeHtml(item.range || "-")}</dd></div>
+          </dl>
+        </article>`,
+    )
+    .join("");
+
+  els.ontologyText.textContent = state.ontologyText;
 }
 
 function renderStatistics(recommendationProfile, skillGapProfile) {
@@ -1157,6 +1244,36 @@ function queryFeedText(id) {
   }[id];
 }
 
+function parseOntologyTurtle(text) {
+  const classes = [];
+  const properties = [];
+  const statements = String(text)
+    .split(/\.\s*(?:\r?\n|$)/)
+    .map((statement) => statement.trim())
+    .filter(Boolean);
+
+  for (const statement of statements) {
+    const declaration = statement.match(/^cad:([A-Za-z0-9]+)\s+a\s+owl:([A-Za-z]+)/);
+    if (!declaration) continue;
+    const [, name, type] = declaration;
+    if (type === "Ontology") continue;
+
+    const domain = statement.match(/rdfs:domain\s+cad:([A-Za-z0-9]+)/)?.[1] ?? "";
+    const range =
+      statement.match(/rdfs:range\s+cad:([A-Za-z0-9]+)/)?.[1] ??
+      statement.match(/rdfs:range\s+xsd:([A-Za-z0-9]+)/)?.[1] ??
+      "";
+
+    if (type === "Class") {
+      classes.push({ name, type });
+    } else {
+      properties.push({ name, type, domain, range });
+    }
+  }
+
+  return { classes, properties };
+}
+
 function formatQueryText(query, keyword) {
   return query.replaceAll(
     "{{keyword}}",
@@ -1175,6 +1292,21 @@ function renderTable(rows, options = {}) {
 
 function countInferred(predicate) {
   return state.dataset.inferredTriples.filter((triple) => triple.predicate === predicate).length;
+}
+
+function classInstanceCount(className) {
+  const counts = {
+    Career: state.dataset.careers.length,
+    Skill: state.dataset.skills.length,
+    Course: state.dataset.courses.length,
+    LearningTopic: state.dataset.topics.length,
+    Certification: state.dataset.certifications.length,
+    Industry: state.dataset.industries.length,
+    Interest: state.dataset.interests.length,
+    LearningResource: state.dataset.resources.length,
+    UserProfile: 1,
+  };
+  return counts[className] ?? 0;
 }
 
 function buildEntityMap(dataset) {
